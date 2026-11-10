@@ -1,0 +1,131 @@
+method,FAR target,"cross-author detected (top-1 correct, above thr)"
+Recency only (newest open PR first),0.01,0.0
+Recency only (newest open PR first),0.02,0.0
+Recency only (newest open PR first),0.05,0.0
+Recency only (newest open PR first),0.1,0.005847953216374269
+Recency only (newest open PR first),0.2,0.017543859649122806
+TF-IDF raw text (Li et al. 2017),0.01,0.1023391812865497
+TF-IDF raw text (Li et al. 2017),0.02,0.15497076023391812
+TF-IDF raw text (Li et al. 2017),0.05,0.32748538011695905
+TF-IDF raw text (Li et al. 2017),0.1,0.4619883040935672
+TF-IDF raw text (Li et al. 2017),0.2,0.5584795321637427
+TF-IDF template-stripped,0.01,0.1023391812865497
+TF-IDF template-stripped,0.02,0.17251461988304093
+TF-IDF template-stripped,0.05,0.3304093567251462
+TF-IDF template-stripped,0.1,0.47076023391812866
+TF-IDF template-stripped,0.2,0.5614035087719298
+BM25 raw text,0.01,0.029239766081871343
+BM25 raw text,0.02,0.038011695906432746
+BM25 raw text,0.05,0.10526315789473684
+BM25 raw text,0.1,0.2309941520467836
+BM25 raw text,0.2,0.3742690058479532
+BM25 template-stripped,0.01,0.029239766081871343
+BM25 template-stripped,0.02,0.04093567251461988
+BM25 template-stripped,0.05,0.11695906432748537
+BM25 template-stripped,0.1,0.26900584795321636
+BM25 template-stripped,0.2,0.4093567251461988
+BM25 on diff,0.01,0.043859649122807015
+BM25 on diff,0.02,0.07309941520467836
+BM25 on diff,0.05,0.14035087719298245
+BM25 on diff,0.1,0.21929824561403508
+BM25 on diff,0.2,0.31871345029239767
+Changed-files Jaccard,0.01,0.0
+Changed-files Jaccard,0.02,0.0
+Changed-files Jaccard,0.05,0.0
+Changed-files Jaccard,0.1,0.1695906432748538
+Changed-files Jaccard,0.2,0.2777777777777778
+Hunk overlap,0.01,0.0
+Hunk overlap,0.02,0.0
+Hunk overlap,0.05,0.0
+Hunk overlap,0.1,0.0
+Hunk overlap,0.2,0.0
+Identical changed lines,0.01,0.0
+Identical changed lines,0.02,0.0
+Identical changed lines,0.05,0.0
+Identical changed lines,0.1,0.0
+Identical changed lines,0.2,0.0
+Code overlap sum (files+hunks+lines),0.01,0.07017543859649122
+Code overlap sum (files+hunks+lines),0.02,0.08187134502923976
+Code overlap sum (files+hunks+lines),0.05,0.15204678362573099
+Code overlap sum (files+hunks+lines),0.1,0.20760233918128654
+Code overlap sum (files+hunks+lines),0.2,0.2953216374269006
+Links only (same issue / #ref),0.01,0.22807017543859648
+Links only (same issue / #ref),0.02,0.3333333333333333
+Links only (same issue / #ref),0.05,0.5087719298245614
+Links only (same issue / #ref),0.1,0.5818713450292398
+Links only (same issue / #ref),0.2,0.6842105263157895
+MiniLM raw text,0.01,0.049707602339181284
+MiniLM raw text,0.02,0.12280701754385964
+MiniLM raw text,0.05,0.2573099415204678
+MiniLM raw text,0.1,0.3713450292397661
+MiniLM raw text,0.2,0.5380116959064327
+MiniLM template-stripped,0.01,0.06432748538011696
+MiniLM template-stripped,0.02,0.11988304093567251
+MiniLM template-stripped,0.05,0.24853801169590642
+MiniLM template-stripped,0.1,0.3830409356725146
+MiniLM template-stripped,0.2,0.5497076023391813
+MiniLM on diff,0.01,0.011695906432748537
+MiniLM on diff,0.02,0.07894736842105263
+MiniLM on diff,0.05,0.19298245614035087
+MiniLM on diff,0.1,0.26900584795321636
+MiniLM on diff,0.2,0.3304093567251462
+"contrib-guard/phoenix (bot, exact port)",0.01,0.049707602339181284
+"contrib-guard/phoenix (bot, exact port)",0.02,0.09649122807017543
+"contrib-guard/phoenix (bot, exact port)",0.05,0.20760233918128654
+"contrib-guard/phoenix (bot, exact port)",0.1,0.3684210526315789
+"contrib-guard/phoenix (bot, exact port)",0.2,0.5614035087719298
+"Simili-bot (bot, re-impl)",0.01,0.05263157894736842
+"Simili-bot (bot, re-impl)",0.02,0.12280701754385964
+"Simili-bot (bot, re-impl)",0.05,0.26608187134502925
+"Simili-bot (bot, re-impl)",0.1,0.38011695906432746
+"Simili-bot (bot, re-impl)",0.2,0.5233918128654971
+"PRSense (bot, re-impl)",0.01,0.07017543859649122
+"PRSense (bot, re-impl)",0.02,0.11695906432748537
+"PRSense (bot, re-impl)",0.05,0.22807017543859648
+"PRSense (bot, re-impl)",0.1,0.34210526315789475
+"PRSense (bot, re-impl)",0.2,0.47953216374269003
+RRF hybrid: BM25 + embedding,0.01,0.0
+RRF hybrid: BM25 + embedding,0.02,0.0
+RRF hybrid: BM25 + embedding,0.05,0.0
+RRF hybrid: BM25 + embedding,0.1,0.0
+RRF hybrid: BM25 + embedding,0.2,0.0
+RRF hybrid: BM25 + embedding + code,0.01,0.0
+RRF hybrid: BM25 + embedding + code,0.02,0.0
+RRF hybrid: BM25 + embedding + code,0.05,0.0
+RRF hybrid: BM25 + embedding + code,0.1,0.0
+RRF hybrid: BM25 + embedding + code,0.2,0.5029239766081871
+RRF hybrid: text + code + links + recency,0.01,0.0
+RRF hybrid: text + code + links + recency,0.02,0.0
+RRF hybrid: text + code + links + recency,0.05,0.11695906432748537
+RRF hybrid: text + code + links + recency,0.1,0.195906432748538
+RRF hybrid: text + code + links + recency,0.2,0.32748538011695905
+"INTRUDE + time (Wang et al. 2019), LR",0.01,0.1286549707602339
+"INTRUDE + time (Wang et al. 2019), LR",0.02,0.2222222222222222
+"INTRUDE + time (Wang et al. 2019), LR",0.05,0.4649122807017544
+"INTRUDE + time (Wang et al. 2019), LR",0.1,0.5760233918128655
+"INTRUDE + time (Wang et al. 2019), LR",0.2,0.6842105263157895
+"AgentDup lexical, LR",0.01,0.19005847953216373
+"AgentDup lexical, LR",0.02,0.3538011695906433
+"AgentDup lexical, LR",0.05,0.5877192982456141
+"AgentDup lexical, LR",0.1,0.7222222222222222
+"AgentDup lexical, LR",0.2,0.7865497076023392
+"AgentDup + MiniLM, LR (current tool)",0.01,0.30116959064327486
+"AgentDup + MiniLM, LR (current tool)",0.02,0.43567251461988304
+"AgentDup + MiniLM, LR (current tool)",0.05,0.631578947368421
+"AgentDup + MiniLM, LR (current tool)",0.1,0.7485380116959064
+"AgentDup + MiniLM, LR (current tool)",0.2,0.8099415204678363
+"All signals, LR",0.01,0.3157894736842105
+"All signals, LR",0.02,0.5029239766081871
+"All signals, LR",0.05,0.652046783625731
+"All signals, LR",0.1,0.7339181286549707
+"All signals, LR",0.2,0.8216374269005848
+"AgentDup features, gradient boosting",0.01,0.391812865497076
+"AgentDup features, gradient boosting",0.02,0.5877192982456141
+"AgentDup features, gradient boosting",0.05,0.6842105263157895
+"AgentDup features, gradient boosting",0.1,0.7631578947368421
+"AgentDup features, gradient boosting",0.2,0.8245614035087719
+"All signals, gradient boosting",0.01,0.22807017543859648
+"All signals, gradient boosting",0.02,0.4269005847953216
+"All signals, gradient boosting",0.05,0.6695906432748538
+"All signals, gradient boosting",0.1,0.7631578947368421
+"All signals, gradient boosting",0.2,0.8128654970760234

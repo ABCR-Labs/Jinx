@@ -1,0 +1,41 @@
+{
+ "latency": {
+  "lexical features ms/query": {
+   "median": 22.004112499416806,
+   "p90": 228.5285644975381
+  }
+ },
+ "kendall_tau random-pair AUC vs live-queue cross-author R@1": [
+  0.8160829614104459,
+  5.772635891668977e-09
+ ],
+ "classes": {
+  "A. code twin (>=50% identical changed lines)": 994,
+  "B. partial code overlap": 701,
+  "D. no shared files (intent-level)": 128,
+  "C. same files, different code": 44
+ },
+ "n_methods": 26,
+ "gb_features": [
+  "text_tfidf",
+  "title_tfidf",
+  "file_jacc",
+  "file_contain",
+  "hunk_overlap",
+  "line_contain",
+  "same_issue",
+  "mention_ref",
+  "same_author",
+  "same_agent",
+  "log_gap_hours",
+  "cand_open",
+  "emb_cos",
+  "cos_raw",
+  "cos_diff",
+  "bm25_raw_n",
+  "bm25_stripped_n",
+  "bm25_diff_n",
+  "text_tfidf_raw",
+  "title_tfidf_raw"
+ ]
+}

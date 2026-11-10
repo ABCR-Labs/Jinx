@@ -1,0 +1,209 @@
+"""Dedup strategy study on the AIDev live-queue benchmark.
+Strategies x duplicate classes; Recall@1/5, MRR with repo-cluster bootstrap CIs; paired tests; false alarms;
+operating curves; random-pair vs live-queue evaluation; error analysis. Writes to agentdup/experiments/results/."""
+import pickle, json, os, sys, numpy as np, pandas as pd
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GroupKFold
+from sklearn.metrics import roc_auc_score
+from scipy.stats import kendalltau
+D = "/home/ubuntu/research/prdupecheck/data/"
+OUT = "/home/ubuntu/research/prdupecheck/agentdup/experiments/results/"; os.makedirs(OUT, exist_ok=True)
+NB = int(os.environ.get("NB", 500))
+B = pickle.load(open(D + "bench.pkl", "rb")); Q = B["queries"]
+P = pd.read_parquet(D + "pull_request.parquet", columns=["id", "repo_url", "title", "number", "user", "agent"]).set_index("id")
+F = pd.read_parquet(D + "features.parquet")
+F = F.merge(pd.read_parquet(D + "feat_bm25.parquet"), on=["qi", "cand"], how="left")
+qidx = np.array([Q[q]["q"] for q in F.qi])
+EMBS = {}
+for tag in ["bge_raw", "bge_stripped", "bge_diff", "bgebase_stripped", "unix_diff", "unix_stripped", "codebert_diff", "jinacode_diff"]:
+    if os.path.exists(D + f"emb_{tag}.npz"):
+        E = np.load(D + f"emb_{tag}.npz"); ix = {int(i): k for k, i in enumerate(E["ids"])}; M = E["emb"].astype(np.float32)
+        a = np.array([ix[int(i)] for i in qidx]); b = np.array([ix[int(c)] for c in F.cand])
+        F["cos_" + tag] = np.einsum("ij,ij->i", M[a], M[b]); EMBS[tag] = True
+meta = pd.DataFrame([{"qi": i, "neg": x["neg"], "self": x["self"], "same_agent": x["same_agent"], "repo": P.repo_url[x["q"]],
+                      "n": len(x["cand"])} for i, x in enumerate(Q)]).set_index("qi")
+gm = F[F.gold].set_index("qi")
+meta["ref"] = (gm.mention_ref > 0).reindex(meta.index).fillna(False).astype(bool)
+meta["issue"] = (gm.same_issue > 0).reindex(meta.index).fillna(False).astype(bool)
+def code_class(r):
+    if r.line_contain >= 0.5: return "A. code twin (>=50% identical changed lines)"
+    if r.hunk_overlap > 0 or r.line_contain > 0: return "B. partial code overlap"
+    if r.file_jacc > 0: return "C. same files, different code"
+    return "D. no shared files (intent-level)"
+meta["cls"] = gm.apply(code_class, axis=1).reindex(meta.index)
+rng = np.random.default_rng(0); F["tie"] = rng.random(len(F)) * 1e-9; F["y"] = (F.gold | F.other_gold).astype(int)
+
+S = {}  # name -> (family, column)
+def add(name, fam, vals): F[name] = vals; S[name] = fam
+add("Recency only (newest open PR first)", "0 trivial", -F.log_gap_hours)
+add("TF-IDF raw text (Li et al. 2017)", "1 lexical", 0.5 * F.title_tfidf_raw + 0.5 * F.text_tfidf_raw)
+add("TF-IDF template-stripped", "1 lexical", 0.5 * F.title_tfidf + 0.5 * F.text_tfidf)
+add("BM25 raw text", "1 lexical", F.bm25_raw); add("BM25 template-stripped", "1 lexical", F.bm25_stripped)
+add("BM25 on diff", "2 code", F.bm25_diff)
+add("Changed-files Jaccard", "2 code", F.file_jacc); add("Hunk overlap", "2 code", F.hunk_overlap)
+add("Identical changed lines", "2 code", F.line_contain)
+add("Code overlap sum (files+hunks+lines)", "2 code", F.file_jacc + F.hunk_overlap + F.line_contain)
+add("Links only (same issue / #ref)", "3 links", F.same_issue + F.mention_ref + 1e-3 * F.text_tfidf_raw)
+add("MiniLM raw text", "4 embedding", F.cos_raw); add("MiniLM template-stripped", "4 embedding", F.emb_cos)
+add("MiniLM on diff", "4 embedding", F.cos_diff)
+for tag, nm in [("bge_raw", "BGE-small raw text"), ("bge_stripped", "BGE-small template-stripped"), ("bge_diff", "BGE-small on diff"), ("bgebase_stripped", "BGE-base template-stripped"), ("unix_diff", "UniXcoder (code model) on diff"), ("unix_stripped", "UniXcoder template-stripped text"), ("codebert_diff", "CodeBERT (mean-pooled) on diff"), ("jinacode_diff", "Jina code embeddings v2 on diff")]:
+    if "cos_" + tag in F: add(nm, "4 embedding", F["cos_" + tag])
+add("contrib-guard/phoenix (bot, exact port)", "5 existing bot", F.cg_phoenix)
+add("Simili-bot (bot, re-impl)", "5 existing bot", F.cos_simili)
+add("PRSense (bot, re-impl)", "5 existing bot", 0.45 * F.cos_raw + 0.35 * F.cos_diff + 0.20 * F.file_jacc)
+g = F.groupby("qi")
+def rr(col): return 1.0 / (60 + g[col].rank(ascending=False, method="average"))
+txt_emb = "BGE-small raw text" if "BGE-small raw text" in S else "MiniLM raw text"
+add("RRF hybrid: BM25 + embedding", "6 unsupervised hybrid", rr("BM25 raw text") + rr(txt_emb))
+add("RRF hybrid: BM25 + embedding + code", "6 unsupervised hybrid", rr("BM25 raw text") + rr(txt_emb) + rr("Code overlap sum (files+hunks+lines)"))
+add("RRF hybrid: text + code + links + recency", "6 unsupervised hybrid", rr("BM25 raw text") + rr(txt_emb) + rr("Code overlap sum (files+hunks+lines)") + rr("Links only (same issue / #ref)") + rr("Recency only (newest open PR first)"))
+
+LEX = ["text_tfidf", "title_tfidf", "file_jacc", "file_contain", "hunk_overlap", "line_contain", "same_issue", "mention_ref",
+       "same_author", "same_agent", "log_gap_hours", "cand_open"]
+INTRUDE = ["title_tfidf_raw", "text_tfidf_raw", "file_jacc", "file_contain", "hunk_overlap", "line_contain", "same_issue_text", "mention_ref"]
+ALL = LEX + ["emb_cos", "cos_raw", "cos_diff", "bm25_raw", "bm25_stripped", "bm25_diff", "text_tfidf_raw", "title_tfidf_raw"] + ["cos_" + t for t in EMBS]
+for c in ["bm25_raw", "bm25_stripped", "bm25_diff"]:
+    F[c + "_n"] = F[c] / (g[c].transform("max") + 1e-9)  # per-queue normalised BM25 for learners
+ALL = [c + "_n" if c.startswith("bm25") else c for c in ALL]
+TRAINED = {"INTRUDE + time (Wang et al. 2019), LR": ("7 supervised", INTRUDE + ["log_gap_hours"], "lr"),
+           "AgentDup lexical, LR": ("7 supervised", LEX, "lr"),
+           "AgentDup + MiniLM, LR (current tool)": ("7 supervised", LEX + ["emb_cos"], "lr"),
+           "All signals, LR": ("7 supervised", ALL, "lr"),
+           "AgentDup features, gradient boosting": ("7 supervised", LEX + ["emb_cos"], "gb"),
+           "All signals, gradient boosting": ("7 supervised", ALL, "gb")}
+folds = list(GroupKFold(n_splits=5).split(meta.index, groups=meta.repo))
+GBIMP = {}
+for name, (fam, cols, kind) in TRAINED.items():
+    F[name] = np.nan; S[name] = fam
+    for tr, te in folds:
+        m = F.qi.isin(set(meta.index[tr])) & ~F.other_gold; T = F[m]
+        X = pd.concat([T[T.y == 1], T[T.y == 0].groupby("qi", group_keys=False).apply(lambda d: d.sample(min(len(d), 100), random_state=0))])
+        tem = F.qi.isin(set(meta.index[te]))
+        if kind == "lr":
+            sc = StandardScaler().fit(X[cols]); mdl = LogisticRegression(C=1.0, class_weight="balanced", max_iter=3000).fit(sc.transform(X[cols]), X.y)
+            F.loc[tem, name] = mdl.predict_proba(sc.transform(F.loc[tem, cols]))[:, 1]
+        else:
+            mdl = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.05, max_leaf_nodes=31, class_weight="balanced", random_state=0).fit(X[cols], X.y)
+            F.loc[tem, name] = mdl.predict_proba(F.loc[tem, cols])[:, 1]
+BASE = "AgentDup + MiniLM, LR (current tool)"
+# top-10 of the current tool for re-rankers
+F["_r"] = F.groupby("qi")[BASE].rank(ascending=False, method="first")
+F.loc[F._r <= 10, ["qi", "cand", BASE, "_r"]].rename(columns={BASE: "base", "_r": "rank"}).to_parquet(D + "top10.parquet")
+xq_all = meta.index[(~meta.neg) & (meta.self == False)]
+def rerank(name, file, col, k, combine=False, scope=None, sig=False, fam="8 re-ranker on top-k"):
+    if not os.path.exists(D + file): return
+    R_ = pd.read_parquet(D + file)[["qi", "cand", col]]
+    if scope is not None: R_ = R_[R_.qi.isin(scope)]
+    x = F[["qi", "cand", BASE, "_r"]].merge(R_, on=["qi", "cand"], how="left")
+    covered = x.qi.isin(set(R_.qi))
+    s = x[col].values.astype(float)
+    if sig: s = 1 / (1 + np.exp(-s))
+    if combine: s = 0.5 * s + 0.5 * x[BASE].values
+    val = np.where(covered & (x._r <= k) & ~np.isnan(s), 10 + np.nan_to_num(s), x[BASE].values)
+    add(name, fam, val)
+negset = set(meta.index[meta.neg])
+rerank("Cross-encoder ms-marco MiniLM (CPU) re-rank top-10", "ce_scores.parquet", "ce", 10, sig=True)
+for tag, nm in [("ce_msmarco", "ms-marco MiniLM"), ("ce_bgebase", "BGE-reranker-base"), ("ce_bgem3", "BGE-reranker-v2-m3")]:
+    rerank(f"Cross-encoder {nm} re-rank top-10", f"rr_{tag}.parquet", tag, 10, sig=True)
+    rerank(f"Cross-encoder {nm} + AgentDup (avg) top-10", f"rr_{tag}.parquet", tag, 10, combine=True, sig=True)
+LLMS = [("qwen15", "Qwen2.5-1.5B"), ("qwen7", "Qwen2.5-7B"), ("qwencoder7", "Qwen2.5-Coder-7B"), ("qwen14", "Qwen2.5-14B")]
+for tag, nm in LLMS:
+    for k in [5, 10]:
+        rerank(f"LLM judge {nm} re-rank top-{k}", f"llm_{tag}.parquet", "p_yes", k, fam="9 LLM judge on top-k")
+        rerank(f"LLM judge {nm} + AgentDup (avg) top-{k}", f"llm_{tag}.parquet", "p_yes", k, combine=True, fam="9 LLM judge on top-k")
+rerank("LLM judge Claude Haiku 4.5 re-rank top-5", "llm_haiku45.parquet", "p_yes", 5, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
+rerank("LLM judge Claude Haiku 4.5 + AgentDup (avg) top-5", "llm_haiku45.parquet", "p_yes", 5, combine=True, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
+METHODS = list(S)
+def ranks(col):
+    s = F[~F.other_gold][["qi", "gold", col, "tie"]].copy(); s["v"] = s[col] + s.tie
+    gv = s[s.gold].set_index("qi").v; s = s.join(gv.rename("gv"), on="qi"); s = s[s.gv.notna()]
+    return (s.v > s.gv).groupby(s.qi).sum() + 1
+R = {c: ranks(c) for c in METHODS}
+pd.DataFrame(R).to_parquet(OUT + "ranks.parquet")
+def boot(vals, repos, nb=NB, seed=1):
+    rs = np.random.default_rng(seed); u = repos.unique(); idx = {r: np.where(repos.values == r)[0] for r in u}
+    out = [vals[np.concatenate([idx[r] for r in rs.choice(u, len(u))])].mean(0) for _ in range(nb)]
+    return np.percentile(np.array(out), [2.5, 97.5], axis=0)
+lab = ~meta.neg
+GROUPS = {"all labelled": lab, "self-replacement": lab & (meta.self == True), "cross-author": lab & (meta.self == False),
+          "cross-author, same agent": lab & (meta.self == False) & (meta.same_agent == True),
+          "cross-author, cross-agent": lab & (meta.self == False) & (meta.same_agent == False),
+          "cross-author, no #ref in text": lab & (meta.self == False) & ~meta.ref,
+          "cross-author, shares linked issue": lab & (meta.self == False) & meta.issue}
+for c in sorted(meta.cls.dropna().unique()):
+    GROUPS["class " + c] = lab & (meta.cls == c)
+    GROUPS["cross-author, class " + c] = lab & (meta.self == False) & (meta.cls == c)
+rows = []
+for gname, msk in GROUPS.items():
+    qs = meta.index[msk]
+    if len(qs) == 0: continue
+    for c in METHODS:
+        r = R[c].reindex(qs).values; v = np.stack([r <= 1, r <= 5, 1 / r], 1).astype(float)
+        lo, hi = boot(v, meta.repo.reindex(qs))
+        rows.append({"group": gname, "n": len(qs), "family": S[c], "method": c, "R@1": v[:, 0].mean(), "R@1 lo": lo[0], "R@1 hi": hi[0],
+                     "R@5": v[:, 1].mean(), "R@5 lo": lo[1], "R@5 hi": hi[1], "MRR": v[:, 2].mean(), "MRR lo": lo[2], "MRR hi": hi[2]})
+res = pd.DataFrame(rows); res.to_csv(OUT + "strategies_by_group.csv", index=False)
+cls_counts = meta[lab].groupby(["cls", "self"]).size().unstack().rename(columns={True: "self-replacement", False: "cross-author"})
+cls_counts.to_csv(OUT + "class_counts.csv")
+# paired vs current tool and vs Wang on cross-author
+xq = meta.index[GROUPS["cross-author"]]; pr_rows = []
+for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR"]:
+    for c in METHODS:
+        if c == ref: continue
+        a, b = R[c].reindex(xq).values, R[ref].reindex(xq).values
+        d = np.stack([(a <= 1).astype(float) - (b <= 1), (a <= 5).astype(float) - (b <= 5), 1 / a - 1 / b], 1)
+        lo, hi = boot(d, meta.repo.reindex(xq), nb=max(NB, 1000), seed=5)
+        pr_rows.append({"reference": ref, "method": c, "dR@1": d[:, 0].mean(), "dR@1 lo": lo[0], "dR@1 hi": hi[0], "dR@5": d[:, 1].mean(),
+                        "dR@5 lo": lo[1], "dR@5 hi": hi[1], "dMRR": d[:, 2].mean(), "dMRR lo": lo[2], "dMRR hi": hi[2]})
+pd.DataFrame(pr_rows).to_csv(OUT + "paired_cross_author.csv", index=False)
+# false alarms (threshold per fold at 50% of training cross-author top-1 scores) + operating curve on negatives
+negq = meta.index[meta.neg]; fa = []; curve = []
+for c in METHODS:
+    t1 = F.groupby("qi")[c].max(); far, hit = [], []
+    for tr, te in folds:
+        trx = [q for q in meta.index[tr] if q in set(xq)]; thr = np.quantile(t1.reindex(trx).values, 0.5)
+        ten = [q for q in meta.index[te] if meta.neg[q]]; tex = [q for q in meta.index[te] if q in set(xq)]
+        far += list(t1.reindex(ten).values >= thr); hit += list((t1.reindex(tex).values >= thr) & (R[c].reindex(tex).values == 1))
+    fa.append({"family": S[c], "method": c, "FAR": np.mean(far), "cross-author correct alerts": np.mean(hit)})
+    nv = np.sort(t1.reindex(negq).values)
+    for target in [0.01, 0.02, 0.05, 0.10, 0.20]:
+        thr = nv[int((1 - target) * len(nv))]
+        curve.append({"method": c, "FAR target": target, "cross-author detected (top-1 correct, above thr)":
+                      float(np.mean((t1.reindex(xq).values > thr) & (R[c].reindex(xq).values == 1)))})
+pd.DataFrame(fa).to_csv(OUT + "false_alarms.csv", index=False); pd.DataFrame(curve).to_csv(OUT + "operating_curve.csv", index=False)
+# random-pair (classic) evaluation vs live-queue: AUC of gold vs one random non-gold candidate from the same queue
+rp = F[~F.other_gold & F.qi.isin(meta.index[lab])]
+negs = rp[~rp.gold].groupby("qi", group_keys=False).apply(lambda d: d.sample(1, random_state=0)); pos = rp[rp.gold]
+rpair = []
+for c in METHODS:
+    y = np.r_[np.ones(len(pos)), np.zeros(len(negs))]; s = np.r_[pos[c].values, negs[c].values]
+    rpair.append({"method": c, "random-pair AUC": roc_auc_score(y, s), "live-queue R@1 (all labelled)": float((R[c].reindex(meta.index[lab]) <= 1).mean()),
+                  "live-queue R@1 (cross-author)": float((R[c].reindex(xq) <= 1).mean())})
+rpair = pd.DataFrame(rpair); rpair.to_csv(OUT + "random_pair_vs_live_queue.csv", index=False)
+tau = kendalltau(rpair["random-pair AUC"], rpair["live-queue R@1 (cross-author)"])
+# error analysis for the current tool on cross-author
+er = []
+for q in xq:
+    if R[BASE][q] > 1:
+        x = Q[q]; s = F[(F.qi == q) & ~F.other_gold].sort_values(BASE, ascending=False).iloc[0]; t = int(s.cand)
+        er.append({"qi": q, "rank of true duplicate": int(R[BASE][q]), "class": meta.cls[q], "queue size": meta.n[q],
+                   "top-1 same author as new PR": bool(P.user[t] == P.user[x["q"]]), "new PR": f"#{P.number[x['q']]} {P.title[x['q']]}"[:90],
+                   "true duplicate": f"#{P.number[x['gold']]} {P.title[x['gold']]}"[:90], "ranked first instead": f"#{P.number[t]} {P.title[t]}"[:90]})
+pd.DataFrame(er).to_csv(OUT + "errors_cross_author.csv", index=False)
+lat = {"lexical features ms/query": {"median": float(F.groupby("qi").t_lex.sum().median() * 1000), "p90": float(F.groupby("qi").t_lex.sum().quantile(0.9) * 1000)}}
+for f in ["ce_timing.json"]:
+    if os.path.exists(D + f): lat["cross-encoder"] = json.load(open(D + f))
+for f in sorted(os.listdir(D)):
+    if f.startswith("modal_info_") and f.endswith(".json"): lat[f[11:-5]] = json.load(open(D + f))
+if os.path.exists(D + "llm_haiku45.parquet"):
+    L = pd.read_parquet(D + "llm_haiku45.parquet"); lat["claude haiku45 API"] = {"pairs": len(L), "ms/pair median": float(L.ms.median()), "ms/pair p90": float(L.ms.quantile(.9))}
+    if os.path.exists(D + "llm_haiku45_cost.json"): lat["claude haiku45 API"].update(json.load(open(D + "llm_haiku45_cost.json")))
+json.dump({"latency": lat, "kendall_tau random-pair AUC vs live-queue cross-author R@1": [tau.statistic, tau.pvalue],
+           "classes": {str(k): v for k, v in meta[lab].cls.value_counts().items()}, "n_methods": len(METHODS),
+           "gb_features": ALL}, open(OUT + "summary.json", "w"), indent=1, default=float)
+pd.set_option("display.width", 250); pd.set_option("display.max_rows", 500)
+for gname in ["cross-author", "all labelled"]:
+    print("\n==", gname); print(res[res.group == gname].sort_values("R@1", ascending=False)[["family", "method", "R@1", "R@5", "MRR"]].round(3).to_string(index=False))
+print(cls_counts); print(pd.DataFrame(fa).sort_values("FAR").round(3).to_string(index=False)); print("tau", tau)

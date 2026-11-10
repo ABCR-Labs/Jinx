@@ -1,0 +1,4 @@
+{"number": 103, "title": "Increase idle limit for user sessions", "user": {"login": "devin-ai-integration[bot]"},
+ "body": "Users are logged out after 5 minutes of inactivity.\n\n## Review checklist\n- [ ] Tests pass\n\nLink to Devin run: https://app.devin.ai/sessions/abc",
+ "created_at": "2026-03-02T09:00:00Z",
+ "diff": "diff --git a/auth/session.py b/auth/session.py\n--- a/auth/session.py\n+++ b/auth/session.py\n@@ -10,3 +10,3 @@\n-IDLE_TIMEOUT = 300\n+IDLE_TIMEOUT = 3600  # one hour\n"}

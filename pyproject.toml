@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentdup"
+version = "0.1.0"
+description = "Find likely duplicate pull requests in an open-PR queue, built for PRs opened by coding agents."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+dependencies = []
+
+[project.optional-dependencies]
+embed = ["sentence-transformers>=2.2"]
+dev = ["pytest", "ruff"]
+
+[project.scripts]
+agentdup = "agentdup.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+agentdup = ["data/*.json"]
+
+[tool.ruff]
+line-length = 110
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "tests"]

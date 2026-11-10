@@ -1,0 +1,27 @@
+family,method,FAR,cross-author correct alerts
+0 trivial,Recency only (newest open PR first),0.44080944350758855,0.05555555555555555
+1 lexical,TF-IDF raw text (Li et al. 2017),0.09409780775716695,0.4239766081871345
+1 lexical,TF-IDF template-stripped,0.08870151770657674,0.4269005847953216
+1 lexical,BM25 raw text,0.21011804384485666,0.38596491228070173
+1 lexical,BM25 template-stripped,0.18684654300168635,0.39766081871345027
+2 code,BM25 on diff,0.17504215851602023,0.30409356725146197
+2 code,Changed-files Jaccard,0.24384485666104552,0.3391812865497076
+2 code,Hunk overlap,0.29612141652613827,0.2631578947368421
+2 code,Identical changed lines,0.3200674536256324,0.24269005847953215
+2 code,Code overlap sum (files+hunks+lines),0.25126475548060706,0.30701754385964913
+3 links,Links only (same issue / #ref),0.038448566610455315,0.4619883040935672
+4 embedding,MiniLM raw text,0.12107925801011804,0.4269005847953216
+4 embedding,MiniLM template-stripped,0.11905564924114671,0.43567251461988304
+4 embedding,MiniLM on diff,0.1524451939291737,0.30116959064327486
+5 existing bot,"contrib-guard/phoenix (bot, exact port)",0.11703204047217539,0.41812865497076024
+5 existing bot,"Simili-bot (bot, re-impl)",0.11129848229342328,0.43567251461988304
+5 existing bot,"PRSense (bot, re-impl)",0.12715008431703204,0.3713450292397661
+6 unsupervised hybrid,RRF hybrid: BM25 + embedding,0.35109612141652613,0.6052631578947368
+6 unsupervised hybrid,RRF hybrid: BM25 + embedding + code,0.1905564924114671,0.5
+6 unsupervised hybrid,RRF hybrid: text + code + links + recency,0.3197301854974705,0.4415204678362573
+7 supervised,"INTRUDE + time (Wang et al. 2019), LR",0.04620573355817875,0.4415204678362573
+7 supervised,"AgentDup lexical, LR",0.03204047217537943,0.4678362573099415
+7 supervised,"AgentDup + MiniLM, LR (current tool)",0.025295109612141653,0.47076023391812866
+7 supervised,"All signals, LR",0.01888701517706577,0.47953216374269003
+7 supervised,"AgentDup features, gradient boosting",0.013490725126475547,0.4619883040935672
+7 supervised,"All signals, gradient boosting",0.0209106239460371,0.4298245614035088

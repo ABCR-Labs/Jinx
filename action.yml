@@ -1,0 +1,33 @@
+name: AgentDup
+description: Comment on new pull requests that likely duplicate an open PR (tuned for coding-agent PRs). No LLM, no API keys.
+branding:
+  icon: copy
+  color: blue
+inputs:
+  github-token:
+    description: Token used to read open PRs and post one comment
+    default: ${{ github.token }}
+  threshold:
+    description: Minimum score (0-1) to post a comment. Empty = bundled default
+    default: ""
+  max-open-prs:
+    description: Max number of open PRs to compare against
+    default: "200"
+  top:
+    description: Max matches listed in the comment
+    default: "3"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - shell: bash
+      run: pip install --quiet "${{ github.action_path }}"
+    - shell: bash
+      env:
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_THRESHOLD: ${{ inputs.threshold }}
+        INPUT_MAX_OPEN_PRS: ${{ inputs.max-open-prs }}
+        INPUT_TOP: ${{ inputs.top }}
+      run: python -m agentdup.action
