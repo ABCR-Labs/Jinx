@@ -1,22 +1,88 @@
 % Tool-demo paper (candidate: FSE 2027 Tool Demos, ACM 4+1 pages; ICPC Tool Demo uses IEEE). Venue not final.
 \documentclass[sigconf,review]{acmart}
-\usepackage{booktabs}
+\usepackage{booktabs,tikz}
+\usetikzlibrary{positioning,arrows.meta}
 \input{../generated/numbers}
+\input{../generated/numbers_extra}
 \newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
 \setcopyright{none}
 \begin{document}
 \title{Jinx: Catching Duplicate Pull Requests from Coding Agents}
-\author{\todo{authors}}
+\author{Harshul Jain}\affiliation{\institution{Independent Researcher}\country{}}
+\author{Saurabh Yergattikar}\affiliation{\institution{Independent Researcher}\country{}}
+\author{Tanya Sah}\affiliation{\institution{Independent Researcher}\country{}}
 \begin{abstract}
-Coding agents open many pull requests, and some repeat work that is already open. Jinx is a CPU-only GitHub Action and CLI that compares a new PR with the repository's open PRs and comments with ranked likely duplicates and plain reasons (shared files, overlapping changed lines, shared issue, similar text after removing agent boilerplate). On \nPairs{} duplicate pairs from AIDev, Jinx ranks the true duplicate first for \ROnejinx{} of cross-author pairs, against \ROnecg{} for the best existing duplicate-PR bot, with \FARjinx\% false alarms, in about 22\,ms per PR without an LLM. \todo{video URL, repo URL, usage evidence}
+Coding agents open many pull requests (PRs), and some repeat work that is already open in the same repository. Jinx is a GitHub Action and command-line tool that compares a new PR with the repository's open PRs and posts one comment listing likely duplicates, each with plain-language reasons (shared files, overlapping lines, a shared issue, similar text after removing agent template text). It runs on a CPU in \latJinx\,ms per PR (median), needs no API key, and sends no code to an external service. On \nCross{} cross-author duplicate pairs from real agent PRs, scored against each repository's open queue, Jinx ranks the true duplicate first for \ROnejinx{} of pairs, against \ROnecg{} for the best existing open-source duplicate-PR bot and \ROneintrude{} for a classic INTRUDE-style detector, with \FARjinx\% false alarms. Video: \todo{URL}. Tool: \todo{URL}.
 \end{abstract}
 \maketitle
-\section{Introduction}\todo{problem, existing tools (bots, commercial review tools), what Jinx adds}
-\section{Jinx}\todo{architecture figure; template stripping; signals; logistic model; reasons; Action workflow; CLI example}
-\section{Evaluation}\todo{head-to-head vs bots and classic detector (Table); latency; false alarms}
-\begin{table}[t]\centering\caption{Cross-author pairs ($n=\nCross$).}\resizebox{\columnwidth}{!}{\input{../generated/tab_main}}\end{table}
-\section{Usage and Limitations}\todo{deployment evidence; limits: intent-level duplicates, silver labels}
-\section{Availability}\todo{repo, PyPI \texttt{jinx-pr}, video, license MIT}
+
+\section{Introduction}
+Coding agents such as Codex, Copilot, Devin, Cursor, and Claude Code now open hundreds of thousands of PRs~\cite{li2026aidev}. Duplicate or superseded work is a leading reason why agent PRs are closed without merging: 142 of 600 failed agent PRs in one study~\cite{ehsani2026fail}, and ``resolved by another PR'' tops the list in another~\cite{alam2026unmerged}. Duplicates happen when several agents are assigned the same issue, or when one agent replaces its own PR instead of updating it. Each duplicate wastes a maintainer's review.
+
+GitHub only lets a maintainer mark a duplicate by hand. Commercial AI review tools document duplicate detection for issues, not PRs; CodeRabbit's ``Related PRs'' lists PRs that touched the same code as context, not as a duplicate alarm. Small open-source bots (contrib-guard, Simili, PRSense, PRism, vector-triage, doppelg\"anger\footnote{\url{https://github.com/dannyl1u/doppelganger}}) compare PR titles and descriptions with text or embedding similarity, and some need an LLM API key. Research detectors~\cite{li2017detecting,ren2019intrude,wang2019time,jiang2023duphunter,liao2024dupllm} were built for human PRs and are not packaged as maintained tools.
+
+Jinx fills this gap: it uses the code changes as well as the text, explains each match, runs inside the repository's own CI, and is tuned and evaluated on agent PRs.
+
+\section{Jinx}
+\begin{figure}[t]\centering
+\begin{tikzpicture}[node distance=3.5mm,every node/.style={font=\scriptsize,align=center},box/.style={draw,rounded corners,minimum width=36mm,inner sep=2pt},>={Stealth[length=1.5mm]}]
+\node[box] (in) {new PR + open PRs (GitHub API or JSON)};
+\node[box,below=of in] (t) {strip repeated agent template text};
+\node[box,below=of t] (f) {pair signals: text TF-IDF, (opt.) MiniLM, files,\\ line ranges, identical lines, issue, \#ref, author, time};
+\node[box,below=of f] (s) {logistic model $\rightarrow$ score in [0,1]};
+\node[box,below=of s] (o) {ranked candidates + reasons $\rightarrow$ one PR comment / CLI};
+\foreach \a/\b in {in/t,t/f,f/s,s/o}\draw[->](\a)--(\b);
+\end{tikzpicture}
+\caption{The Jinx pipeline.}\label{fig:arch}\end{figure}
+
+Fig.~\ref{fig:arch} shows the pipeline.
+\textbf{Input.} In the Action, Jinx reads the new PR and up to 200 open PRs (titles, descriptions, linked issues, changed files and patches) through the GitHub API with the workflow's own token. The CLI reads the same fields from JSON files.
+\textbf{Template stripping.} Agents repeat boilerplate (checklists, ``Generated with \ldots'' footers). Jinx learns lines that recur across a repository's PRs and removes them before comparing text.
+\textbf{Signals.} For each open PR Jinx computes TF-IDF similarity of title and body, an optional local MiniLM embedding similarity, overlap of changed files, overlap of changed line ranges, share of identical added lines, shared linked issues, explicit references between the PRs, same author or agent, time gap, and whether the candidate is still open.
+\textbf{Score and reasons.} A logistic model, trained on our benchmark and shipped with the package, combines the signals. The score threshold of 0.5 is set to the median top-1 score of cross-author duplicates. Each signal that contributes is turned into a sentence.
+\textbf{Output.} The CLI prints a ranked list; the Action posts or updates a single comment and never closes or labels PRs.
+
+\begin{figure}[t]
+\begin{verbatim}
+$ jinx check new.json --open-queue open.jsonl
+PR #44134: checked 19 open PRs in 12 ms.
+  DUPLICATE? #44110  score 1.00  refactor(tvp): use
+             capture_outputs for output tracing
+   - one PR links to the other (#44110)
+   - shares 1 of 1 changed files (.../modeling_tvp.py)
+   - 100% of changed line ranges overlap
+   - 100% of added lines are identical
+   - similar title/description after removing
+     agent template text (0.92)
+\end{verbatim}
+\caption{Jinx on a real agent PR from huggingface/transformers (AIDev).}\label{fig:cli}\end{figure}
+
+\textbf{Usage.} Install with \texttt{pip install jinx-pr}, or add the Action to a workflow:
+\begin{verbatim}
+on:
+  pull_request_target:
+    types: [opened, reopened]
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+jobs:
+  jinx:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ABCR-Labs/jinx-pr@v1
+\end{verbatim}
+\todo{confirm final repository name and tag}
+
+\section{Evaluation}
+\begin{table}[t]\centering\caption{Cross-author pairs ($n=\nCross$); false alarms on \nNeg{} PRs with no duplicate.}\label{tab:main}\resizebox{\columnwidth}{!}{\input{../generated/tab_main}}\end{table}
+We built a live-queue benchmark from AIDev~\cite{li2026aidev}: for each of \nPairs{} PR pairs that a comment marks as duplicate or superseded, the new PR is compared against the PRs open in its repository at that moment, and \nNeg{} PRs with no duplicate measure false alarms. Table~\ref{tab:main} compares Jinx with the existing bots, a classic detector, embeddings, and LLM judges on the hardest case, duplicates opened by different authors. Jinx beats the best bot on Recall@5 by \dRFCg{} points [\dRFCgLo, \dRFCgHi] and on Recall@1 by \dROCg{} points, and beats INTRUDE + time on Recall@1 by \dROIntrude{} points [\dROIntrudeLo, \dROIntrudeHi] with fewer false alarms. LLM judges (Claude Haiku 4.5, Qwen2.5) on top of Jinx add cost and latency but no accuracy. Jinx needs \latJinx\,ms per PR (p90 \latJinxPninety\,ms) on a CPU, with no GPU. A companion empirical study reports all \nStrategies{} strategies \todo{cite once public}.
+
+\section{Limitations}
+Jinx misses many duplicates that touch different files (cross-author Recall@1 \ROnejinxClassD), and its Recall@5 is not clearly better than the classic detector's. Our labels come from PR comments, and an LLM audit judged \auditCrossStrict\% of cross-author labels to be true duplicates or replacements. We have not yet measured Jinx on live repositories; \todo{sandbox and pilot deployment results}.
+
+\section{Availability}
+Jinx is open source (MIT): \todo{repository URL}, PyPI \texttt{jinx-pr}, GitHub Marketplace \todo{listing}. The benchmark, scripts, and results are archived at \todo{DOI}. Demo video: \todo{URL}.
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{../refs}
 \end{document}
