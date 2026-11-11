@@ -1,0 +1,19 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/105 [00:00<?, ?it/s]Loading weights: 100%|██████████| 105/105 [00:00<00:00, 3462.31it/s]
+Terminated
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[transformers] `torch_dtype` is deprecated! Use `dtype` instead!
+Loading weights:   0%|          | 0/338 [00:00<?, ?it/s]Loading weights:  39%|███▉      | 131/338 [00:00<00:00, 1283.12it/s]Loading weights:  77%|███████▋  | 260/338 [00:00<00:00, 1278.16it/s]Loading weights: 100%|██████████| 338/338 [00:00<00:00, 1455.68it/s]
+Traceback (most recent call last):
+  File "/home/ubuntu/research/prdupecheck/bench2/llm_judge.py", line 24, in <module>
+    ids = tok.apply_chat_template(msg, add_generation_prompt=True, return_tensors="pt")
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/tokenization_utils_base.py", line 3145, in apply_chat_template
+    rendered_chat, generation_indices = render_jinja_template(
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/utils/chat_template_utils.py", line 623, in render_jinja_template
+    compiled_template = _compile_jinja_template(chat_template)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/utils/chat_template_utils.py", line 530, in _compile_jinja_template
+    return _cached_compile_jinja_template(chat_template)
+  File "/home/ubuntu/.local/lib/python3.10/site-packages/transformers/utils/chat_template_utils.py", line 583, in _cached_compile_jinja_template
+    raise ImportError(
+ImportError: apply_chat_template requires jinja2>=3.1.0 to be installed. Your version is 3.0.3.
+RERANK_ALLDONE

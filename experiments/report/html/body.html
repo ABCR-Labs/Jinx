@@ -1,0 +1,251 @@
+<div id="root"></div>
+<script type="text/jsx">
+const D = data;
+const BASE = "AgentDup + MiniLM, LR (current tool)", WANG = "INTRUDE + time (Wang et al. 2019), LR", CG = "contrib-guard/phoenix (bot, exact port)";
+const famKey = (f) => parseInt(f, 10);
+const families = [...new Set(D.rows.map((r) => r.f))].sort((a, b) => famKey(a) - famKey(b));
+const famColor = Object.fromEntries(families.map((f) => {
+  const k = famKey(f);
+  return [f, k === 0 ? "rgb(var(--text-secondary))" : k >= 10 ? "rgb(var(--text-primary))" : chartColors[k - 1]];
+}));
+const row = (g, m) => D.rows.find((r) => r.g === g && r.m === m);
+const pct = (x, d = 1) => (x == null ? "–" : (x * 100).toFixed(d));
+const f3 = (x) => (x == null ? "–" : x.toFixed(3));
+const pair = (ref, m) => D.paired.find((p) => p.ref === ref && p.m === m);
+const sig = (lo, hi) => lo > 0 || hi < 0;
+const X = (m) => row("cross-author", m);
+const xa = D.rows.filter((r) => r.g === "cross-author");
+const bestR1 = [...xa].sort((a, b) => b.R1 - a.R1 || b.MRR - a.MRR)[0];
+const kill = pair(WANG, BASE);
+const nX = D.groups.find((g) => g.group === "cross-author").n;
+const metrics = { R1: "Recall@1", R5: "Recall@5", MRR: "MRR" };
+const shortFam = (f) => f.replace(/^\d+\s/, "");
+
+function Delta({ p, k }) {
+  if (!p) return <span>–</span>;
+  const v = p["d" + k], lo = p["d" + k + "_lo"], hi = p["d" + k + "_hi"];
+  const cls = sig(lo, hi) ? (v > 0 ? "text-green" : "text-red") : "text-secondary";
+  return <span className={cls}>{(v * 100).toFixed(1)} [{(lo * 100).toFixed(1)}, {(hi * 100).toFixed(1)}]</span>;
+}
+
+function Strategies() {
+  const [g, setG] = useState("cross-author");
+  const [k, setK] = useState("R1");
+  const [sortDesc, setSortDesc] = useState(true);
+  const rs = D.rows.filter((r) => r.g === g).sort((a, b) => (sortDesc ? b[k] - a[k] : a[k] - b[k]));
+  const n = D.groups.find((x) => x.group === g).n;
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <Text size={12} className="text-secondary">Pair group</Text>
+        <SimpleSelect options={D.groups.map((x) => ({ value: x.group, label: `${x.group} (n=${x.n})` }))} value={g} onValueChange={setG} />
+        <SegmentedControl value={k} onValueChange={setK} size="small">
+          {Object.entries(metrics).map(([v, l]) => <SegmentedControlItem key={v} value={v}>{l}</SegmentedControlItem>)}
+        </SegmentedControl>
+      </div>
+      <Text size={12} className="text-secondary">{metrics[k]} on {n} pairs, live-queue ranking. Bar colour = strategy family.</Text>
+      <div className="flex flex-wrap gap-2">
+        {families.map((f) => (
+          <span key={f} className="flex items-center gap-1"><span className="inline-block w-3 h-3 rounded-sm" style={{ background: famColor[f] }}></span><Text size={11} className="text-secondary">{shortFam(f)}</Text></span>
+        ))}
+      </div>
+      <BarList data={rs.map((r) => ({ label: r.m, value: r[k], color: famColor[r.f], valueLabel: f3(r[k]) }))} />
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Family</TableHead>
+            <TableHead>Strategy</TableHead>
+            {Object.entries(metrics).map(([v, l]) => (
+              <SortableTableHead key={v} align="end" sort={k === v ? (sortDesc ? "desc" : "asc") : undefined}
+                onSort={() => { if (k === v) setSortDesc(!sortDesc); else { setK(v); setSortDesc(true); } }}>{l} [95% CI]</SortableTableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rs.map((r) => (
+            <TableRow key={r.m}>
+              <TableCell><Text size={12} className="text-secondary">{shortFam(r.f)}</Text></TableCell>
+              <TableCell>{r.m}</TableCell>
+              {["R1", "R5", "MRR"].map((m) => (
+                <TableCell key={m} className="text-right tabular-nums">{f3(r[m])} <span className="text-secondary">[{f3(r[m + "_lo"])}, {f3(r[m + "_hi"])}]</span></TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function ByClass() {
+  const cols = [BASE, "All signals, LR", WANG, CG, "Links only (same issue / #ref)", "TF-IDF raw text (Li et al. 2017)", "BGE-small template-stripped"];
+  const short = { [BASE]: "AgentDup", "All signals, LR": "All signals LR", [WANG]: "INTRUDE+time", [CG]: "contrib-guard", "Links only (same issue / #ref)": "Links only", "TF-IDF raw text (Li et al. 2017)": "TF-IDF", "BGE-small template-stripped": "BGE-small" };
+  return (
+    <div className="flex flex-col gap-3">
+      <Text size={12} className="text-secondary">Recall@1 per duplicate class or relation. The best strategy per row is shown on the right; bold = highest of the listed columns.</Text>
+      <Table stickyFirstColumn>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Group</TableHead><TableHead className="text-right">n</TableHead>
+            {cols.map((c) => <TableHead key={c} className="text-right">{short[c]}</TableHead>)}
+            <TableHead>Best of all {D.n_methods} strategies</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {D.groups.map(({ group, n }) => {
+            const vals = cols.map((c) => row(group, c)?.R1);
+            const mx = Math.max(...vals.filter((v) => v != null));
+            const best = D.rows.filter((r) => r.g === group).sort((a, b) => b.R1 - a.R1 || b.MRR - a.MRR)[0];
+            return (
+              <TableRow key={group}>
+                <TableCell>{group}</TableCell><TableCell className="text-right tabular-nums">{n}</TableCell>
+                {vals.map((v, i) => <TableCell key={i} className={"text-right tabular-nums" + (v === mx ? " font-semibold" : "")}>{f3(v)}</TableCell>)}
+                <TableCell><Text size={12}>{best.m} ({f3(best.R1)})</Text></TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function Paired() {
+  const refs = [...new Set(D.paired.map((p) => p.ref))];
+  const [ref, setRef] = useState(WANG);
+  const ps = D.paired.filter((p) => p.ref === ref).sort((a, b) => b.dR1 - a.dR1);
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-3">
+        <Text size={12} className="text-secondary">Compared against</Text>
+        <SimpleSelect options={refs.map((r) => ({ value: r, label: r }))} value={ref} onValueChange={setRef} />
+      </div>
+      <Text size={12} className="text-secondary">Strategy minus reference, cross-author pairs, in points, with the 95% repository-cluster bootstrap CI. Green or red = the CI excludes zero.</Text>
+      <Table>
+        <TableHeader><TableRow><TableHead>Strategy</TableHead><TableHead className="text-right">ΔRecall@1</TableHead><TableHead className="text-right">ΔRecall@5</TableHead><TableHead className="text-right">ΔMRR</TableHead></TableRow></TableHeader>
+        <TableBody>
+          {ps.map((p) => (
+            <TableRow key={p.m}><TableCell>{p.m}</TableCell>
+              {["R1", "R5", "MRR"].map((k) => <TableCell key={k} className="text-right tabular-nums"><Delta p={p} k={k} /></TableCell>)}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function FalseAlarms() {
+  const fa = [...D.fa].sort((a, b) => a.far - b.far);
+  const pick = [BASE, "All signals, LR", WANG, CG, "LLM judge Claude Haiku 4.5 + AgentDup (avg) top-5", "Cascade: AgentDup + BGE-reranker-base (stacked LR)", "BGE-small template-stripped", "TF-IDF raw text (Li et al. 2017)"].filter((m) => D.oc.some((o) => o.m === m));
+  const ts = [...new Set(D.oc.map((o) => o.t))].sort((a, b) => a - b);
+  const line = ts.map((t) => Object.fromEntries([["t", `${Math.round(t * 100)}%`], ...pick.map((m, i) => ["s" + i, +(100 * D.oc.find((o) => o.m === m && o.t === t).v).toFixed(1)])]));
+  const cfg = Object.fromEntries(pick.map((m, i) => ["s" + i, { label: m, color: chartColors[i % chartColors.length] }]));
+  return (
+    <div className="flex flex-col gap-4">
+      <Text size={14} weight="semibold">Operating curve</Text>
+      <Text size={12} className="text-secondary">Share of the {nX} cross-author duplicates ranked first and above the alert threshold, when the threshold is set to give a fixed false-alarm rate on the 2,965 PRs with no duplicate.</Text>
+      <ChartContainer config={cfg} style={{ height: 300, width: "100%" }}>
+        <LineChart data={line}>
+          <ChartGrid />
+          <ChartXAxis dataKey="t" title="False-alarm rate" />
+          <ChartYAxis title="Duplicates caught (%)" />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <ChartLegend content={<ChartLegendContent />} />
+          {pick.map((m, i) => <ChartLine key={i} dataKey={"s" + i} />)}
+        </LineChart>
+      </ChartContainer>
+      <Text size={14} weight="semibold">False-alarm rate at a matched threshold</Text>
+      <Text size={12} className="text-secondary">Threshold = median top-1 score of training-fold cross-author duplicates. Lower is better.</Text>
+      <BarList data={fa.map((r) => ({ label: r.m, value: r.far * 100, color: famColor[r.f], valueLabel: `${pct(r.far)}% [${pct(r.lo)}, ${pct(r.hi)}]` }))} />
+    </div>
+  );
+}
+
+function RandomPair() {
+  const pts = D.rp.map((r) => ({ auc: r.auc, live: r.live, m: r.m }));
+  return (
+    <div className="flex flex-col gap-3">
+      <Text size={12} className="text-secondary">Each point is one strategy. x = classic random-pair AUC (true duplicate vs one random other PR). y = live-queue cross-author Recall@1 (true duplicate ranked first among all open PRs). Kendall tau between the two rankings = {D.tau.toFixed(2)}.</Text>
+      <ChartContainer config={{ live: { label: "Strategy", color: chartColors[0] } }} style={{ height: 320, width: "100%" }}>
+        <ScatterChart>
+          <ChartGrid />
+          <ChartXAxis dataKey="auc" type="number" domain={[0.5, 1]} title="Random-pair AUC" />
+          <ChartYAxis dataKey="live" type="number" domain={[0, 1]} title="Live-queue Recall@1" />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <Scatter data={pts} fill={chartColors[0]} />
+        </ScatterChart>
+      </ChartContainer>
+      <Table>
+        <TableHeader><TableRow><TableHead>Strategy</TableHead><TableHead className="text-right">Random-pair AUC</TableHead><TableHead className="text-right">Live-queue R@1</TableHead></TableRow></TableHeader>
+        <TableBody>{[...pts].sort((a, b) => b.auc - a.auc).map((p) => <TableRow key={p.m}><TableCell>{p.m}</TableCell><TableCell className="text-right tabular-nums">{f3(p.auc)}</TableCell><TableCell className="text-right tabular-nums">{f3(p.live)}</TableCell></TableRow>)}</TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function Costs() {
+  const L = D.latency;
+  const rows = Object.entries(L).map(([k, v]) => {
+    let hw = v.gpu || (k.includes("cpu") || k.includes("lexical") ? "CPU" : k.includes("claude") ? "Anthropic API" : "");
+    let num = v.predict_ms_per_pair_gpu != null ? `${v.predict_ms_per_pair_gpu} ms / pair (scoring)` : v.ms_per_pr_gpu != null ? `${v.ms_per_pr_gpu} ms / PR embedded` : v.ms_per_pair_gpu != null ? `${v.ms_per_pair_gpu} ms / pair` :
+      v.ms_per_pair_gpu_batched != null ? `${v.ms_per_pair_gpu_batched} ms / pair (batched)` : v.median != null ? `median ${v.median.toFixed(0)} ms, p90 ${v.p90.toFixed(0)} ms / query` :
+      v["ms/pair median"] != null ? `median ${v["ms/pair median"].toFixed(0)} ms / pair` : Object.entries(v).map(([a, b]) => `${a.split("/").pop()}: ${b.ms_per_pair} ms/pair`).join("; ");
+    let extra = v.train_s_total != null ? `training ${Math.round(v.train_s_total / 60)} min over 5 folds` : v.usd != null ? `$${v.usd.toFixed(2)} for ${v.pairs} pairs` : v.seconds != null ? `${v.seconds} s total` : "";
+    return { k, model: v.model || (v.folds ? v.folds[0].base + " (fine-tuned)" : ""), hw, num, extra };
+  });
+  return (
+    <div className="flex flex-col gap-3">
+      {D.modal_cost && <Text size={12}>Modal GPU spend for this study: ${D.modal_cost.total_usd.toFixed(2)} ({D.modal_cost.source}).</Text>}
+      <Table>
+        <TableHeader><TableRow><TableHead>Component</TableHead><TableHead>Model</TableHead><TableHead>Hardware</TableHead><TableHead>Speed</TableHead><TableHead>Total</TableHead></TableRow></TableHeader>
+        <TableBody>{rows.map((r) => <TableRow key={r.k}><TableCell>{r.k}</TableCell><TableCell><Text size={12}>{r.model}</Text></TableCell><TableCell>{r.hw}</TableCell><TableCell>{r.num}</TableCell><TableCell>{r.extra}</TableCell></TableRow>)}</TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function Errors() {
+  return (
+    <div className="flex flex-col gap-3">
+      <Text size={12} className="text-secondary">{D.errors.length} of {nX} cross-author pairs where the current AgentDup tool does not rank the true duplicate first.</Text>
+      <Table>
+        <TableHeader><TableRow><TableHead>New PR</TableHead><TableHead>True duplicate</TableHead><TableHead>Ranked first instead</TableHead><TableHead className="text-right">Rank</TableHead><TableHead>Class</TableHead><TableHead>Top-1 by same author</TableHead></TableRow></TableHeader>
+        <TableBody>{D.errors.map((e, i) => <TableRow key={i}><TableCell><Text size={12}>{e["new PR"]}</Text></TableCell><TableCell><Text size={12}>{e["true duplicate"]}</Text></TableCell><TableCell><Text size={12}>{e["ranked first instead"]}</Text></TableCell><TableCell className="text-right">{e["rank of true duplicate"]}</TableCell><TableCell><Text size={12}>{e["class"]}</Text></TableCell><TableCell>{e["top-1 same author as new PR"] ? "yes" : "no"}</TableCell></TableRow>)}</TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function Report() {
+  const killPass = kill.dR5_lo > 0;
+  const fb = D.fa.find((r) => r.m === BASE), fw = D.fa.find((r) => r.m === WANG);
+  return (
+    <PageLayout title="AgentDup strategy study" subtitle={`Which duplicate-PR detection strategy works on coding-agent PRs? ${D.n_methods} strategies, AIDev live queues, repository-cluster bootstrap CIs.`} themeToggle>
+      <BannerCard variant={killPass ? "info" : "warning"} title={killPass ? "Kill rule passes" : "Kill rule fails: no CI-backed Recall@5 gain over the classic detector"}>
+        AgentDup vs INTRUDE + time on cross-author Recall@5: {(kill.dR5 * 100).toFixed(1)} points [{(kill.dR5_lo * 100).toFixed(1)}, {(kill.dR5_hi * 100).toFixed(1)}]. CI-backed gains: Recall@1 {(kill.dR1 * 100).toFixed(1)} points [{(kill.dR1_lo * 100).toFixed(1)}, {(kill.dR1_hi * 100).toFixed(1)}], MRR {(kill.dMRR * 100).toFixed(1)} points, and fewer false alarms ({pct(fb.far)}% vs {pct(fw.far)}%).
+      </BannerCard>
+      <StatsRow>
+        <StatCard label={`Best Recall@1, cross-author (n=${nX})`}><StatCardValue>{f3(bestR1.R1)}</StatCardValue><StatCardCaption>{bestR1.m}</StatCardCaption></StatCard>
+        <StatCard label="AgentDup (current tool)"><StatCardValue>{f3(X(BASE).R1)}</StatCardValue><StatCardCaption>Recall@5 {f3(X(BASE).R5)}</StatCardCaption></StatCard>
+        <StatCard label="Classic detector (INTRUDE + time)"><StatCardValue>{f3(X(WANG).R1)}</StatCardValue><StatCardCaption>Recall@5 {f3(X(WANG).R5)}</StatCardCaption></StatCard>
+        <StatCard label="Best existing bot (contrib-guard)"><StatCardValue>{f3(X(CG).R1)}</StatCardValue><StatCardCaption>Recall@5 {f3(X(CG).R5)}</StatCardCaption></StatCard>
+      </StatsRow>
+      <TabsRoot defaultValue="s">
+        <TabsList>
+          <Tab value="s">Strategies</Tab><Tab value="c">By class</Tab><Tab value="p">Paired CIs</Tab><Tab value="f">False alarms</Tab><Tab value="r">Random pair vs live</Tab><Tab value="l">Latency and cost</Tab><Tab value="e">Errors</Tab>
+        </TabsList>
+        <TabsPanel value="s" className="pt-4"><Strategies /></TabsPanel>
+        <TabsPanel value="c" className="pt-4"><ByClass /></TabsPanel>
+        <TabsPanel value="p" className="pt-4"><Paired /></TabsPanel>
+        <TabsPanel value="f" className="pt-4"><FalseAlarms /></TabsPanel>
+        <TabsPanel value="r" className="pt-4"><RandomPair /></TabsPanel>
+        <TabsPanel value="l" className="pt-4"><Costs /></TabsPanel>
+        <TabsPanel value="e" className="pt-4"><Errors /></TabsPanel>
+      </TabsRoot>
+      <Footnote>Data: AIDev (hao-li/AIDev, CC BY 4.0), silver duplicate labels from PR comments. Cross-author = the two PRs have different authors. LLM judges and re-rankers re-score AgentDup's top-k only. Claude Haiku was run on cross-author and no-duplicate queries only. Jev was not run. No OpenAI models were used. Generated from experiments/results by experiments/report/html/export_data.py.</Footnote>
+    </PageLayout>
+  );
+}
+render(<Report />);
+</script>

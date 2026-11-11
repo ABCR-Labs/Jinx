@@ -54,5 +54,7 @@ agentdup check new.json --open-queue open.jsonl --templates my_templates.json
 pip install pytest ruff && python -m pytest -q && ruff check src tests
 ```
 
-The benchmark (live-queue scoring on AIDev) lives outside this package; see the paper materials.
+## Benchmark and strategy study
+
+`experiments/` holds the live-queue benchmark on AIDev and a comparison of 60+ duplicate-detection strategies (lexical, code overlap, embeddings, existing bots, learned models, cross-encoders, LLM judges, cascades). Read `experiments/report/REPORT.md` (or open `experiments/report/agentdup_strategy_report.html`). Raw results are in `experiments/results/`, run logs in `experiments/logs/`.
 License: MIT.

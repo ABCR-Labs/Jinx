@@ -1,0 +1,11 @@
+{
+ "source": "modal billing report --start 2026-11-10 -r h --show-resources, app agentdup-study, hours up to 2026-11-10T23:00Z (Qwen2.5-14B still running after that)",
+ "by_resource_usd": {
+  "Network Egress": 0.077,
+  "Memory": 0.312,
+  "L40S": 4.82,
+  "CPU": 0.28,
+  "L4": 1.401
+ },
+ "total_usd": 6.89
+}

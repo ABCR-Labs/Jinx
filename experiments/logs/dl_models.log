@@ -1,0 +1,11 @@
+Fetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 6 files:  17%|█▋        | 1/6 [00:00<00:00,  8.46it/s]Fetching 6 files: 100%|██████████| 6/6 [00:01<00:00,  5.21it/s]Fetching 6 files: 100%|██████████| 6/6 [00:01<00:00,  5.31it/s]
+cross-encoder/ms-marco-MiniLM-L6-v2 /home/ubuntu/.cache/huggingface/hub/models--cross-encoder--ms-marco-MiniLM-L6-v2/snapshots/233902d25c440f23af6f7d6e94d2946bac0bee0a
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files:  20%|██        | 1/5 [00:00<00:00,  8.08it/s]Fetching 5 files: 100%|██████████| 5/5 [00:00<00:00, 35.18it/s]
+microsoft/unixcoder-base /home/ubuntu/.cache/huggingface/hub/models--microsoft--unixcoder-base/snapshots/5604afdc964f6c53782a6813140ade5216b99006
+Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files:  14%|█▍        | 1/7 [00:00<00:00,  8.25it/s]Fetching 7 files: 100%|██████████| 7/7 [00:13<00:00,  2.04s/it]Fetching 7 files: 100%|██████████| 7/7 [00:13<00:00,  1.95s/it]
+Qwen/Qwen2.5-1.5B-Instruct /home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen2.5-1.5B-Instruct/snapshots/989aa7980e4cf806f80c7fef2b1adb7bc71aa306
+Fetching 7 files:   0%|          | 0/7 [00:00<?, ?it/s]Fetching 7 files:  14%|█▍        | 1/7 [00:00<00:00,  8.87it/s]Fetching 7 files:  86%|████████▌ | 6/7 [00:00<00:00, 28.75it/s]Fetching 7 files: 100%|██████████| 7/7 [00:03<00:00,  1.97it/s]
+Qwen/Qwen2.5-0.5B-Instruct /home/ubuntu/.cache/huggingface/hub/models--Qwen--Qwen2.5-0.5B-Instruct/snapshots/7ae557604adf67be50417f59c2c2f167def9a775
+Fetching 10 files:   0%|          | 0/10 [00:00<?, ?it/s]Fetching 10 files:  10%|█         | 1/10 [00:00<00:00,  9.45it/s]Fetching 10 files:  80%|████████  | 8/10 [00:00<00:00, 42.15it/s]Fetching 10 files: 100%|██████████| 10/10 [00:03<00:00,  2.93it/s]
+BAAI/bge-base-en-v1.5 /home/ubuntu/.cache/huggingface/hub/models--BAAI--bge-base-en-v1.5/snapshots/a5beb1e3e68b9ab74eb54cfd186867f64f240e1a

@@ -1,0 +1,76 @@
+✓ Initialized. View run at 
+https://modal.com/apps/harshuljain1393/main/ap-gNUA9wQp6S9PD54KrkZZVM
+✓ Created objects.
+├── ✓ Uploaded /home/ubuntu/research/prdupecheck/modal/gpu_jobs.py
+├── ✓ Created Function rerank_job.
+├── ✓ Created Function embed_job.
+└── ✓ Created Function judge_job.
+INFO 11-10 22:54:12 [__init__.py:239] Automatically detected platform cuda.
+INFO 11-10 22:54:27 [config.py:717] This model supports multiple tasks: {'embed', 'classify', 'score', 'reward', 'generate'}. Defaulting to 'generate'.
+INFO 11-10 22:54:27 [llm_engine.py:240] Initializing a V0 LLM engine (v0.8.5) with config: model='Qwen/Qwen2.5-Coder-7B-Instruct', speculative_config=None, tokenizer='Qwen/Qwen2.5-Coder-7B-Instruct', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=1, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto,  device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='xgrammar', reasoning_backend=None), observability_config=ObservabilityConfig(show_hidden_metrics=False, otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=Qwen/Qwen2.5-Coder-7B-Instruct, num_scheduler_steps=1, multi_step_stream_outputs=True, enable_prefix_caching=True, chunked_prefill_enabled=False, use_async_output_proc=True, disable_mm_preprocessor_cache=False, mm_processor_kwargs=None, pooler_config=None, compilation_config={"splitting_ops":[],"compile_sizes":[],"cudagraph_capture_sizes":[256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"max_capture_size":256}, use_cached_outputs=False, 
+INFO 11-10 22:54:30 [cuda.py:292] Using Flash Attention backend.
+INFO 11-10 22:54:31 [parallel_state.py:1004] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, TP rank 0
+INFO 11-10 22:54:31 [model_runner.py:1108] Starting to load model Qwen/Qwen2.5-Coder-7B-Instruct...
+INFO 11-10 22:54:31 [weight_utils.py:265] Using model weights format ['*.safetensors']
+INFO 11-10 22:55:47 [weight_utils.py:281] Time spent downloading weights for Qwen/Qwen2.5-Coder-7B-Instruct: 76.222804 seconds
+Loading safetensors checkpoint shards:   0% Completed | 0/4 [00:00<?, ?it/s]
+Loading safetensors checkpoint shards:  25% Completed | 1/4 [00:01<00:04,  1.55s/it]
+Loading safetensors checkpoint shards:  50% Completed | 2/4 [00:02<00:02,  1.06s/it]
+Loading safetensors checkpoint shards:  75% Completed | 3/4 [00:02<00:00,  1.14it/s]
+Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:03<00:00,  1.58it/s]
+Loading safetensors checkpoint shards: 100% Completed | 4/4 [00:03<00:00,  1.25it/s]
+
+INFO 11-10 22:55:50 [loader.py:458] Loading weights took 3.22 seconds
+INFO 11-10 22:55:51 [model_runner.py:1140] Model loading took 14.2488 GiB and 79.891652 seconds
+INFO 11-10 22:55:52 [worker.py:287] Memory profiling takes 0.89 seconds
+INFO 11-10 22:55:52 [worker.py:287] the current vLLM instance can use total_gpu_memory (44.42GiB) x gpu_memory_utilization (0.90) = 39.98GiB
+INFO 11-10 22:55:52 [worker.py:287] model weights take 14.25GiB; non_torch_memory takes 0.09GiB; PyTorch activation peak memory takes 1.42GiB; the rest of the memory reserved for KV Cache is 24.23GiB.
+INFO 11-10 22:55:52 [executor_base.py:112] # cuda blocks: 28353, # CPU blocks: 4681
+INFO 11-10 22:55:52 [executor_base.py:117] Maximum concurrency for 4096 tokens per request: 110.75x
+INFO 11-10 22:55:53 [model_runner.py:1450] Capturing cudagraphs for decoding. This may lead to unexpected consequences if the model is not static. To run the model in eager mode, set 'enforce_eager=True' or use '--enforce-eager' in the CLI. If out-of-memory error occurs during cudagraph capture, consider decreasing `gpu_memory_utilization` or switching to eager mode. You can also reduce the `max_num_seqs` as needed to decrease memory usage.
+
+[1ACapturing CUDA graph shapes:   0%|          | 0/35 [00:00<?, ?it/s]
+[1ACapturing CUDA graph shapes:   3%|▎         | 1/35 [00:00<00:18,  1.80it/s]
+[1ACapturing CUDA graph shapes:   6%|▌         | 2/35 [00:01<00:17,  1.84it/s]
+[1ACapturing CUDA graph shapes:   9%|▊         | 3/35 [00:01<00:16,  1.91it/s]
+[1ACapturing CUDA graph shapes:  11%|█▏        | 4/35 [00:02<00:15,  1.96it/s]
+[1ACapturing CUDA graph shapes:  14%|█▍        | 5/35 [00:02<00:15,  1.99it/s]
+[1ACapturing CUDA graph shapes:  17%|█▋        | 6/35 [00:03<00:14,  2.00it/s]
+[1ACapturing CUDA graph shapes:  20%|██        | 7/35 [00:03<00:13,  2.01it/s]
+[1ACapturing CUDA graph shapes:  23%|██▎       | 8/35 [00:04<00:13,  2.02it/s]
+[1ACapturing CUDA graph shapes:  26%|██▌       | 9/35 [00:04<00:12,  2.00it/s]
+[1ACapturing CUDA graph shapes:  29%|██▊       | 10/35 [00:05<00:12,  1.95it/s]
+[1ACapturing CUDA graph shapes:  31%|███▏      | 11/35 [00:05<00:12,  1.95it/s]
+[1ACapturing CUDA graph shapes:  34%|███▍      | 12/35 [00:06<00:11,  1.93it/s]
+[1ACapturing CUDA graph shapes:  37%|███▋      | 13/35 [00:06<00:11,  1.91it/s]
+[1ACapturing CUDA graph shapes:  40%|████      | 14/35 [00:07<00:11,  1.81it/s]
+[1ACapturing CUDA graph shapes:  43%|████▎     | 15/35 [00:07<00:10,  1.84it/s]
+[1ACapturing CUDA graph shapes:  46%|████▌     | 16/35 [00:08<00:10,  1.86it/s]
+[1ACapturing CUDA graph shapes:  49%|████▊     | 17/35 [00:08<00:09,  1.87it/s]
+[1ACapturing CUDA graph shapes:  51%|█████▏    | 18/35 [00:09<00:09,  1.88it/s]
+[1ACapturing CUDA graph shapes:  54%|█████▍    | 19/35 [00:09<00:08,  1.89it/s]
+[1ACapturing CUDA graph shapes:  57%|█████▋    | 20/35 [00:10<00:08,  1.85it/s]
+[1ACapturing CUDA graph shapes:  60%|██████    | 21/35 [00:11<00:08,  1.57it/s]
+[1ACapturing CUDA graph shapes:  63%|██████▎   | 22/35 [00:12<00:09,  1.37it/s]
+[1ACapturing CUDA graph shapes:  66%|██████▌   | 23/35 [00:13<00:09,  1.26it/s]
+[1ACapturing CUDA graph shapes:  69%|██████▊   | 24/35 [00:13<00:08,  1.33it/s]
+[1ACapturing CUDA graph shapes:  71%|███████▏  | 25/35 [00:14<00:07,  1.37it/s]
+[1ACapturing CUDA graph shapes:  74%|███████▍  | 26/35 [00:15<00:06,  1.41it/s]
+[1ACapturing CUDA graph shapes:  77%|███████▋  | 27/35 [00:16<00:06,  1.25it/s]
+[1ACapturing CUDA graph shapes:  80%|████████  | 28/35 [00:17<00:05,  1.25it/s]
+[1ACapturing CUDA graph shapes:  83%|████████▎ | 29/35 [00:17<00:04,  1.23it/s]
+[1ACapturing CUDA graph shapes:  86%|████████▌ | 30/35 [00:18<00:04,  1.22it/s]
+[1ACapturing CUDA graph shapes:  89%|████████▊ | 31/35 [00:19<00:03,  1.28it/s]
+[1ACapturing CUDA graph shapes:  91%|█████████▏| 32/35 [00:20<00:02,  1.38it/s]
+[1ACapturing CUDA graph shapes:  94%|█████████▍| 33/35 [00:20<00:01,  1.41it/s]
+[1ACapturing CUDA graph shapes:  97%|█████████▋| 34/35 [00:21<00:00,  1.52it/s]
+[1ACapturing CUDA graph shapes: 100%|██████████| 35/35 [00:21<00:00,  1.58it/s]Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:21<00:00,  1.61it/s]
+INFO 11-10 22:56:15 [model_runner.py:1592] Graph capturing finished in 22 secs, took 0.22 GiB
+INFO 11-10 22:56:15 [llm_engine.py:437] init engine (profile, create kv cache, warmup model) took 24.18 seconds
+INFO 11-10 22:56:17 [chat_utils.py:397] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+{'tag': 'qwencoder7', 'model': 'Qwen/Qwen2.5-Coder-7B-Instruct', 'pairs': 43591, 'gpu': 'L40S', 'seconds': 2478.3, 'ms_per_pair_gpu_batched': 56.854, 'prompt_tokens_total': 49530439}
+{"tag": "qwencoder7", "model": "Qwen/Qwen2.5-Coder-7B-Instruct", "pairs": 43591, "gpu": "L40S", "seconds": 2478.3, "ms_per_pair_gpu_batched": 56.854, "prompt_tokens_total": 49530439}
+Stopping app - local entrypoint completed.
+[rank0]:[W1110 23:37:39.800638951 ProcessGroupNCCL.cpp:1496] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+✓ App completed. View run at 
+https://modal.com/apps/harshuljain1393/main/ap-gNUA9wQp6S9PD54KrkZZVM

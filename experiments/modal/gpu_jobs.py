@@ -104,3 +104,32 @@ RERANK_PLAN = [("cross-encoder/ms-marco-MiniLM-L6-v2", "ce_msmarco"), ("BAAI/bge
 def rerank_all():
     for r in rerank_job.starmap([(m, t, 512) for m, t in RERANK_PLAN], return_exceptions=True):
         print(json.dumps(r if isinstance(r, dict) else {"error": repr(r)[:500]}), flush=True)
+
+@app.function(image=st_img, gpu="L4", volumes=V, timeout=3 * 3600)
+def finetune_job(fold: int, base: str = "BAAI/bge-reranker-base", epochs: int = 1, maxlen: int = 512):
+    """Fine-tune a cross-encoder on the top-10 pairs of the 4 training folds; score the held-out fold."""
+    import numpy as np, pandas as pd, torch
+    from torch.utils.data import DataLoader
+    from sentence_transformers import CrossEncoder, InputExample
+    torch.manual_seed(0)
+    T = pd.read_parquet("/data/modal_pairs_folds.parquet"); _v = pd.read_parquet("/data/modal_pair_views.parquet")
+    P = dict(zip(_v.id.tolist(), _v["view"].tolist()))
+    tr, te = T[T.fold != fold], T[T.fold == fold]
+    ex = [InputExample(texts=[P[q], P[c]], label=float(y)) for q, c, y in zip(tr.q.tolist(), tr.cand.tolist(), tr.y.tolist())]
+    ce = CrossEncoder(base, num_labels=1, device="cuda", max_length=maxlen)
+    pos_w = torch.tensor([(len(tr) - tr.y.sum()) / max(tr.y.sum(), 1)], device="cuda")
+    t0 = time.time()
+    ce.fit(train_dataloader=DataLoader(ex, shuffle=True, batch_size=16), epochs=epochs, warmup_steps=200, optimizer_params={"lr": 2e-5},
+           use_amp=True, loss_fct=torch.nn.BCEWithLogitsLoss(pos_weight=pos_w), show_progress_bar=False)
+    t_train = time.time() - t0; t0 = time.time()
+    s = ce.predict([(P[q], P[c]) for q, c in zip(te.q.tolist(), te.cand.tolist())], batch_size=64, show_progress_bar=False, apply_softmax=False,
+                   activation_fct=torch.nn.Identity())
+    te = te[["qi", "cand"]].copy(); te["ft"] = np.asarray(s, dtype=np.float32).reshape(-1)
+    te.to_parquet(f"/data/rr_ft_fold{fold}.parquet"); vol.commit()
+    info = {"fold": fold, "base": base, "train_pairs": len(tr), "test_pairs": len(te), "train_s": round(t_train, 1), "predict_s": round(time.time() - t0, 1)}
+    print(info); return info
+
+@app.local_entrypoint()
+def finetune_all(base: str = "BAAI/bge-reranker-base"):
+    for r in finetune_job.starmap([(k, base) for k in range(5)], return_exceptions=True):
+        print(json.dumps(r if isinstance(r, dict) else {"error": repr(r)[:800]}), flush=True)
