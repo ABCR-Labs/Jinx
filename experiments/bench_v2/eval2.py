@@ -1,7 +1,7 @@
 """Dedup strategy study on the AIDev live-queue benchmark.
 Strategies x duplicate classes; Recall@1/5, MRR with repo-cluster bootstrap CIs; paired tests; false alarms;
 operating curves; random-pair vs live-queue evaluation; error analysis. Writes to jinx_pr/experiments/results/."""
-import pickle, json, os, sys, numpy as np, pandas as pd
+import pickle, json, os, re, sys, numpy as np, pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.preprocessing import StandardScaler
@@ -9,13 +9,24 @@ from sklearn.model_selection import GroupKFold
 from sklearn.metrics import roc_auc_score
 from scipy.stats import kendalltau
 D = "/home/ubuntu/research/prdupecheck/data/"
-OUT = "/home/ubuntu/research/prdupecheck/jinx_pr/experiments/results/"; os.makedirs(OUT, exist_ok=True)
+OUT = os.environ.get("OUT", "/home/ubuntu/research/prdupecheck/jinx_pr/experiments/results/"); os.makedirs(OUT, exist_ok=True)
 NB = int(os.environ.get("NB", 500))
 B = pickle.load(open(D + "bench.pkl", "rb")); Q = B["queries"]
 P = pd.read_parquet(D + "pull_request.parquet", columns=["id", "repo_url", "title", "number", "user", "agent"]).set_index("id")
 F = pd.read_parquet(D + "features.parquet")
 F = F.merge(pd.read_parquet(D + "feat_bm25.parquet"), on=["qi", "cand"], how="left")
+# QUEUE=open200 (default): only PRs still open when the new PR arrived, the 200 most recent (what the Action sees).
+# QUEUE=grace7: the original queues, which also hold PRs closed in the previous 7 days (results_grace7/).
+QUEUE = os.environ.get("QUEUE", "open200")
+if QUEUE == "open200":
+    F = F[F.cand_open > 0].copy(); F = F[F.groupby("qi").log_gap_hours.rank(method="first") <= 200].reset_index(drop=True)
 qidx = np.array([Q[q]["q"] for q in F.qi])
+# Forward-only mentions: count a link only if the new PR's own title/body names the older PR. The older PR's text in the
+# AIDev snapshot may have been edited after the duplicate was found, which a live run would not see.
+_P = pd.read_parquet(D + "pull_request.parquet", columns=["id", "number", "title", "body"]).set_index("id")
+_REF = re.compile(r"(?:#|/pull/|/issues/)(\d+)")
+_ment = {x["q"]: {int(m) for m in _REF.findall(f"{_P.title.get(x['q']) or ''}\n{_P.body.get(x['q']) or ''}")} for x in Q}
+F["mention_ref"] = [float(int(n) in _ment[q]) for q, n in zip(qidx, _P.number.reindex(F.cand.values).values)]
 EMBS = {}
 for tag in ["bge_raw", "bge_stripped", "bge_diff", "bgebase_stripped", "unix_diff", "unix_stripped", "codebert_diff", "jinacode_diff"]:
     if os.path.exists(D + f"emb_{tag}.npz"):
@@ -24,6 +35,9 @@ for tag in ["bge_raw", "bge_stripped", "bge_diff", "bgebase_stripped", "unix_dif
         F["cos_" + tag] = np.einsum("ij,ij->i", M[a], M[b]); EMBS[tag] = True
 meta = pd.DataFrame([{"qi": i, "neg": x["neg"], "self": x["self"], "same_agent": x["same_agent"], "repo": P.repo_url[x["q"]],
                       "n": len(x["cand"])} for i, x in enumerate(Q)]).set_index("qi")
+# keep labelled queries only if the true duplicate is still in the (real-use) queue; a closed one cannot be flagged live
+meta = meta[meta.index.isin(set(F.qi)) & (meta.neg | meta.index.isin(set(F[F.gold].qi)))]; F = F[F.qi.isin(meta.index)].reset_index(drop=True)
+meta["n"] = F.groupby("qi").size().reindex(meta.index)
 gm = F[F.gold].set_index("qi")
 meta["ref"] = (gm.mention_ref > 0).reindex(meta.index).fillna(False).astype(bool)
 meta["issue"] = (gm.same_issue > 0).reindex(meta.index).fillna(False).astype(bool)
@@ -193,12 +207,15 @@ for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR", "contrib-guard/phoeni
 pd.DataFrame(pr_rows).to_csv(OUT + "paired_cross_author.csv", index=False)
 # false alarms (threshold per fold at 50% of training cross-author top-1 scores) + operating curve on negatives
 negq = meta.index[meta.neg]; fa = []; curve = []; FARR = {}
+ALERT_METHODS = {BASE, "INTRUDE + time (Wang et al. 2019), LR", "contrib-guard/phoenix (bot, exact port)"}; alerts = []
 for c in METHODS:
     t1 = F.groupby("qi")[c].max(); far, hit, fq = [], [], []
     for tr, te in folds:
         trx = [q for q in meta.index[tr] if q in set(xq)]; thr = np.quantile(t1.reindex(trx).values, 0.5)
         ten = [q for q in meta.index[te] if meta.neg[q]]; tex = [q for q in meta.index[te] if q in set(xq)]
         far += list(t1.reindex(ten).values >= thr); hit += list((t1.reindex(tex).values >= thr) & (R[c].reindex(tex).values == 1)); fq += ten
+        if c in ALERT_METHODS:
+            alerts += [{"method": c, "qi": q, "top1": t1.get(q, np.nan), "thr": thr, "rank": R[c].get(q, np.nan)} for q in meta.index[te]]
     FARR[c] = np.array(far, float)
     lo, hi = boot(FARR[c][:, None], meta.repo.reindex(fq))
     fa.append({"family": S[c], "method": c, "FAR": np.mean(far), "FAR lo": lo[0], "FAR hi": hi[0], "cross-author correct alerts": np.mean(hit)})
@@ -214,6 +231,7 @@ for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR", "contrib-guard/phoeni
         d = (FARR[c] - FARR[ref])[:, None]; lo, hi = boot(d, meta.repo.reindex(fq), nb=max(NB, 1000), seed=7)
         fpd.append({"reference": ref, "method": c, "dFAR": d.mean(), "dFAR lo": lo[0], "dFAR hi": hi[0]})
 pd.DataFrame(fpd).to_csv(OUT + "paired_false_alarms.csv", index=False)
+pd.DataFrame(alerts).to_parquet(OUT + "alerts.parquet")
 pd.DataFrame(fa).to_csv(OUT + "false_alarms.csv", index=False); pd.DataFrame(curve).to_csv(OUT + "operating_curve.csv", index=False)
 # random-pair (classic) evaluation vs live-queue: AUC of gold vs one random non-gold candidate from the same queue
 rp = F[~F.other_gold & F.qi.isin(xq)]  # cross-author queries, same set as the live-queue column used for tau

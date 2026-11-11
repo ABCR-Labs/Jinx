@@ -1,0 +1,26 @@
+% Jinx architecture (shared by both papers). Needs tikz with positioning, arrows.meta, fit, backgrounds.
+% Colours: Okabe-Ito palette, matching the plots. Step numbers match Sec. 2.1-2.5 of the tool-demo paper.
+\definecolor{okblue}{HTML}{0072B2}\definecolor{okorange}{HTML}{E69F00}\definecolor{okgreen}{HTML}{009E73}
+\definecolor{okpurple}{HTML}{CC79A7}\definecolor{oksky}{HTML}{56B4E9}
+\begin{tikzpicture}[font=\sffamily\footnotesize, node distance=4mm and 5mm, >={Stealth[length=2.2mm]},
+  st/.style={draw=#1!80!black, fill=#1!18, rounded corners=2pt, thick, align=center, inner sep=3pt, minimum height=13mm},
+  sig/.style={draw=okgreen!80!black, fill=okgreen!15, rounded corners=1.5pt, align=left, inner sep=2.5pt, text width=34mm},
+  note/.style={draw=black!45, dashed, rounded corners=1.5pt, align=center, font=\sffamily\scriptsize, text=black!75, inner sep=2pt},
+  arr/.style={->, thick, draw=black!70}]
+\node[st=okblue, text width=18mm] (in) {\textbf{\large\ding{172}\,Read PRs}\\new PR and the\\open PRs};
+\node[st=okorange, text width=20mm, right=of in] (strip) {\textbf{\large\ding{173}\,Clean text}\\remove repeated\\agent boilerplate};
+\node[sig, right=7mm of strip, yshift=10.5mm] (s1) {\textbf{Text}: how similar the titles and descriptions are};
+\node[sig, below=1.3mm of s1] (s2) {\textbf{Code}: shared files, overlapping lines, identical added lines};
+\node[sig, below=1.3mm of s2] (s3) {\textbf{Context}: same issue, mentions the other PR, author, agent, time};
+\begin{scope}[on background layer]
+\node[draw=okgreen!70!black, dashed, rounded corners=2pt, fit=(s1)(s3), inner sep=2.5pt,
+  label={[font=\sffamily\footnotesize\bfseries, okgreen!60!black]above:\large\ding{174}\,\normalsize Compare each pair}] (sig) {};
+\end{scope}
+\node[st=okpurple, text width=22mm, right=7mm of sig] (lr) {\textbf{\large\ding{175}\,Score + explain}\\score from 0 to 1;\\one reason per\\strong signal};
+\node[st=oksky, text width=27mm, right=of lr, align=left, font=\ttfamily\scriptsize] (c)
+  {\textsf{\textbf{\large\ding{176}\,\footnotesize Report}}\\DUPLICATE? \#44110\\score 1.00\\- links to the other PR\\- same changed file\\- 100\% identical lines};
+\draw[arr] (in) -- (strip); \draw[arr] (strip) -- (sig.west); \draw[arr] (sig) -- (lr); \draw[arr] (lr) -- (c);
+\node[note, below=2mm of strip, text width=22mm] {boilerplate learned from this repository's PRs};
+\node[note, below=2mm of lr, text width=27mm] {weights trained offline on LiveQueue, shipped in the package};
+\node[note, below=2mm of c, text width=27mm] {one PR comment (Action) or a ranked list (CLI)};
+\end{tikzpicture}

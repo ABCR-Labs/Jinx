@@ -1,0 +1,8 @@
+{
+ "tag": "ce_bgem3",
+ "model": "BAAI/bge-reranker-v2-m3",
+ "pairs": 43591,
+ "gpu": "L4",
+ "seconds": 445.7,
+ "ms_per_pair_gpu": 10.224
+}

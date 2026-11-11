@@ -1,0 +1,11 @@
+{
+ "tag": "codebert_diff",
+ "model": "microsoft/codebert-base",
+ "variant": "diff",
+ "maxlen": 512,
+ "n": 76209,
+ "dim": 768,
+ "gpu": "L4",
+ "seconds": 262.1,
+ "ms_per_pr_gpu": 3.44
+}

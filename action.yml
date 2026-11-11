@@ -16,6 +16,9 @@ inputs:
   top:
     description: Max matches listed in the comment
     default: "3"
+  embed:
+    description: Also use the local MiniLM text model (runs on the runner CPU, no API). "false" = lexical signals only
+    default: "true"
 runs:
   using: composite
   steps:
@@ -23,11 +26,13 @@ runs:
       with:
         python-version: "3.11"
     - shell: bash
-      run: pip install --quiet "${{ github.action_path }}"
+      run: |
+        if [ "${{ inputs.embed }}" = "true" ]; then pip install --quiet "${{ github.action_path }}[embed]"; else pip install --quiet "${{ github.action_path }}"; fi
     - shell: bash
       env:
         INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
         INPUT_THRESHOLD: ${{ inputs.threshold }}
         INPUT_MAX_OPEN_PRS: ${{ inputs.max-open-prs }}
         INPUT_TOP: ${{ inputs.top }}
+        INPUT_EMBED: ${{ inputs.embed }}
       run: python -m jinx_pr.action

@@ -1,5 +1,5 @@
 cls,cross-author,self-replacement
-A. code twin (>=50% identical changed lines),139,855
-B. partial code overlap,164,537
-"C. same files, different code",10,34
-D. no shared files (intent-level),29,99
+A. code twin (>=50% identical changed lines),132,819
+B. partial code overlap,146,512
+"C. same files, different code",10,31
+D. no shared files (intent-level),25,92

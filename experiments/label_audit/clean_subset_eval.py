@@ -29,7 +29,8 @@ def boot(df, f, n=2000):
 res = {}
 for subset, keep in [("all cross-author", A.label.notna()), ("audit-valid (duplicate+replacement)", A.label.isin(["duplicate", "replacement"])),
                      ("audit-valid incl. subsumed", A.label.isin(["duplicate", "replacement", "subsumed"]))]:
-    S = A[keep].reset_index(drop=True)
+    # only pairs whose true duplicate is in the real-use queue (open PRs only) are scored
+    S = A[keep & A.qi.isin(R.index[R[M["Jinx"]].notna()])].reset_index(drop=True)
     rk = R.loc[S.qi]
     out = {"n": len(S)}
     for name, col in M.items():

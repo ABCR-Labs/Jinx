@@ -1,8 +1,8 @@
 {
  "latency": {
   "lexical features ms/query": {
-   "median": 22.004112499416806,
-   "p90": 228.5285644975381
+   "median": 4.3549504928342335,
+   "p90": 43.002333160116265
   },
   "cpu_rerankers": {
    "cross-encoder/ms-marco-MiniLM-L6-v2": {
@@ -223,14 +223,14 @@
   }
  },
  "kendall_tau random-pair AUC vs live-queue cross-author R@1": [
-  0.7486621386066837,
-  9.028727952465525e-19
+  0.6819937613864485,
+  1.2184959809442045e-15
  ],
  "classes": {
-  "A. code twin (>=50% identical changed lines)": 994,
-  "B. partial code overlap": 701,
-  "D. no shared files (intent-level)": 128,
-  "C. same files, different code": 44
+  "A. code twin (>=50% identical changed lines)": 951,
+  "B. partial code overlap": 658,
+  "D. no shared files (intent-level)": 117,
+  "C. same files, different code": 41
  },
  "n_methods": 66,
  "gb_features": [

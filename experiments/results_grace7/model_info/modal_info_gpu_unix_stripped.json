@@ -1,0 +1,11 @@
+{
+ "tag": "unix_stripped",
+ "model": "microsoft/unixcoder-base",
+ "variant": "stripped",
+ "maxlen": 512,
+ "n": 76209,
+ "dim": 768,
+ "gpu": "L4",
+ "seconds": 247.7,
+ "ms_per_pr_gpu": 3.251
+}

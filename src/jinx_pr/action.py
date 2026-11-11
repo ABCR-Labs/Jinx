@@ -59,7 +59,7 @@ def render(new: PR, matches, threshold: float) -> str:
     return "\n".join(lines)
 
 
-def run(event: dict, gh: GitHub, threshold: float | None, max_open: int, top: int) -> str | None:
+def run(event: dict, gh: GitHub, threshold: float | None, max_open: int, top: int, embed: bool = False) -> str | None:
     new = pr_from_api(gh, event["pull_request"])
     open_prs = [
         d
@@ -67,7 +67,12 @@ def run(event: dict, gh: GitHub, threshold: float | None, max_open: int, top: in
         if d["number"] != new.number
     ]
     queue = [pr_from_api(gh, d) for d in open_prs]
-    det = Detector()
+    embedder = None
+    if embed:
+        from .embed import Embedder
+
+        embedder = Embedder()
+    det = Detector(embedder=embedder)
     thr = det.threshold if threshold is None else threshold
     matches = det.rank(new, queue, top=top)
     if not any(m.score >= thr for m in matches):
@@ -95,6 +100,7 @@ def main() -> int:
         float(thr) if thr else None,
         int(os.environ.get("INPUT_MAX_OPEN_PRS", "200")),
         int(os.environ.get("INPUT_TOP", "3")),
+        os.environ.get("INPUT_EMBED", "true").lower() == "true",
     )
     print(body or "jinx_pr: no likely duplicates")
     return 0

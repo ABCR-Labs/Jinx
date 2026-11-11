@@ -1,0 +1,11 @@
+{
+ "tag": "bge_raw",
+ "model": "BAAI/bge-small-en-v1.5",
+ "variant": "raw",
+ "maxlen": 512,
+ "n": 76209,
+ "dim": 384,
+ "gpu": "L4",
+ "seconds": 125.0,
+ "ms_per_pr_gpu": 1.64
+}

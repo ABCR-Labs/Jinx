@@ -1,14 +1,20 @@
-\begin{tabular}{lcccc}\toprule
-Strategy & R@1 & R@5 & MRR & False alarms \% [95\% CI] \\\midrule
-Jinx (ours) & 0.901 & 0.971 & 0.932 & 2.5 [1.9, 3.3] \\
-All signals, LR & 0.906 & 0.974 & 0.935 & 1.6 [1.1, 2.1] \\
-Jinx + BGE rerank + Qwen-7B & 0.901 & 0.974 & 0.931 & 2.8 [2.2, 3.5] \\
-Claude Haiku 4.5 + Jinx & 0.898 & 0.971 & 0.932 & 1.8 [1.3, 2.3] \\
-Qwen2.5-14B + Jinx & 0.871 & 0.971 & 0.917 & 2.9 [2.3, 3.7] \\
-Claude Haiku 4.5 alone & 0.842 & 0.971 & 0.902 & 5.4 [4.6, 6.1] \\
-INTRUDE + time~\cite{ren2019intrude,wang2019time} & 0.810 & 0.953 & 0.873 & 4.6 [3.7, 5.7] \\
-contrib-guard (bot) & 0.778 & 0.918 & 0.843 & 11.7 [8.9, 14.6] \\
-Links only & 0.839 & 0.924 & 0.882 & 3.8 [3.0, 4.8] \\
-TF-IDF~\cite{li2017detecting} & 0.757 & 0.921 & 0.832 & 9.4 [7.8, 10.9] \\
-BGE-small embedding & 0.763 & 0.915 & 0.830 & 6.4 [5.3, 7.5] \\
+\begin{tabular}{lccccc}\toprule
+Strategy & R@1 $\uparrow$ & R@5 $\uparrow$ & MRR $\uparrow$ & False alarms \% $\downarrow$ & Jinx $-$ row, R@1 (pts) \\\midrule
+\multicolumn{6}{l}{\emph{Our tool}}\\
+\rowcolor{jinxrow}Jinx (ours, default) & 0.927 & 0.990 & 0.954 & 1.8 {\scriptsize [1.2, 2.5]} & -- \\
+Jinx without MiniLM & 0.917 & 0.990 & 0.949 & 1.9 {\scriptsize [1.3, 2.7]} & +1.0 {\scriptsize [-0.9, +2.7]} \\
+\midrule
+\multicolumn{6}{l}{\emph{Our tool with extra models added}}\\
+All signals, LR & 0.927 & 0.990 & 0.955 & 1.6 {\scriptsize [1.1, 2.2]} & -0.0 {\scriptsize [-2.0, +1.7]} \\
+Jinx + BGE rerank + Qwen-7B & 0.936 & 0.981 & 0.958 & 1.4 {\scriptsize [0.9, 2.0]} & -1.0 {\scriptsize [-2.6, +1.0]} \\
+Claude Haiku 4.5 + Jinx & 0.936 & 0.990 & 0.961 & 0.9 {\scriptsize [0.6, 1.3]}$^{\ddagger}$ & -1.0 {\scriptsize [-2.5, +0.3]} \\
+Qwen2.5-14B + Jinx & 0.917 & 0.990 & 0.949 & 1.3 {\scriptsize [0.8, 2.0]}$^{\ddagger}$ & +1.0 {\scriptsize [-0.0, +2.0]} \\
+Claude Haiku 4.5 alone on Jinx top-5 & 0.923 & 0.990 & 0.956 & 1.8 {\scriptsize [1.1, 2.3]} & +0.3 {\scriptsize [-2.2, +2.6]} \\
+\midrule
+\multicolumn{6}{l}{\emph{Baselines: link rule, classic detector, existing bot, embedding, text}}\\
+Link rule (shared issue or \#ref) & \underline{0.936} & 0.978 & \underline{0.957} & \underline{1.2 {\scriptsize [0.7, 1.7]}} & -1.0 {\scriptsize [-4.3, +2.7]} \\
+INTRUDE + time~\cite{ren2019intrude,wang2019time} & 0.914 & \underline{0.987} & 0.945 & 2.0 {\scriptsize [1.3, 3.0]} & +1.3 {\scriptsize [-0.7, +3.1]} \\
+contrib-guard (bot) & 0.914 & 0.981 & 0.947 & \cellcolor{wincell}5.5 {\scriptsize [4.0, 7.0]}$^{\dagger}$ & +1.3 {\scriptsize [-2.7, +4.7]} \\
+TF-IDF~\cite{li2017detecting} & 0.911 & 0.981 & 0.945 & \cellcolor{wincell}3.5 {\scriptsize [2.5, 4.8]}$^{\dagger}$ & +1.6 {\scriptsize [-2.2, +4.9]} \\
+BGE-small embedding & 0.907 & 0.981 & 0.944 & 2.3 {\scriptsize [1.5, 3.3]} & +1.9 {\scriptsize [-1.1, +4.6]} \\
 \bottomrule\end{tabular}
