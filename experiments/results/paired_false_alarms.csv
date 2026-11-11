@@ -1,196 +1,196 @@
 reference,method,dFAR,dFAR lo,dFAR hi
-"Jinx + MiniLM, LR (current tool)",Recency only (newest open PR first),0.4155143338954469,0.3416978858127178,0.48739684757539936
-"Jinx + MiniLM, LR (current tool)",TF-IDF raw text (Li et al. 2017),0.06880269814502529,0.052831711574042865,0.08314654030946166
-"Jinx + MiniLM, LR (current tool)",TF-IDF template-stripped,0.06340640809443508,0.04825991788506748,0.07735326662151006
-"Jinx + MiniLM, LR (current tool)",BM25 raw text,0.184822934232715,0.10210209666228094,0.28680240761261727
-"Jinx + MiniLM, LR (current tool)",BM25 template-stripped,0.1615514333895447,0.08957337207736117,0.25
-"Jinx + MiniLM, LR (current tool)",BM25 on diff,0.14974704890387858,0.10143096274842048,0.19840548759789295
-"Jinx + MiniLM, LR (current tool)",Changed-files Jaccard,0.21854974704890387,0.18026599898335183,0.25970962251179286
-"Jinx + MiniLM, LR (current tool)",Hunk overlap,0.2708263069139966,0.23249783271728747,0.30319840445815927
-"Jinx + MiniLM, LR (current tool)",Identical changed lines,0.29477234401349073,0.25017732044814933,0.3368412780365478
-"Jinx + MiniLM, LR (current tool)",Code overlap sum (files+hunks+lines),0.22596964586846544,0.18313933624220188,0.26977520793117415
-"Jinx + MiniLM, LR (current tool)",Links only (same issue / #ref),0.01315345699831366,0.005047126176614908,0.021765808491418237
-"Jinx + MiniLM, LR (current tool)",MiniLM raw text,0.09578414839797639,0.07681825666070186,0.11256369984313061
-"Jinx + MiniLM, LR (current tool)",MiniLM template-stripped,0.09376053962900506,0.07521868796702533,0.11035513526617624
-"Jinx + MiniLM, LR (current tool)",MiniLM on diff,0.12715008431703204,0.08727802786182962,0.17554962883414907
-"Jinx + MiniLM, LR (current tool)",BGE-small raw text,0.04350758853288364,0.03354262924788801,0.05342987718324894
-"Jinx + MiniLM, LR (current tool)",BGE-small template-stripped,0.038448566610455315,0.028529429025442858,0.04831112623524463
-"Jinx + MiniLM, LR (current tool)",BGE-small on diff,0.09612141652613827,0.06723178730620076,0.12808568818251476
-"Jinx + MiniLM, LR (current tool)",BGE-base template-stripped,0.047892074198988194,0.03527446762098157,0.060011901093144374
-"Jinx + MiniLM, LR (current tool)",UniXcoder (code model) on diff,0.13558178752107924,0.10123569058927816,0.17537384034872397
-"Jinx + MiniLM, LR (current tool)",UniXcoder template-stripped text,0.22259696458684655,0.16693727449347764,0.2754300163853009
-"Jinx + MiniLM, LR (current tool)",CodeBERT (mean-pooled) on diff,0.12748735244519394,0.09223536902080463,0.1616079063301195
-"Jinx + MiniLM, LR (current tool)",Jina code embeddings v2 on diff,0.09477234401349073,0.060807832799200524,0.13396977585993033
-"Jinx + MiniLM, LR (current tool)","contrib-guard/phoenix (bot, exact port)",0.09173693086003373,0.06368664109893418,0.12138886335119269
-"Jinx + MiniLM, LR (current tool)","Simili-bot (bot, re-impl)",0.08600337268128162,0.0684104826691922,0.10241247373578424
-"Jinx + MiniLM, LR (current tool)","PRSense (bot, re-impl)",0.10185497470489038,0.07824420273804693,0.127244375653442
-"Jinx + MiniLM, LR (current tool)",RRF hybrid: BM25 + embedding,0.34772344013490725,0.31848243889397526,0.3807571397344963
-"Jinx + MiniLM, LR (current tool)",RRF hybrid: BM25 + embedding + code,0.1548060708263069,0.1311908117229155,0.18288239787224203
-"Jinx + MiniLM, LR (current tool)",RRF hybrid: text + code + links + recency,0.29139966273187184,0.24347509442753315,0.34545626504642896
-"Jinx + MiniLM, LR (current tool)","INTRUDE + time (Wang et al. 2019), LR",0.0209106239460371,0.015488312134284529,0.027205955410290073
-"Jinx + MiniLM, LR (current tool)","Jinx lexical, LR",0.006745362563237774,0.003066129793355063,0.011151255601905547
-"Jinx + MiniLM, LR (current tool)","All signals, LR",-0.009780775716694773,-0.016221986199817517,-0.004381291258745395
-"Jinx + MiniLM, LR (current tool)","Jinx features, gradient boosting",-0.011804384485666104,-0.017755963505222173,-0.006278401147424222
-"Jinx + MiniLM, LR (current tool)","All signals, gradient boosting",-0.001011804384485666,-0.0075946874434965565,0.005296765766669421
-"Jinx + MiniLM, LR (current tool)",Cross-encoder ms-marco MiniLM re-rank top-10,0.10860033726812816,0.08292435682326621,0.13473209988549556
-"Jinx + MiniLM, LR (current tool)",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,0.04350758853288364,0.03260857907597038,0.05423415989946839
-"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-base re-rank top-10,0.42563237774030355,0.3929856080227371,0.453002549998142
-"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,0.06239460370994941,0.04961859795126572,0.07337220115616239
-"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,0.08161888701517707,0.055647154047638425,0.10678520835862969
-"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,0.019898819561551432,0.011155097167052333,0.02749136465060607
-"Jinx + MiniLM, LR (current tool)",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,0.021585160202360877,0.013707895945154295,0.029486937917222733
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B re-rank top-5,0.21888701517706577,0.18967949924132446,0.2501699297644479
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B + Jinx (avg) top-5,0.024283305227655986,0.017135015833381995,0.033103954473693145
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B re-rank top-10,0.23204047217537943,0.20155336925147713,0.2635880603074386
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B + Jinx (avg) top-10,0.024283305227655986,0.017135015833381995,0.033103954473693145
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-7B re-rank top-5,0.014502529510961214,0.006375622198288409,0.02149479393959581
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-7B + Jinx (avg) top-5,0.0026981450252951096,-0.0033275115372423418,0.008000501780110145
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-7B re-rank top-10,0.01517706576728499,0.006878681756577773,0.022478294616946278
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-7B + Jinx (avg) top-10,0.0026981450252951096,-0.0033275115372423418,0.008000501780110145
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B re-rank top-5,0.016863406408094434,0.007519503546099291,0.02477490980188822
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.0006745362563237774,-0.007382166247127741,0.00494978477647983
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B re-rank top-10,0.017537942664418212,0.00844629843931826,0.02536503229878909
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.0006745362563237774,-0.007382166247127741,0.00494978477647983
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-5,0.016526138279932545,0.0078272539646894,0.02378212431086492
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,0.003709949409780776,-0.001743631150744358,0.009165057041983006
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-10,0.016863406408094434,0.008264092272667988,0.02403359815713363
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,0.003372681281618887,-0.002197957898524649,0.008917905128435318
-"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 re-rank top-5,0.02866779089376054,0.019991470536637797,0.03610959729036864
-"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.00775716694772344,-0.013022560174819153,-0.0035398875899901915
-"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + BGE-reranker-base (stacked LR),0.04418212478920742,0.03249767776150783,0.05458445419129427
-"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.001011804384485666,-0.006978801006425359,0.004042825142422204
-"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),0.0,-0.006602368731081602,0.005608354044137535
-"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-14B judge (stacked LR),0.017537942664418212,0.009414056269737472,0.02592874857751869
-"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + fine-tuned BGE-reranker (stacked LR),0.012141652613827993,0.0054369238978677365,0.018982285614062868
-"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR),0.0060708263069139965,0.0003125652740987342,0.011853962697328475
-"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR),0.0026981450252951096,-0.0033643131344096295,0.007744303500117453
-"INTRUDE + time (Wang et al. 2019), LR",Recency only (newest open PR first),0.3946037099494098,0.32130044271475067,0.46679442241708285
-"INTRUDE + time (Wang et al. 2019), LR",TF-IDF raw text (Li et al. 2017),0.047892074198988194,0.03322721259134396,0.061832054812483585
-"INTRUDE + time (Wang et al. 2019), LR",TF-IDF template-stripped,0.042495784148397976,0.02768966810476983,0.056625576267391245
-"INTRUDE + time (Wang et al. 2019), LR",BM25 raw text,0.1639123102866779,0.08115078289791341,0.26642090312218475
-"INTRUDE + time (Wang et al. 2019), LR",BM25 template-stripped,0.1406408094435076,0.06817271666669199,0.2307470410549068
-"INTRUDE + time (Wang et al. 2019), LR",BM25 on diff,0.12883642495784148,0.0797469849600967,0.17783252159948384
-"INTRUDE + time (Wang et al. 2019), LR",Changed-files Jaccard,0.19763912310286677,0.15907734747097427,0.23944163210849262
-"INTRUDE + time (Wang et al. 2019), LR",Hunk overlap,0.24991568296795952,0.21034792525934257,0.2827377289633618
-"INTRUDE + time (Wang et al. 2019), LR",Identical changed lines,0.27386172006745363,0.22796627002754835,0.31788749417490536
-"INTRUDE + time (Wang et al. 2019), LR",Code overlap sum (files+hunks+lines),0.20505902192242834,0.1613539487919221,0.24992941442676597
-"INTRUDE + time (Wang et al. 2019), LR",Links only (same issue / #ref),-0.00775716694772344,-0.01751487433770495,0.000850141598986989
-"INTRUDE + time (Wang et al. 2019), LR",MiniLM raw text,0.07487352445193929,0.055181913649065634,0.09164721737751703
-"INTRUDE + time (Wang et al. 2019), LR",MiniLM template-stripped,0.07284991568296796,0.054506353459826254,0.08922842310188189
-"INTRUDE + time (Wang et al. 2019), LR",MiniLM on diff,0.10623946037099494,0.06635926159359107,0.15552546076812
-"INTRUDE + time (Wang et al. 2019), LR",BGE-small raw text,0.022596964586846544,0.013016523102157196,0.032154515527309184
-"INTRUDE + time (Wang et al. 2019), LR",BGE-small template-stripped,0.017537942664418212,0.007273939984763988,0.027154705602959933
-"INTRUDE + time (Wang et al. 2019), LR",BGE-small on diff,0.07521079258010117,0.046220776926700395,0.10815462677222305
-"INTRUDE + time (Wang et al. 2019), LR",BGE-base template-stripped,0.026981450252951095,0.015259615647562882,0.03869522912406454
-"INTRUDE + time (Wang et al. 2019), LR",UniXcoder (code model) on diff,0.11467116357504216,0.08052812093006846,0.15496933860841144
-"INTRUDE + time (Wang et al. 2019), LR",UniXcoder template-stripped text,0.20168634064080945,0.1463586060317344,0.2559657399635407
-"INTRUDE + time (Wang et al. 2019), LR",CodeBERT (mean-pooled) on diff,0.10657672849915684,0.0713694643208915,0.1409856600633066
-"INTRUDE + time (Wang et al. 2019), LR",Jina code embeddings v2 on diff,0.07386172006745363,0.0390944477590494,0.11443824974358718
-"INTRUDE + time (Wang et al. 2019), LR","contrib-guard/phoenix (bot, exact port)",0.07082630691399663,0.043167106241885085,0.10203510433568917
-"INTRUDE + time (Wang et al. 2019), LR","Simili-bot (bot, re-impl)",0.06509274873524452,0.04656768927666761,0.0816992042687183
-"INTRUDE + time (Wang et al. 2019), LR","PRSense (bot, re-impl)",0.08094435075885328,0.05735235422180483,0.1065854610897629
-"INTRUDE + time (Wang et al. 2019), LR",RRF hybrid: BM25 + embedding,0.32681281618887015,0.2986472327472561,0.3588087254377546
-"INTRUDE + time (Wang et al. 2019), LR",RRF hybrid: BM25 + embedding + code,0.1338954468802698,0.11067504621743614,0.16170009211719355
-"INTRUDE + time (Wang et al. 2019), LR",RRF hybrid: text + code + links + recency,0.27048903878583475,0.223715524044602,0.3243794363402638
-"INTRUDE + time (Wang et al. 2019), LR","Jinx lexical, LR",-0.014165261382799325,-0.0198491957401663,-0.009189345256065596
-"INTRUDE + time (Wang et al. 2019), LR","Jinx + MiniLM, LR (current tool)",-0.0209106239460371,-0.027205955410290073,-0.015488312134284529
-"INTRUDE + time (Wang et al. 2019), LR","All signals, LR",-0.03069139966273187,-0.040319985431395346,-0.023078326651472414
-"INTRUDE + time (Wang et al. 2019), LR","Jinx features, gradient boosting",-0.032715008431703205,-0.041231244099782086,-0.025674753472244686
-"INTRUDE + time (Wang et al. 2019), LR","All signals, gradient boosting",-0.021922428330522766,-0.029588465185681014,-0.01472083663915742
-"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder ms-marco MiniLM re-rank top-10,0.08768971332209106,0.06261288516493958,0.11467126499889786
-"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,0.022596964586846544,0.012632000742634122,0.032575956671605524
-"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-base re-rank top-10,0.40472175379426645,0.37102585548185507,0.43260298748471776
-"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,0.04148397976391231,0.028790683416681097,0.05160733821025294
-"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,0.06070826306913996,0.03367291011383916,0.08742452710861935
-"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,-0.001011804384485666,-0.01104143096505783,0.006751207640307695
-"INTRUDE + time (Wang et al. 2019), LR",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,0.0006745362563237774,-0.008437840180262599,0.008835270390365364
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B re-rank top-5,0.19797639123102867,0.16948500979381415,0.22701645298341322
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B + Jinx (avg) top-5,0.003372681281618887,-0.0030652619743291288,0.010518474241902186
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B re-rank top-10,0.21112984822934233,0.18176611290574077,0.2418018226618202
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B + Jinx (avg) top-10,0.003372681281618887,-0.0030652619743291288,0.010518474241902186
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-7B re-rank top-5,-0.0064080944350758855,-0.017570200423273483,0.0027832056697406626
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-7B + Jinx (avg) top-5,-0.01821247892074199,-0.026987834773397917,-0.01121613000309444
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-7B re-rank top-10,-0.005733558178752108,-0.017079944584782843,0.003925610065587658
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-7B + Jinx (avg) top-10,-0.01821247892074199,-0.026987834773397917,-0.01121613000309444
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B re-rank top-5,-0.004047217537942664,-0.01638798560466561,0.005817237231424366
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.021585160202360877,-0.031490507359229994,-0.014026231496348731
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B re-rank top-10,-0.003372681281618887,-0.01530162184625816,0.006255242000279913
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.021585160202360877,-0.031490507359229994,-0.014026231496348731
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-5,-0.004384485666104553,-0.01500203749607091,0.004025332778429529
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.017200674536256323,-0.025286968954248368,-0.010740498546836575
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-10,-0.004047217537942664,-0.014665969459601995,0.004334016267993354
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.017537942664418212,-0.025589809987150956,-0.010912482154778028
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 re-rank top-5,0.00775716694772344,-0.002911405796448431,0.01613837804642097
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.02866779089376054,-0.03685702628103952,-0.022124695958689402
-"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + BGE-reranker-base (stacked LR),0.02327150084317032,0.012823962901902575,0.03222584664365673
-"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.021922428330522766,-0.03077705984763957,-0.014751680075309212
-"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.0209106239460371,-0.030658309266972654,-0.013542374752666014
-"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-14B judge (stacked LR),-0.003372681281618887,-0.0117542443806791,0.0043700319524444
-"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + fine-tuned BGE-reranker (stacked LR),-0.008768971332209106,-0.01660811242414564,-0.0016867937556450767
-"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR),-0.014839797639123103,-0.0233081149744962,-0.00796154601056084
-"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR),-0.01821247892074199,-0.02673870196983766,-0.011331206375844746
-"contrib-guard/phoenix (bot, exact port)",Recency only (newest open PR first),0.32377740303541314,0.26227939246341964,0.3756847940157647
-"contrib-guard/phoenix (bot, exact port)",TF-IDF raw text (Li et al. 2017),-0.022934232715008433,-0.042937943871041835,-0.003374285872474441
-"contrib-guard/phoenix (bot, exact port)",TF-IDF template-stripped,-0.02833052276559865,-0.04861074503875256,-0.007777498145249877
-"contrib-guard/phoenix (bot, exact port)",BM25 raw text,0.09308600337268128,0.025682041185004872,0.17190135557658284
-"contrib-guard/phoenix (bot, exact port)",BM25 template-stripped,0.06981450252951096,0.011534388333997595,0.13598111437457414
-"contrib-guard/phoenix (bot, exact port)",BM25 on diff,0.05801011804384486,0.020651013193381442,0.09276276507269823
-"contrib-guard/phoenix (bot, exact port)",Changed-files Jaccard,0.12681281618887016,0.1014395039676947,0.14828278360432964
-"contrib-guard/phoenix (bot, exact port)",Hunk overlap,0.1790893760539629,0.14990634007880657,0.2052249055304235
-"contrib-guard/phoenix (bot, exact port)",Identical changed lines,0.203035413153457,0.16764249100966075,0.2325310095392924
-"contrib-guard/phoenix (bot, exact port)",Code overlap sum (files+hunks+lines),0.1342327150084317,0.10173355186932305,0.1611917405304883
-"contrib-guard/phoenix (bot, exact port)",Links only (same issue / #ref),-0.07858347386172007,-0.1118053350991158,-0.048035883433934626
-"contrib-guard/phoenix (bot, exact port)",MiniLM raw text,0.004047217537942664,-0.018970823086013607,0.026449425029286783
-"contrib-guard/phoenix (bot, exact port)",MiniLM template-stripped,0.002023608768971332,-0.01964033494753834,0.022736611739465756
-"contrib-guard/phoenix (bot, exact port)",MiniLM on diff,0.03541315345699832,0.007726246812616297,0.05914983432736909
-"contrib-guard/phoenix (bot, exact port)",BGE-small raw text,-0.048229342327150086,-0.07508587352971334,-0.025134359212663233
-"contrib-guard/phoenix (bot, exact port)",BGE-small template-stripped,-0.05328836424957842,-0.07835037041344069,-0.03047933326234057
-"contrib-guard/phoenix (bot, exact port)",BGE-small on diff,0.004384485666104553,-0.014656827517077576,0.020287546439026336
-"contrib-guard/phoenix (bot, exact port)",BGE-base template-stripped,-0.04384485666104553,-0.06711731199971965,-0.021863961238832993
-"contrib-guard/phoenix (bot, exact port)",UniXcoder (code model) on diff,0.04384485666104553,0.02049537354836187,0.06320113817962565
-"contrib-guard/phoenix (bot, exact port)",UniXcoder template-stripped text,0.13086003372681282,0.09633586513167962,0.16319524864715307
-"contrib-guard/phoenix (bot, exact port)",CodeBERT (mean-pooled) on diff,0.0357504215851602,0.0093068924432105,0.05801162585643374
-"contrib-guard/phoenix (bot, exact port)",Jina code embeddings v2 on diff,0.0030354131534569982,-0.02197672154603708,0.022230520661584218
-"contrib-guard/phoenix (bot, exact port)","Simili-bot (bot, re-impl)",-0.005733558178752108,-0.027752297647489127,0.01576377659094872
-"contrib-guard/phoenix (bot, exact port)","PRSense (bot, re-impl)",0.01011804384485666,-0.004715474910432607,0.025690400781457165
-"contrib-guard/phoenix (bot, exact port)",RRF hybrid: BM25 + embedding,0.25598650927487354,0.20190389378095763,0.310082069008466
-"contrib-guard/phoenix (bot, exact port)",RRF hybrid: BM25 + embedding + code,0.06306913996627318,0.013124442302410751,0.11115709828569163
-"contrib-guard/phoenix (bot, exact port)",RRF hybrid: text + code + links + recency,0.1996627318718381,0.1253276021672248,0.2722696471633824
-"contrib-guard/phoenix (bot, exact port)","INTRUDE + time (Wang et al. 2019), LR",-0.07082630691399663,-0.10203510433568919,-0.04316710624188509
-"contrib-guard/phoenix (bot, exact port)","Jinx lexical, LR",-0.08499156829679595,-0.1156285536595971,-0.057373309765275333
-"contrib-guard/phoenix (bot, exact port)","Jinx + MiniLM, LR (current tool)",-0.09173693086003373,-0.1213888633511927,-0.06368664109893418
-"contrib-guard/phoenix (bot, exact port)","All signals, LR",-0.1015177065767285,-0.1307279670015519,-0.07288268671842137
-"contrib-guard/phoenix (bot, exact port)","Jinx features, gradient boosting",-0.10354131534569982,-0.1339675305807914,-0.07445475719424326
-"contrib-guard/phoenix (bot, exact port)","All signals, gradient boosting",-0.09274873524451939,-0.12254066477497855,-0.06528428250281006
-"contrib-guard/phoenix (bot, exact port)",Cross-encoder ms-marco MiniLM re-rank top-10,0.016863406408094434,-0.00036191659762496546,0.034328035305819474
-"contrib-guard/phoenix (bot, exact port)",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,-0.048229342327150086,-0.07413826027598483,-0.0234769016546346
-"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-base re-rank top-10,0.33389544688026984,0.30242466447455374,0.36549804675657777
-"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,-0.029342327150084318,-0.05617570201323207,-0.003796205760078782
-"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,-0.01011804384485666,-0.02666076616647721,0.005518504403305581
-"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,-0.07183811129848229,-0.09970569247262152,-0.04581660269915104
-"contrib-guard/phoenix (bot, exact port)",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,-0.07015177065767285,-0.09879390796671708,-0.04184531400426386
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B re-rank top-5,0.12715008431703204,0.07282341355196008,0.17596727266882062
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B + Jinx (avg) top-5,-0.06745362563237774,-0.10071206961396578,-0.03889073753563691
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B re-rank top-10,0.1403035413153457,0.08620150432248506,0.18946355194470196
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B + Jinx (avg) top-10,-0.06745362563237774,-0.10071206961396578,-0.03889073753563691
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-7B re-rank top-5,-0.07723440134907252,-0.1027172330560258,-0.051442961998826434
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-7B + Jinx (avg) top-5,-0.08903878583473862,-0.11717826671015209,-0.0605308951499739
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-7B re-rank top-10,-0.07655986509274873,-0.1017138625920759,-0.0513331230533662
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-7B + Jinx (avg) top-10,-0.08903878583473862,-0.11717826671015209,-0.0605308951499739
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B re-rank top-5,-0.07487352445193929,-0.10104027925814793,-0.04756288330709982
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.0924114671163575,-0.12025332894953149,-0.06374467387021601
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B re-rank top-10,-0.07419898819561552,-0.10056384032507629,-0.04678420087281009
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.0924114671163575,-0.12025332894953149,-0.06374467387021601
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-5,-0.07521079258010117,-0.10225270651492502,-0.04849342732600514
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.08802698145025295,-0.11832909745474215,-0.05917948103358385
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-10,-0.07487352445193929,-0.10188399359939058,-0.04780286347498959
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.08836424957841484,-0.11854979992376938,-0.05934646741554326
-"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 re-rank top-5,-0.06306913996627318,-0.09008324913698745,-0.0359884388825068
-"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.09949409780775717,-0.1287572599074745,-0.07058719784209981
-"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + BGE-reranker-base (stacked LR),-0.04755480607082631,-0.07619688871706576,-0.020445713000379687
-"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.09274873524451939,-0.12081312031045435,-0.06462502402157326
-"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.09173693086003373,-0.12006935934880748,-0.06339464555883523
-"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-14B judge (stacked LR),-0.07419898819561552,-0.10307425060661395,-0.046508492009733844
-"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + fine-tuned BGE-reranker (stacked LR),-0.07959527824620573,-0.10861140604890605,-0.051484336771270824
-"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR),-0.08566610455311972,-0.11467925456582698,-0.057228764999975895
-"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR),-0.08903878583473862,-0.11714694872464525,-0.06100405679513187
+"Jinx + MiniLM, LR (current tool)",Recency only (newest open PR first),0.44846796657381616,0.36781346073950977,0.5261541328443069
+"Jinx + MiniLM, LR (current tool)",TF-IDF raw text (Li et al. 2017),0.017508953442101075,0.009187356274773564,0.02830188679245283
+"Jinx + MiniLM, LR (current tool)",TF-IDF template-stripped,0.013927576601671309,0.00802094454338589,0.02156059900529058
+"Jinx + MiniLM, LR (current tool)",BM25 raw text,0.11619578193394349,0.070376213592233,0.16149757229253153
+"Jinx + MiniLM, LR (current tool)",BM25 template-stripped,0.09072821329088739,0.0549087642724376,0.12612268935768184
+"Jinx + MiniLM, LR (current tool)",BM25 on diff,0.0831675288499801,0.059922229651265084,0.10645392812578897
+"Jinx + MiniLM, LR (current tool)",Changed-files Jaccard,0.10505372065260644,0.07699192528142104,0.13503956645338527
+"Jinx + MiniLM, LR (current tool)",Hunk overlap,0.2487067250298448,0.20361133233570902,0.28992876185939004
+"Jinx + MiniLM, LR (current tool)",Identical changed lines,0.3203342618384401,0.27279992953043075,0.36309823651078055
+"Jinx + MiniLM, LR (current tool)",Code overlap sum (files+hunks+lines),0.2216474333465977,0.17454486269516653,0.2691655448895644
+"Jinx + MiniLM, LR (current tool)",Links only (same issue / #ref),-0.005968961400716275,-0.012987599678962167,0.0004538755137057143
+"Jinx + MiniLM, LR (current tool)",MiniLM raw text,0.02865101472343812,0.016237686807980423,0.04535129829370772
+"Jinx + MiniLM, LR (current tool)",MiniLM template-stripped,0.02825308396339037,0.01547457468101076,0.04506027795327522
+"Jinx + MiniLM, LR (current tool)",MiniLM on diff,0.07162753680859531,0.046476926923095324,0.09784493227586442
+"Jinx + MiniLM, LR (current tool)",BGE-small raw text,0.005968961400716275,0.0,0.013563318805818276
+"Jinx + MiniLM, LR (current tool)",BGE-small template-stripped,0.005173099880620772,-0.001284555927477666,0.013103026085163417
+"Jinx + MiniLM, LR (current tool)",BGE-small on diff,0.04257859132510943,0.021953076498699087,0.06521064155589888
+"Jinx + MiniLM, LR (current tool)",BGE-base template-stripped,0.01193792280143255,0.00324323814200262,0.02303218066607532
+"Jinx + MiniLM, LR (current tool)",UniXcoder (code model) on diff,0.07242339832869081,0.04972204229377024,0.09600930012901215
+"Jinx + MiniLM, LR (current tool)",UniXcoder template-stripped text,0.12415439713489852,0.09160469589652823,0.16365447387821583
+"Jinx + MiniLM, LR (current tool)",CodeBERT (mean-pooled) on diff,0.11579785117389574,0.09333122875182127,0.13796416769929779
+"Jinx + MiniLM, LR (current tool)",Jina code embeddings v2 on diff,0.05212892956625547,0.02839618562601557,0.08142014700023653
+"Jinx + MiniLM, LR (current tool)","contrib-guard/phoenix (bot, exact port)",0.03700756068444091,0.022297056088138503,0.0508615686744609
+"Jinx + MiniLM, LR (current tool)","Simili-bot (bot, re-impl)",0.027457222443294866,0.01599396397103387,0.0423628882327209
+"Jinx + MiniLM, LR (current tool)","PRSense (bot, re-impl)",0.029844807003581376,0.017901671538180487,0.04119238422171378
+"Jinx + MiniLM, LR (current tool)",RRF hybrid: BM25 + embedding,0.469558296856347,0.4408303523409701,0.49784758360023745
+"Jinx + MiniLM, LR (current tool)",RRF hybrid: BM25 + embedding + code,0.21050537206526065,0.18302566356985836,0.23996401267392067
+"Jinx + MiniLM, LR (current tool)",RRF hybrid: text + code + links + recency,0.5125348189415042,0.44630134496546714,0.5713277128374884
+"Jinx + MiniLM, LR (current tool)","INTRUDE + time (Wang et al. 2019), LR",0.002785515320334262,-0.0003962398696351082,0.007404922435292919
+"Jinx + MiniLM, LR (current tool)","Jinx lexical, LR",0.0015917230401910067,-0.00034300715016892254,0.0036986095732492
+"Jinx + MiniLM, LR (current tool)","All signals, LR",-0.0015917230401910067,-0.006963993453355155,0.0031750374568432
+"Jinx + MiniLM, LR (current tool)","Jinx features, gradient boosting",-0.006366892160764027,-0.01324724932162324,-0.00040152986875717587
+"Jinx + MiniLM, LR (current tool)","All signals, gradient boosting",0.0015917230401910067,-0.005587114290189527,0.00911194799084303
+"Jinx + MiniLM, LR (current tool)",Cross-encoder ms-marco MiniLM re-rank top-10,0.04257859132510943,0.03082239185844088,0.057058207232301934
+"Jinx + MiniLM, LR (current tool)",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,0.020692399522483088,0.013467362011150197,0.029106911132512278
+"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-base re-rank top-10,0.3489852765618782,0.31531940932486807,0.37887096333524234
+"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,0.029048945483485872,0.020981246368141533,0.03781955485835105
+"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,0.02626343016315161,0.01496035154696572,0.036908914116277725
+"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,0.008356545961002786,0.0019771639466314977,0.014642813261617841
+"Jinx + MiniLM, LR (current tool)",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,-0.004377238360525269,-0.009725575628508376,0.00043543160797073177
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B re-rank top-5,0.1663350576999602,0.13344622528784353,0.20194907810829377
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B + Jinx (avg) top-5,0.010346199761241544,0.003738832514498629,0.017699220900199007
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B re-rank top-10,0.17071229606048546,0.13432929358608264,0.21141483232199476
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B + Jinx (avg) top-10,0.010346199761241544,0.003738832514498629,0.017699220900199007
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-7B re-rank top-5,-0.0015917230401910067,-0.0072753894053168445,0.003215746753246745
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-7B + Jinx (avg) top-5,-0.002785515320334262,-0.00805891574776141,0.001832460078626701
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-7B re-rank top-10,-0.0015917230401910067,-0.0072753894053168445,0.003215746753246745
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-7B + Jinx (avg) top-10,-0.002785515320334262,-0.00805891574776141,0.001832460078626701
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B re-rank top-5,0.0,-0.005921953075706241,0.005639179755671898
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.0031834460803820135,-0.008035714285714285,0.0009575251363240921
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B re-rank top-10,0.0,-0.005921953075706241,0.005639179755671898
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.0031834460803820135,-0.008035714285714285,0.0009575251363240921
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-5,-0.00477516912057302,-0.010591117569837985,0.0006493657715943441
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.004377238360525269,-0.008126860321833613,-0.0004683731160253327
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-10,-0.00477516912057302,-0.010591117569837985,0.0006493657715943441
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.004377238360525269,-0.008126860321833613,-0.0004683731160253327
+"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 re-rank top-5,0.0,-0.007706151930326698,0.006607906332482596
+"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.008356545961002786,-0.014234911590855865,-0.003398711395729359
+"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + BGE-reranker-base (stacked LR),0.02347791484281735,0.01716046862855767,0.03013707114011968
+"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.003979307600477517,-0.009196474784319402,0.00034353830444311547
+"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.002785515320334262,-0.0072969919298126245,0.0011202667186446958
+"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-14B judge (stacked LR),0.011539992041384799,0.005960287599216576,0.01778469558435069
+"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + fine-tuned BGE-reranker (stacked LR),-0.00477516912057302,-0.009894652784120536,0.0
+"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR),-0.005968961400716275,-0.010934497419628458,-0.0014373841618102049
+"Jinx + MiniLM, LR (current tool)",Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR),-0.003581376840429765,-0.008852946512481738,0.0010080984348543392
+"INTRUDE + time (Wang et al. 2019), LR",Recency only (newest open PR first),0.4456824512534819,0.3644420598212874,0.5257219649329599
+"INTRUDE + time (Wang et al. 2019), LR",TF-IDF raw text (Li et al. 2017),0.014723438121766812,0.007662435726870662,0.02311474101941731
+"INTRUDE + time (Wang et al. 2019), LR",TF-IDF template-stripped,0.011142061281337047,0.004270846243993079,0.019004829204409032
+"INTRUDE + time (Wang et al. 2019), LR",BM25 raw text,0.11341026661360923,0.06594482466817692,0.16044421156392816
+"INTRUDE + time (Wang et al. 2019), LR",BM25 template-stripped,0.08794269797055312,0.04992501395043535,0.1252441549478043
+"INTRUDE + time (Wang et al. 2019), LR",BM25 on diff,0.08038201352964584,0.0545713815901869,0.10468218802336773
+"INTRUDE + time (Wang et al. 2019), LR",Changed-files Jaccard,0.10226820533227218,0.07357057258364363,0.1333108268578097
+"INTRUDE + time (Wang et al. 2019), LR",Hunk overlap,0.24592120970951054,0.19991627773406054,0.28910029878425714
+"INTRUDE + time (Wang et al. 2019), LR",Identical changed lines,0.31754874651810583,0.2696301043539942,0.36187481148874534
+"INTRUDE + time (Wang et al. 2019), LR",Code overlap sum (files+hunks+lines),0.21886191802626342,0.1716804857275854,0.26784831207408805
+"INTRUDE + time (Wang et al. 2019), LR",Links only (same issue / #ref),-0.008754476721050538,-0.016674970310116635,-0.0021002452986811056
+"INTRUDE + time (Wang et al. 2019), LR",MiniLM raw text,0.02586549940310386,0.014112721478628411,0.04073747700394217
+"INTRUDE + time (Wang et al. 2019), LR",MiniLM template-stripped,0.025467568643056108,0.013806813807040902,0.04070963347857071
+"INTRUDE + time (Wang et al. 2019), LR",MiniLM on diff,0.06884202148826105,0.04362490771880896,0.09605499412753804
+"INTRUDE + time (Wang et al. 2019), LR",BGE-small raw text,0.0031834460803820135,-0.0022949482336850923,0.009426374523091703
+"INTRUDE + time (Wang et al. 2019), LR",BGE-small template-stripped,0.00238758456028651,-0.003300542370413512,0.008788476698009546
+"INTRUDE + time (Wang et al. 2019), LR",BGE-small on diff,0.03979307600477517,0.018381245695366456,0.06440346002670583
+"INTRUDE + time (Wang et al. 2019), LR",BGE-base template-stripped,0.00915240748109829,0.0018017950238256532,0.017821127664193557
+"INTRUDE + time (Wang et al. 2019), LR",UniXcoder (code model) on diff,0.06963788300835655,0.04692824045182227,0.09440722011695032
+"INTRUDE + time (Wang et al. 2019), LR",UniXcoder template-stripped text,0.12136888181456426,0.08932529130106695,0.16114548016789373
+"INTRUDE + time (Wang et al. 2019), LR",CodeBERT (mean-pooled) on diff,0.11301233585356148,0.09018152495045051,0.13496597596794166
+"INTRUDE + time (Wang et al. 2019), LR",Jina code embeddings v2 on diff,0.04934341424592121,0.023463682854203423,0.080077542430742
+"INTRUDE + time (Wang et al. 2019), LR","contrib-guard/phoenix (bot, exact port)",0.03422204536410665,0.019786780828447495,0.04777431170849234
+"INTRUDE + time (Wang et al. 2019), LR","Simili-bot (bot, re-impl)",0.024671707122960605,0.0144038154724878,0.0382986798013646
+"INTRUDE + time (Wang et al. 2019), LR","PRSense (bot, re-impl)",0.027059291683247114,0.015003074628452549,0.03797013146078311
+"INTRUDE + time (Wang et al. 2019), LR",RRF hybrid: BM25 + embedding,0.46677278153601276,0.4382281196995882,0.4942452501013011
+"INTRUDE + time (Wang et al. 2019), LR",RRF hybrid: BM25 + embedding + code,0.20771985674492638,0.1799993234100135,0.23651264975977615
+"INTRUDE + time (Wang et al. 2019), LR",RRF hybrid: text + code + links + recency,0.5097493036211699,0.44331682707495684,0.56973143531435
+"INTRUDE + time (Wang et al. 2019), LR","Jinx lexical, LR",-0.001193792280143255,-0.0057999302941857105,0.0018630333461587187
+"INTRUDE + time (Wang et al. 2019), LR","Jinx + MiniLM, LR (current tool)",-0.002785515320334262,-0.007404922435292925,0.000396239869635108
+"INTRUDE + time (Wang et al. 2019), LR","All signals, LR",-0.004377238360525269,-0.011354899068273399,0.001229009440111337
+"INTRUDE + time (Wang et al. 2019), LR","Jinx features, gradient boosting",-0.00915240748109829,-0.01734170092253067,-0.0023188596642719104
+"INTRUDE + time (Wang et al. 2019), LR","All signals, gradient boosting",-0.001193792280143255,-0.008412331638262781,0.005673026206207311
+"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder ms-marco MiniLM re-rank top-10,0.03979307600477517,0.028551726529771806,0.0534617432811686
+"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,0.017906884202148827,0.011348725044964725,0.024863688720325884
+"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-base re-rank top-10,0.34619976124154395,0.31160160077405447,0.3765739803741184
+"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,0.02626343016315161,0.018834424851285093,0.03327802405261448
+"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,0.02347791484281735,0.010696318673282254,0.0351351826176141
+"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,0.005571030640668524,-0.0032011830218454302,0.013194094582114556
+"INTRUDE + time (Wang et al. 2019), LR",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,-0.00716275368085953,-0.013977187545517739,-0.0013672565318272674
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B re-rank top-5,0.16354954237962593,0.1318983196357603,0.19759960948260055
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B + Jinx (avg) top-5,0.007560684440907282,0.002185029644268775,0.013714485829376209
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B re-rank top-10,0.16792678074015122,0.133414561600998,0.20744845323144998
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B + Jinx (avg) top-10,0.007560684440907282,0.002185029644268775,0.013714485829376209
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-7B re-rank top-5,-0.004377238360525269,-0.012566497722175236,0.0017585370136310584
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-7B + Jinx (avg) top-5,-0.005571030640668524,-0.013257357948124224,0.0
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-7B re-rank top-10,-0.004377238360525269,-0.012566497722175236,0.0017585370136310584
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-7B + Jinx (avg) top-10,-0.005571030640668524,-0.013257357948124224,0.0
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B re-rank top-5,-0.002785515320334262,-0.010971234667306916,0.0038242599154057716
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.005968961400716275,-0.012941284316086606,-0.0004609158147481715
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B re-rank top-10,-0.002785515320334262,-0.010971234667306916,0.0038242599154057716
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.005968961400716275,-0.012941284316086606,-0.0004609158147481715
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-5,-0.007560684440907282,-0.015293628885914283,-0.0011964361174849048
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.00716275368085953,-0.013190499742533626,-0.0022620621282220775
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-10,-0.007560684440907282,-0.015293628885914283,-0.0011964361174849048
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.00716275368085953,-0.013190499742533626,-0.0022620621282220775
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 re-rank top-5,-0.002785515320334262,-0.01227774517629636,0.005136952076932162
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.011142061281337047,-0.018798539480858426,-0.005038608513477137
+"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + BGE-reranker-base (stacked LR),0.020692399522483088,0.014612459933927301,0.026802893892709588
+"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.006764822920811779,-0.014508178250173705,-0.0013111530332797527
+"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.005571030640668524,-0.012673752053355835,-0.00033756449731850343
+"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-14B judge (stacked LR),0.008754476721050538,0.0010385385385385387,0.016106718475355754
+"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + fine-tuned BGE-reranker (stacked LR),-0.007560684440907282,-0.014337346298297061,-0.0022114984531574513
+"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR),-0.008754476721050538,-0.015316660917279755,-0.0035014164058773593
+"INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR),-0.006366892160764027,-0.0141091511232862,-0.0007780972235811219
+"contrib-guard/phoenix (bot, exact port)",Recency only (newest open PR first),0.41146040588937527,0.3293232510054735,0.4840735826268833
+"contrib-guard/phoenix (bot, exact port)",TF-IDF raw text (Li et al. 2017),-0.019498607242339833,-0.034241322540814925,-0.0035012477225072913
+"contrib-guard/phoenix (bot, exact port)",TF-IDF template-stripped,-0.023079984082769598,-0.038094059908054353,-0.006649034254281795
+"contrib-guard/phoenix (bot, exact port)",BM25 raw text,0.07918822124950259,0.03701624362592587,0.11760796604350864
+"contrib-guard/phoenix (bot, exact port)",BM25 template-stripped,0.05372065260644648,0.020539500869943453,0.08225441295732246
+"contrib-guard/phoenix (bot, exact port)",BM25 on diff,0.046159968165539196,0.021354025690685084,0.06538688774345933
+"contrib-guard/phoenix (bot, exact port)",Changed-files Jaccard,0.06804615996816554,0.04225770791018922,0.09144787377166906
+"contrib-guard/phoenix (bot, exact port)",Hunk overlap,0.2116991643454039,0.1698705989940558,0.248896724101255
+"contrib-guard/phoenix (bot, exact port)",Identical changed lines,0.2833267011539992,0.2395170944298235,0.3212721823039711
+"contrib-guard/phoenix (bot, exact port)",Code overlap sum (files+hunks+lines),0.18463987266215678,0.1418853221110809,0.22597414593942605
+"contrib-guard/phoenix (bot, exact port)",Links only (same issue / #ref),-0.04297652208515718,-0.058937904711868445,-0.026446556523348687
+"contrib-guard/phoenix (bot, exact port)",MiniLM raw text,-0.008356545961002786,-0.023590455141677322,0.0071622209144151
+"contrib-guard/phoenix (bot, exact port)",MiniLM template-stripped,-0.008754476721050538,-0.024643334671035143,0.007557993910837835
+"contrib-guard/phoenix (bot, exact port)",MiniLM on diff,0.0346199761241544,0.012521985867387089,0.0543090411861442
+"contrib-guard/phoenix (bot, exact port)",BGE-small raw text,-0.03103859928372463,-0.044335733109574005,-0.016672094588182522
+"contrib-guard/phoenix (bot, exact port)",BGE-small template-stripped,-0.03183446080382014,-0.04527812917709697,-0.017119343569698856
+"contrib-guard/phoenix (bot, exact port)",BGE-small on diff,0.005571030640668524,-0.015828207137220905,0.02282030552620276
+"contrib-guard/phoenix (bot, exact port)",BGE-base template-stripped,-0.025069637883008356,-0.03918206067736013,-0.010535441934431294
+"contrib-guard/phoenix (bot, exact port)",UniXcoder (code model) on diff,0.0354158376442499,0.014824693170906521,0.05306887098132826
+"contrib-guard/phoenix (bot, exact port)",UniXcoder template-stripped text,0.08714683645045762,0.05662418558440275,0.12455724981409964
+"contrib-guard/phoenix (bot, exact port)",CodeBERT (mean-pooled) on diff,0.07879029048945484,0.05661781205294782,0.10025159761250763
+"contrib-guard/phoenix (bot, exact port)",Jina code embeddings v2 on diff,0.015121368881814564,-0.010777915668150177,0.03741124626072337
+"contrib-guard/phoenix (bot, exact port)","Simili-bot (bot, re-impl)",-0.00955033824114604,-0.02504668033370799,0.006095803494428814
+"contrib-guard/phoenix (bot, exact port)","PRSense (bot, re-impl)",-0.00716275368085953,-0.01777242512016629,0.003932522537949026
+"contrib-guard/phoenix (bot, exact port)",RRF hybrid: BM25 + embedding,0.4325507361719061,0.4016559790329034,0.46806923090230057
+"contrib-guard/phoenix (bot, exact port)",RRF hybrid: BM25 + embedding + code,0.17349781138081974,0.1447331673022326,0.2087282841249465
+"contrib-guard/phoenix (bot, exact port)",RRF hybrid: text + code + links + recency,0.47552725825706327,0.4093478757423481,0.5314119601384375
+"contrib-guard/phoenix (bot, exact port)","INTRUDE + time (Wang et al. 2019), LR",-0.03422204536410665,-0.04777431170849234,-0.0197867808284475
+"contrib-guard/phoenix (bot, exact port)","Jinx lexical, LR",-0.0354158376442499,-0.04959808958416126,-0.020771946021634433
+"contrib-guard/phoenix (bot, exact port)","Jinx + MiniLM, LR (current tool)",-0.03700756068444091,-0.050861568674460914,-0.022297056088138537
+"contrib-guard/phoenix (bot, exact port)","All signals, LR",-0.038599283724631915,-0.053683812794394825,-0.02251256497398686
+"contrib-guard/phoenix (bot, exact port)","Jinx features, gradient boosting",-0.043374452845204935,-0.057598488679808296,-0.02767662672384274
+"contrib-guard/phoenix (bot, exact port)","All signals, gradient boosting",-0.0354158376442499,-0.04801842403230961,-0.021619787481392705
+"contrib-guard/phoenix (bot, exact port)",Cross-encoder ms-marco MiniLM re-rank top-10,0.005571030640668524,-0.010267501667139849,0.023036671550846093
+"contrib-guard/phoenix (bot, exact port)",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,-0.01631516116195782,-0.029748261194296605,-0.0023456858299075044
+"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-base re-rank top-10,0.31197771587743733,0.28049055855487043,0.3409664212395874
+"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,-0.007958615200955034,-0.02095242517305386,0.006476217774008675
+"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,-0.010744130521289296,-0.025643086816720256,0.004776304631460327
+"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,-0.02865101472343812,-0.04265430542821609,-0.014016031882197673
+"contrib-guard/phoenix (bot, exact port)",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,-0.041384799044966177,-0.05574110213526837,-0.02604012433670234
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B re-rank top-5,0.1293274970155193,0.08922241340763151,0.16937427282072454
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B + Jinx (avg) top-5,-0.026661360923199363,-0.041479129099874605,-0.011178497101956668
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B re-rank top-10,0.13370473537604458,0.09020397334963948,0.17989307150049966
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B + Jinx (avg) top-10,-0.026661360923199363,-0.041479129099874605,-0.011178497101956668
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-7B re-rank top-5,-0.038599283724631915,-0.0528467163689755,-0.02442000127156972
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-7B + Jinx (avg) top-5,-0.03979307600477517,-0.054126830570627636,-0.02489179337678421
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-7B re-rank top-10,-0.038599283724631915,-0.0528467163689755,-0.02442000127156972
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-7B + Jinx (avg) top-10,-0.03979307600477517,-0.054126830570627636,-0.02489179337678421
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B re-rank top-5,-0.03700756068444091,-0.05181593343515057,-0.02154757880898286
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.04019100676482292,-0.05484606233811458,-0.024650764420298864
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B re-rank top-10,-0.03700756068444091,-0.05181593343515057,-0.02154757880898286
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.04019100676482292,-0.05484606233811458,-0.024650764420298864
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-5,-0.04178272980501393,-0.05614691720306078,-0.026513000231369974
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.041384799044966177,-0.056345501041975506,-0.025627624433538113
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-10,-0.04178272980501393,-0.05614691720306078,-0.026513000231369974
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.041384799044966177,-0.056345501041975506,-0.025627624433538113
+"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 re-rank top-5,-0.03700756068444091,-0.051349148538516076,-0.02311297108124558
+"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.04536410664544369,-0.059426416619654414,-0.029770945544063714
+"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + BGE-reranker-base (stacked LR),-0.013529645841623557,-0.02715674026035954,0.0008750870386753919
+"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.040986868284918425,-0.05545826203374171,-0.026133408953717366
+"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.03979307600477517,-0.054123722992160374,-0.02482418050234144
+"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-14B judge (stacked LR),-0.025467568643056108,-0.04065127696244843,-0.008678920903684332
+"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + fine-tuned BGE-reranker (stacked LR),-0.04178272980501393,-0.05639916285113131,-0.026169757517876816
+"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR),-0.04297652208515718,-0.057589526588845655,-0.027372981430228385
+"contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR),-0.04058893752487067,-0.0552126031272118,-0.025458312204730184

@@ -29,7 +29,7 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 
 ## 4. Repo organization
 - [x] D: one repo layout: `src/`, `tests/`, `experiments/`, `docs/`, `paper/`
-- [ ] D/H: review and merge PRs (one commit each)
+- [x] D/H: review and merge PRs #1-#6 (one commit each)
 
 ## 5. Papers
 - [x] D: `paper/` set up: IEEE (empirical) and ACM (tool demo) templates, `refs.bib`, tables and numbers generated from results
@@ -39,9 +39,18 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [ ] D: independent re-review after venue-length expansion
 - [x] D: tool-demo paper first draft (2 pages, ACM) + TikZ architecture figure; expand after sandbox/pilot results
 - [x] D: demo video script (`paper/tooldemo/VIDEO_SCRIPT.md`)
+- [x] D: plain-English rewrite of both papers, colour architecture diagram (`paper/figures/arch.tex`), 5 vector figures (`paper/scripts/make_figures.py`), highlighted tables
+- [x] D: 3-reviewer panel (methods, writing, figures/tool demo); reports in `paper/reviews/`
 - [ ] H: record or approve a screencast (after the sandbox Action run)
 - [ ] H: choose venue(s): ICPC Tool Demo (19 Nov), ICPC RENE (abstract 11 Dec, paper 18 Dec), FSE Tool Demos (26 Jan)
 - [ ] H: approve submission (nothing is submitted without approval)
 
 ## 6. Budget
 - Spent: Anthropic $8.08 (cap $20); Modal about $8.5 (cap $20).
+- [x] D: review-panel fixes: real-use queues (open PRs only, 200 most recent, forward-only mentions) are now the main benchmark; all 66 strategies rerun; 7-day-window results kept in `experiments/results_grace7/` and reported as RQ3
+- [x] D: impact analysis: duplicate cost (`experiments/impact/duplicate_cost.py`) and day-0 warning replay (`experiments/impact/replay.py`)
+- [x] D: shipped weights retrained on real-use queues; Action `embed` input (MiniLM on by default); end-to-end package latency (`experiments/bench_v2/package_latency.py`)
+- [ ] H: 100-pair human label check (two labellers)
+- [ ] H: GitHub token (read-only, public repos) for a shadow-mode run on live repos
+- [ ] D: second review round on the reframed papers
+

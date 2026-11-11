@@ -1,0 +1,14 @@
+{
+ "cross-encoder/ms-marco-MiniLM-L6-v2": {
+  "cpu_threads": 4,
+  "pairs": 200,
+  "ms_per_pair": 45.7,
+  "ms_per_query_top10": 457.5
+ },
+ "BAAI/bge-reranker-base": {
+  "cpu_threads": 4,
+  "pairs": 200,
+  "ms_per_pair": 286.1,
+  "ms_per_query_top10": 2861.4
+ }
+}

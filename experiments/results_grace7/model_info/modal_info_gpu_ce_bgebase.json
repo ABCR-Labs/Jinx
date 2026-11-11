@@ -1,0 +1,8 @@
+{
+ "tag": "ce_bgebase",
+ "model": "BAAI/bge-reranker-base",
+ "pairs": 43591,
+ "gpu": "L4",
+ "seconds": 137.5,
+ "ms_per_pair_gpu": 3.154
+}

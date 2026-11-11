@@ -1,0 +1,13 @@
+{
+ "queries": 300,
+ "cpu_threads": 4,
+ "queue_median": 36.5,
+ "lexical": {
+  "median_ms": 22.1,
+  "p90_ms": 198.1
+ },
+ "minilm": {
+  "median_ms": 706.7,
+  "p90_ms": 3675.4
+ }
+}

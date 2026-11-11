@@ -3,10 +3,6 @@ import json
 import os
 import pathlib
 
-import matplotlib
-
-matplotlib.use("Agg")
-import matplotlib.pyplot as plt
 import pandas as pd
 
 H = os.path.dirname(os.path.abspath(__file__))
@@ -37,8 +33,10 @@ def find(sub):
 
 
 nm("kendallTau", f"{SUM['kendall_tau random-pair AUC vs live-queue cross-author R@1'][0]:.2f}")
-nm("latJinx", f"{SUM['latency']['lexical features ms/query']['median']:.0f}")
-nm("latJinxPninety", f"{SUM['latency']['lexical features ms/query']['p90']:.0f}")
+PL = json.loads(pathlib.Path(os.path.join(RES, "package_latency.json")).read_text())  # end-to-end, installed package, 4 CPU threads
+nm("latJinx", f"{PL['lexical']['median_ms']:.0f}"); nm("latJinxPninety", f"{PL['lexical']['p90_ms']:.0f}")
+nm("latMini", f"{PL['minilm']['median_ms'] / 1000:.1f}"); nm("latMiniPninety", f"{PL['minilm']['p90_ms'] / 1000:.1f}")
+nm("latQueries", PL["queries"])
 for k, sub in [("ROneqwenSevenAvg", "LLM judge Qwen2.5-7B + Jinx (avg) top-5"), ("ROneqwenFourteenAvg", "LLM judge Qwen2.5-14B + Jinx (avg) top-5"),
                ("ROnehaikuOnly", "LLM judge Claude Haiku 4.5 re-rank top-5"), ("ROnecascade", "Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR)"),
                ("ROneminilm", "MiniLM template-stripped"), ("ROnebgeSmall", "BGE-small template-stripped"), ("ROnebgeDiff", "BGE-small on diff"),
@@ -73,25 +71,51 @@ nm("nComb", len(comb)); nm("nCombHiAUC", len(hi))
 nm("combHiMin", f"{hi.iloc[:, 2].min():.3f}"); nm("combHiMax", f"{hi.iloc[:, 2].max():.3f}")
 ca = S[S.group.str.startswith("cross-author, class A") & S.method.str.contains("LR|avg")]
 nm("classAMin", f"{ca['R@1'].min():.2f}")
+# Queue construction: original queues (open + closed in the previous 7 days) vs real-use queues (open only, 200 most recent)
+SG = pd.read_csv(os.path.join(EXP, "results_grace7", "strategies_by_group.csv"))
+PG = pd.read_csv(os.path.join(EXP, "results_grace7", "paired_cross_author.csv"))
+FG = pd.read_csv(os.path.join(EXP, "results_grace7", "false_alarms.csv"))
+CG = "contrib-guard/phoenix (bot, exact port)"
+for tag, m in [("jinx", JINX), ("intrude", INTR), ("cg", CG), ("links", "Links only (same issue / #ref)"),
+               ("tfidf", "TF-IDF raw text (Li et al. 2017)"), ("all", "All signals, LR"), ("haiku", "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5")]:
+    r = SG[(SG.group == CA) & (SG.method == m)]
+    nm("Gseven" + tag, f"{float(r['R@1'].iloc[0]):.3f}")
+    nm("FARGseven" + tag, f"{100 * float(FG[FG.method == m].FAR.iloc[0]):.1f}")
+nm("nCrossGseven", int(SG[SG.group == CA].n.iloc[0])); nm("nPairsGseven", int(SG[SG.group == "all labelled"].n.iloc[0]))
+r = PG[(PG.reference == JINX) & (PG.method == INTR)].iloc[0]
+nm("dGsevenIntrude", f"{-100 * r['dR@1']:+.1f}"); nm("dGsevenIntrudeLo", f"{-100 * r['dR@1 hi']:+.1f}"); nm("dGsevenIntrudeHi", f"{-100 * r['dR@1 lo']:+.1f}")
+AB = pd.read_csv(os.path.join(RES, "ablations.csv"))
+ab = lambda st, m: f"{float(AB[(AB.setting == st) & (AB.method == m)]['R@1'].iloc[0]):.3f}"
+nm("abJinxNoOpen", ab("benchmark queues (as in paper)", "Jinx without cand_open"))
+nm("abIntrudeOpen", ab("benchmark queues (as in paper)", "INTRUDE + time + cand_open"))
+nm("nGraceCand", 18)  # ablation log: cross-author gold pairs whose queue held a PR already closed at query time
+nm("ROnehaikuAlone", r1(CA, find("LLM judge Claude Haiku 4.5 re-rank top-5")))
+FA = pd.read_csv(os.path.join(RES, "false_alarms.csv")); PFA = pd.read_csv(os.path.join(RES, "paired_false_alarms.csv"))
+for tag, m in [("links", "Links only (same issue / #ref)"), ("haiku", "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5"), ("cg", CG),
+               ("tfidf", "TF-IDF raw text (Li et al. 2017)")]:
+    nm("FARx" + tag, f"{100 * float(FA[FA.method == m].FAR.iloc[0]):.1f}")
+    q = PFA[(PFA.reference == JINX) & (PFA.method == m)].iloc[0]
+    nm("dFAR" + tag, f"{100 * q.dFAR:+.1f}"); nm("dFAR" + tag + "Lo", f"{100 * q['dFAR lo']:+.1f}"); nm("dFAR" + tag + "Hi", f"{100 * q['dFAR hi']:+.1f}")
+OC = pd.read_csv(os.path.join(RES, "operating_curve.csv")); occ = OC.columns[2]
+oc = lambda m, t: f"{100 * float(OC[(OC.method == m) & (OC['FAR target'] == t)][occ].iloc[0]):.0f}"
+for tag, m in [("jinx", JINX), ("haiku", "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5"), ("intrude", INTR), ("links", "Links only (same issue / #ref)"),
+               ("cg", CG)]:
+    nm("OCone" + tag, oc(m, 0.01)); nm("OCfive" + tag, oc(m, 0.05))
+# Impact: cost of duplicates and a replay of day-0 warnings
+DC = json.loads(pathlib.Path(os.path.join(RES, "duplicate_cost_summary.json")).read_text())
+x = DC["cross-author"]
+nm("dupDelayMedMin", f"{60 * x['delay_h median']:.0f}"); nm("dupDelayMeanH", f"{x['delay_h mean']:.0f}")
+nm("dupLateOneH", f"{100 * x['share caught after >1h']:.0f}"); nm("dupLateOneD", f"{100 * x['share after >24h']:.0f}")
+nm("dupLateSevenD", f"{100 * x['share after >7d']:.0f}"); nm("dupEffort", f"{100 * x['share with >=1 human comment or review before flag']:.0f}")
+nm("dupComments", x["human comments before flag (total)"]); nm("dupReviews", x["reviews before flag (total)"])
+nm("dupLifeH", f"{x['closed_life_h median']:.0f}"); nm("dupLinesMed", f"{x['lines added median']:.0f}")
+nm("dupCommits", f"{x['commits on closed PR (total)']:,}".replace(",", "{,}"))
+a = DC["all"]
+nm("dupAllLateOneD", f"{100 * a['share after >24h']:.0f}"); nm("dupAllLines", f"{a['lines added (total)'] / 1e6:.1f}")
+RP = pd.read_csv(os.path.join(RES, "replay_impact.csv"))
+rp = RP[(RP.method == JINX) & (RP.group == CA)].iloc[0]
+nm("replayWarn", f"{100 * rp['correct warning at open']:.0f}"); nm("replayWarnLate", f"{100 * rp['correct warning, human took >24h']:.0f}")
+nm("replayHours", f"{rp['hours saved (sum, correct warnings)']:,.0f}".replace(",", "{,}"))
+nm("replayEffort", int(rp["reviews+comments before flag avoided"])); nm("replayFA", f"{rp['false alarms per 100 PRs without duplicate']:.1f}")
 pathlib.Path(OUT, "numbers_extra.tex").write_text("\n".join(mac) + "\n")
-
-plt.rcParams.update({"font.size": 8, "figure.dpi": 200})
-oc = pd.read_csv(os.path.join(RES, "operating_curve.csv"))
-fig, ax = plt.subplots(figsize=(3.4, 2.2))
-for meth, lab in [(JINX, "Jinx"), (find("All signals, LR"), "All signals, LR"), (INTR, "INTRUDE + time"),
-                  (find("contrib-guard/phoenix"), "contrib-guard"), (find("LLM judge Claude Haiku 4.5 + Jinx (avg) top-5"), "Haiku + Jinx")]:
-    d = oc[oc.method == meth]
-    if len(d):
-        ax.plot(100 * d["FAR target"], d.iloc[:, 2], marker="o", ms=2.5, label=lab)
-ax.set_xlabel("false alarms on no-duplicate PRs (%)"); ax.set_ylabel("cross-author detected@1")
-ax.grid(alpha=.3); ax.legend(fontsize=6, frameon=False)
-fig.tight_layout(); fig.savefig(os.path.join(OUT, "fig_operating.pdf"))
-rl = pd.read_csv(os.path.join(RES, "random_pair_vs_live_queue.csv"))
-fig, ax = plt.subplots(figsize=(3.4, 2.2))
-ax.scatter(rl["random-pair AUC"], rl["live-queue R@1 (cross-author)"], s=6, alpha=.7)
-for meth, lab in [(JINX, "Jinx"), (INTR, "INTRUDE+t"), (find("Recency only"), "recency")]:
-    r = rl[rl.method == meth].iloc[0]
-    ax.annotate(lab, (r["random-pair AUC"], r["live-queue R@1 (cross-author)"]), fontsize=6, xytext=(3, -6), textcoords="offset points")
-ax.set_xlabel("random-pair AUC"); ax.set_ylabel("live-queue Recall@1 (cross-author)"); ax.grid(alpha=.3)
-fig.tight_layout(); fig.savefig(os.path.join(OUT, "fig_randlive.pdf"))
-print(len(mac), "macros; figures written")
+print(len(mac), "macros")
