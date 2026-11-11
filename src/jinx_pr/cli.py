@@ -88,7 +88,7 @@ def cmd_learn(a) -> int:
 
 
 def main(argv=None) -> int:
-    p = argparse.ArgumentParser(prog="agentdup", description="Find likely duplicate PRs in an open-PR queue.")
+    p = argparse.ArgumentParser(prog="jinx", description="Find likely duplicate PRs in an open-PR queue.")
     sub = p.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("check", help="rank open PRs that may duplicate a new PR")
     c.add_argument("new_pr", help="JSON file with the new PR (GitHub API shape; optional files/diff/agent)")
@@ -100,9 +100,9 @@ def main(argv=None) -> int:
         "--embed",
         nargs="?",
         const="sentence-transformers/all-MiniLM-L6-v2",
-        help="also use a local embedding model (needs agentdup[embed])",
+        help="also use a local embedding model (needs jinx-pr[embed])",
     )
-    c.add_argument("--templates", help="template file from `agentdup learn-templates`")
+    c.add_argument("--templates", help="template file from `jinx learn-templates`")
     c.add_argument("--json", action="store_true")
     c.set_defaults(fn=cmd_check)
     lt = sub.add_parser("learn-templates", help="learn agent boilerplate lines from a PR corpus")

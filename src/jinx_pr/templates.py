@@ -55,7 +55,7 @@ class TemplateModel:
     @classmethod
     def default(cls) -> TemplateModel:
         try:
-            raw = resources.files("agentdup").joinpath("data/templates.json").read_text()
+            raw = resources.files("jinx_pr").joinpath("data/templates.json").read_text()
         except FileNotFoundError:
             return cls()
         return cls.from_json(raw)

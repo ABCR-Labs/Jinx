@@ -1,5 +1,5 @@
-# Example workflow for a repository that wants AgentDup comments on new PRs.
-name: agentdup
+# Example workflow for a repository that wants Jinx comments on new PRs.
+name: jinx
 on:
   pull_request_target:
     types: [opened, reopened]

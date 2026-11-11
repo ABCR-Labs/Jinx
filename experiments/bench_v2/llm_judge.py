@@ -1,5 +1,5 @@
 """Open LLM judge (Qwen2.5 Instruct, local CPU): P(yes) that two PRs are duplicates, one forward pass per pair.
-usage: llm_judge.py MODEL TAG K NNEG   -> scores AgentDup top-K for cross-author queries and top-1 for NNEG negative queries."""
+usage: llm_judge.py MODEL TAG K NNEG   -> scores Jinx top-K for cross-author queries and top-1 for NNEG negative queries."""
 import pickle, sys, time, json, os, numpy as np, pandas as pd, torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from pairtext import pr_text, D

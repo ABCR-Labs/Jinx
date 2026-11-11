@@ -1,11 +1,11 @@
-"""Compute per-(query, candidate) features for AgentDup and every baseline on the live-queue benchmark."""
+"""Compute per-(query, candidate) features for Jinx and every baseline on the live-queue benchmark."""
 import pickle, numpy as np, pandas as pd, sys, math, collections, time
 from multiprocessing import Pool
-sys.path.insert(0, "/home/ubuntu/research/prdupecheck/agentdup/src")
-from agentdup import PR, Detector
-from agentdup.pr import CLOSING
-from agentdup.text import tokens
-from agentdup.scorer import FEATURES
+sys.path.insert(0, "/home/ubuntu/research/prdupecheck/jinx_pr/src")
+from jinx_pr import PR, Detector
+from jinx_pr.pr import CLOSING
+from jinx_pr.text import tokens
+from jinx_pr.scorer import FEATURES
 sys.path.insert(0, '/home/ubuntu/research/prdupecheck/bench')
 from ported import phoenix_scores, balyakin_scores
 D = "/home/ubuntu/research/prdupecheck/data/"

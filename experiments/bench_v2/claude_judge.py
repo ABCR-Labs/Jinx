@@ -1,4 +1,4 @@
-"""Claude Haiku 4.5 duplicate judge on AgentDup top-K candidates (cross-author queries) + top-1 of negative queries.
+"""Claude Haiku 4.5 duplicate judge on Jinx top-K candidates (cross-author queries) + top-1 of negative queries.
 Asks for a JSON verdict with a 0-100 duplicate probability; logs tokens and cost; hard budget stop.
 usage: claude_judge.py TAG K BUDGET_USD"""
 import json, os, re, sys, time, concurrent.futures as cf, pandas as pd, anthropic

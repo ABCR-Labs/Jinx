@@ -1,6 +1,6 @@
 """Dedup strategy study on the AIDev live-queue benchmark.
 Strategies x duplicate classes; Recall@1/5, MRR with repo-cluster bootstrap CIs; paired tests; false alarms;
-operating curves; random-pair vs live-queue evaluation; error analysis. Writes to agentdup/experiments/results/."""
+operating curves; random-pair vs live-queue evaluation; error analysis. Writes to jinx_pr/experiments/results/."""
 import pickle, json, os, sys, numpy as np, pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import HistGradientBoostingClassifier
@@ -9,7 +9,7 @@ from sklearn.model_selection import GroupKFold
 from sklearn.metrics import roc_auc_score
 from scipy.stats import kendalltau
 D = "/home/ubuntu/research/prdupecheck/data/"
-OUT = "/home/ubuntu/research/prdupecheck/agentdup/experiments/results/"; os.makedirs(OUT, exist_ok=True)
+OUT = "/home/ubuntu/research/prdupecheck/jinx_pr/experiments/results/"; os.makedirs(OUT, exist_ok=True)
 NB = int(os.environ.get("NB", 500))
 B = pickle.load(open(D + "bench.pkl", "rb")); Q = B["queries"]
 P = pd.read_parquet(D + "pull_request.parquet", columns=["id", "repo_url", "title", "number", "user", "agent"]).set_index("id")
@@ -68,10 +68,10 @@ for c in ["bm25_raw", "bm25_stripped", "bm25_diff"]:
     F[c + "_n"] = F[c] / (g[c].transform("max") + 1e-9)  # per-queue normalised BM25 for learners
 ALL = [c + "_n" if c.startswith("bm25") else c for c in ALL]
 TRAINED = {"INTRUDE + time (Wang et al. 2019), LR": ("7 supervised", INTRUDE + ["log_gap_hours"], "lr"),
-           "AgentDup lexical, LR": ("7 supervised", LEX, "lr"),
-           "AgentDup + MiniLM, LR (current tool)": ("7 supervised", LEX + ["emb_cos"], "lr"),
+           "Jinx lexical, LR": ("7 supervised", LEX, "lr"),
+           "Jinx + MiniLM, LR (current tool)": ("7 supervised", LEX + ["emb_cos"], "lr"),
            "All signals, LR": ("7 supervised", ALL, "lr"),
-           "AgentDup features, gradient boosting": ("7 supervised", LEX + ["emb_cos"], "gb"),
+           "Jinx features, gradient boosting": ("7 supervised", LEX + ["emb_cos"], "gb"),
            "All signals, gradient boosting": ("7 supervised", ALL, "gb")}
 folds = list(GroupKFold(n_splits=5).split(meta.index, groups=meta.repo))
 GBIMP = {}
@@ -87,7 +87,7 @@ for name, (fam, cols, kind) in TRAINED.items():
         else:
             mdl = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.05, max_leaf_nodes=31, class_weight="balanced", random_state=0).fit(X[cols], X.y)
             F.loc[tem, name] = mdl.predict_proba(F.loc[tem, cols])[:, 1]
-BASE = "AgentDup + MiniLM, LR (current tool)"
+BASE = "Jinx + MiniLM, LR (current tool)"
 # top-10 of the current tool for re-rankers
 F["_r"] = F.groupby("qi")[BASE].rank(ascending=False, method="first")
 F.loc[F._r <= 10, ["qi", "cand", BASE, "_r"]].rename(columns={BASE: "base", "_r": "rank"}).to_parquet(D + "top10.parquet")
@@ -107,14 +107,38 @@ negset = set(meta.index[meta.neg])
 rerank("Cross-encoder ms-marco MiniLM (CPU) re-rank top-10", "ce_scores.parquet", "ce", 10, sig=True)
 for tag, nm in [("ce_msmarco", "ms-marco MiniLM"), ("ce_bgebase", "BGE-reranker-base"), ("ce_bgem3", "BGE-reranker-v2-m3")]:
     rerank(f"Cross-encoder {nm} re-rank top-10", f"rr_{tag}.parquet", tag, 10, sig=True)
-    rerank(f"Cross-encoder {nm} + AgentDup (avg) top-10", f"rr_{tag}.parquet", tag, 10, combine=True, sig=True)
+    rerank(f"Cross-encoder {nm} + Jinx (avg) top-10", f"rr_{tag}.parquet", tag, 10, combine=True, sig=True)
+import glob
+ftf = sorted(glob.glob(D + "rr_ft_fold*.parquet"))
+if len(ftf) == 5:
+    pd.concat([pd.read_parquet(f) for f in ftf]).to_parquet(D + "rr_ft.parquet")
+    rerank("Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10", "rr_ft.parquet", "ft", 10, sig=True, fam="10 stacked cascade (ours)")
 LLMS = [("qwen15", "Qwen2.5-1.5B"), ("qwen7", "Qwen2.5-7B"), ("qwencoder7", "Qwen2.5-Coder-7B"), ("qwen14", "Qwen2.5-14B")]
 for tag, nm in LLMS:
     for k in [5, 10]:
         rerank(f"LLM judge {nm} re-rank top-{k}", f"llm_{tag}.parquet", "p_yes", k, fam="9 LLM judge on top-k")
-        rerank(f"LLM judge {nm} + AgentDup (avg) top-{k}", f"llm_{tag}.parquet", "p_yes", k, combine=True, fam="9 LLM judge on top-k")
+        rerank(f"LLM judge {nm} + Jinx (avg) top-{k}", f"llm_{tag}.parquet", "p_yes", k, combine=True, fam="9 LLM judge on top-k")
 rerank("LLM judge Claude Haiku 4.5 re-rank top-5", "llm_haiku45.parquet", "p_yes", 5, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
-rerank("LLM judge Claude Haiku 4.5 + AgentDup (avg) top-5", "llm_haiku45.parquet", "p_yes", 5, combine=True, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
+rerank("LLM judge Claude Haiku 4.5 + Jinx (avg) top-5", "llm_haiku45.parquet", "p_yes", 5, combine=True, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
+# stacked re-ranker: per-fold LR over Jinx score + cross-encoder + LLM judge scores on the top-10 (repo-grouped folds)
+def stack(name, files):
+    x = F[["qi", "cand", BASE, "_r", "y", "other_gold"]].copy(); cols = [BASE]
+    for f, col in files:
+        if not os.path.exists(D + f): return
+        R_ = pd.read_parquet(D + f)[["qi", "cand", col]].rename(columns={col: f}); x = x.merge(R_, on=["qi", "cand"], how="left"); cols.append(f)
+    top = (x._r <= 10) & x[cols].notna().all(1); x["s"] = np.nan
+    for tr, te in folds:
+        trm = top & x.qi.isin(set(meta.index[tr])) & ~x.other_gold; tem = top & x.qi.isin(set(meta.index[te]))
+        sc = StandardScaler().fit(x.loc[trm, cols]); mdl = LogisticRegression(C=1.0, class_weight="balanced", max_iter=3000).fit(sc.transform(x.loc[trm, cols]), x.loc[trm, "y"])
+        x.loc[tem, "s"] = mdl.predict_proba(sc.transform(x.loc[tem, cols]))[:, 1]
+    add(name, "10 stacked cascade (ours)", np.where(x.s.notna(), 10 + x.s.fillna(0), x[BASE].values))
+stack("Cascade: Jinx + BGE-reranker-base (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase")])
+stack("Cascade: Jinx + Qwen2.5-7B judge (stacked LR)", [("llm_qwen7.parquet", "p_yes")])
+stack("Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR)", [("llm_qwencoder7.parquet", "p_yes")])
+stack("Cascade: Jinx + Qwen2.5-14B judge (stacked LR)", [("llm_qwen14.parquet", "p_yes")])
+stack("Cascade: Jinx + fine-tuned BGE-reranker (stacked LR)", [("rr_ft.parquet", "ft")])
+stack("Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR)", [("rr_ft.parquet", "ft"), ("llm_qwen7.parquet", "p_yes")])
+stack("Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase"), ("llm_qwen7.parquet", "p_yes")])
 METHODS = list(S)
 def ranks(col):
     s = F[~F.other_gold][["qi", "gold", col, "tie"]].copy(); s["v"] = s[col] + s.tie
@@ -123,15 +147,23 @@ def ranks(col):
 R = {c: ranks(c) for c in METHODS}
 pd.DataFrame(R).to_parquet(OUT + "ranks.parquet")
 def boot(vals, repos, nb=NB, seed=1):
-    rs = np.random.default_rng(seed); u = repos.unique(); idx = {r: np.where(repos.values == r)[0] for r in u}
-    out = [vals[np.concatenate([idx[r] for r in rs.choice(u, len(u))])].mean(0) for _ in range(nb)]
-    return np.percentile(np.array(out), [2.5, 97.5], axis=0)
+    """Repository-cluster bootstrap: resample repos with replacement (multinomial weights), 95% percentile CI of the mean."""
+    rs = np.random.default_rng(seed); codes, u = pd.factorize(repos.values); vals = np.asarray(vals, float)
+    sums = np.zeros((len(u), vals.shape[1])); np.add.at(sums, codes, vals); cnt = np.bincount(codes, minlength=len(u)).astype(float)
+    W = rs.multinomial(len(u), np.full(len(u), 1.0 / len(u)), size=nb).astype(float)
+    out = (W @ sums) / (W @ cnt)[:, None]
+    return np.percentile(out, [2.5, 97.5], axis=0)
 lab = ~meta.neg
 GROUPS = {"all labelled": lab, "self-replacement": lab & (meta.self == True), "cross-author": lab & (meta.self == False),
           "cross-author, same agent": lab & (meta.self == False) & (meta.same_agent == True),
           "cross-author, cross-agent": lab & (meta.self == False) & (meta.same_agent == False),
           "cross-author, no #ref in text": lab & (meta.self == False) & ~meta.ref,
-          "cross-author, shares linked issue": lab & (meta.self == False) & meta.issue}
+          "cross-author, shares linked issue": lab & (meta.self == False) & meta.issue,
+          "cross-author, no link at all (no #ref, no shared issue)": lab & (meta.self == False) & ~meta.ref & ~meta.issue}
+meta["txt"] = gm.text_tfidf_raw.reindex(meta.index)
+GROUPS["same issue, different code (classes C/D, shares linked issue)"] = lab & meta.issue & meta.cls.isin(["C. same files, different code", "D. no shared files (intent-level)"])
+GROUPS["same code, different description (code twin, text TF-IDF < 0.3)"] = lab & (meta.cls == "A. code twin (>=50% identical changed lines)") & (meta.txt < 0.3)
+GROUPS["cross-author, same code, different description"] = GROUPS["same code, different description (code twin, text TF-IDF < 0.3)"] & (meta.self == False)
 for c in sorted(meta.cls.dropna().unique()):
     GROUPS["class " + c] = lab & (meta.cls == c)
     GROUPS["cross-author, class " + c] = lab & (meta.self == False) & (meta.cls == c)
@@ -140,6 +172,7 @@ for gname, msk in GROUPS.items():
     qs = meta.index[msk]
     if len(qs) == 0: continue
     for c in METHODS:
+        if "Claude" in c and (meta.self.reindex(qs) == True).any(): continue  # Claude was only run on cross-author + negative queries
         r = R[c].reindex(qs).values; v = np.stack([r <= 1, r <= 5, 1 / r], 1).astype(float)
         lo, hi = boot(v, meta.repo.reindex(qs))
         rows.append({"group": gname, "n": len(qs), "family": S[c], "method": c, "R@1": v[:, 0].mean(), "R@1 lo": lo[0], "R@1 hi": hi[0],
@@ -149,7 +182,7 @@ cls_counts = meta[lab].groupby(["cls", "self"]).size().unstack().rename(columns=
 cls_counts.to_csv(OUT + "class_counts.csv")
 # paired vs current tool and vs Wang on cross-author
 xq = meta.index[GROUPS["cross-author"]]; pr_rows = []
-for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR"]:
+for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR", "contrib-guard/phoenix (bot, exact port)"]:
     for c in METHODS:
         if c == ref: continue
         a, b = R[c].reindex(xq).values, R[ref].reindex(xq).values
@@ -159,27 +192,36 @@ for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR"]:
                         "dR@5 lo": lo[1], "dR@5 hi": hi[1], "dMRR": d[:, 2].mean(), "dMRR lo": lo[2], "dMRR hi": hi[2]})
 pd.DataFrame(pr_rows).to_csv(OUT + "paired_cross_author.csv", index=False)
 # false alarms (threshold per fold at 50% of training cross-author top-1 scores) + operating curve on negatives
-negq = meta.index[meta.neg]; fa = []; curve = []
+negq = meta.index[meta.neg]; fa = []; curve = []; FARR = {}
 for c in METHODS:
-    t1 = F.groupby("qi")[c].max(); far, hit = [], []
+    t1 = F.groupby("qi")[c].max(); far, hit, fq = [], [], []
     for tr, te in folds:
         trx = [q for q in meta.index[tr] if q in set(xq)]; thr = np.quantile(t1.reindex(trx).values, 0.5)
         ten = [q for q in meta.index[te] if meta.neg[q]]; tex = [q for q in meta.index[te] if q in set(xq)]
-        far += list(t1.reindex(ten).values >= thr); hit += list((t1.reindex(tex).values >= thr) & (R[c].reindex(tex).values == 1))
-    fa.append({"family": S[c], "method": c, "FAR": np.mean(far), "cross-author correct alerts": np.mean(hit)})
+        far += list(t1.reindex(ten).values >= thr); hit += list((t1.reindex(tex).values >= thr) & (R[c].reindex(tex).values == 1)); fq += ten
+    FARR[c] = np.array(far, float)
+    lo, hi = boot(FARR[c][:, None], meta.repo.reindex(fq))
+    fa.append({"family": S[c], "method": c, "FAR": np.mean(far), "FAR lo": lo[0], "FAR hi": hi[0], "cross-author correct alerts": np.mean(hit)})
     nv = np.sort(t1.reindex(negq).values)
     for target in [0.01, 0.02, 0.05, 0.10, 0.20]:
         thr = nv[int((1 - target) * len(nv))]
         curve.append({"method": c, "FAR target": target, "cross-author detected (top-1 correct, above thr)":
                       float(np.mean((t1.reindex(xq).values > thr) & (R[c].reindex(xq).values == 1)))})
+fpd = []
+for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR", "contrib-guard/phoenix (bot, exact port)"]:
+    for c in METHODS:
+        if c == ref: continue
+        d = (FARR[c] - FARR[ref])[:, None]; lo, hi = boot(d, meta.repo.reindex(fq), nb=max(NB, 1000), seed=7)
+        fpd.append({"reference": ref, "method": c, "dFAR": d.mean(), "dFAR lo": lo[0], "dFAR hi": hi[0]})
+pd.DataFrame(fpd).to_csv(OUT + "paired_false_alarms.csv", index=False)
 pd.DataFrame(fa).to_csv(OUT + "false_alarms.csv", index=False); pd.DataFrame(curve).to_csv(OUT + "operating_curve.csv", index=False)
 # random-pair (classic) evaluation vs live-queue: AUC of gold vs one random non-gold candidate from the same queue
-rp = F[~F.other_gold & F.qi.isin(meta.index[lab])]
+rp = F[~F.other_gold & F.qi.isin(xq)]  # cross-author queries, same set as the live-queue column used for tau
 negs = rp[~rp.gold].groupby("qi", group_keys=False).apply(lambda d: d.sample(1, random_state=0)); pos = rp[rp.gold]
 rpair = []
 for c in METHODS:
     y = np.r_[np.ones(len(pos)), np.zeros(len(negs))]; s = np.r_[pos[c].values, negs[c].values]
-    rpair.append({"method": c, "random-pair AUC": roc_auc_score(y, s), "live-queue R@1 (all labelled)": float((R[c].reindex(meta.index[lab]) <= 1).mean()),
+    rpair.append({"method": c, "random-pair AUC": roc_auc_score(y, s),
                   "live-queue R@1 (cross-author)": float((R[c].reindex(xq) <= 1).mean())})
 rpair = pd.DataFrame(rpair); rpair.to_csv(OUT + "random_pair_vs_live_queue.csv", index=False)
 tau = kendalltau(rpair["random-pair AUC"], rpair["live-queue R@1 (cross-author)"])

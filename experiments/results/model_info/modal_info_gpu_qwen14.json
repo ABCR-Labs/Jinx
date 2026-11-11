@@ -1,0 +1,1 @@
+{"tag": "qwen14", "model": "Qwen/Qwen2.5-14B-Instruct", "pairs": 43591, "gpu": "L40S", "seconds": 5187.5, "ms_per_pair_gpu_batched": 119.003, "prompt_tokens_total": 49530439}

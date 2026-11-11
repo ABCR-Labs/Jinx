@@ -1,7 +1,7 @@
 """Add embedding-cosine columns (from emb.npz / emb_vt.npz) and vector-triage BM25 to the lexical feature table."""
 import pickle, sys, numpy as np, pandas as pd, collections, math
-sys.path.insert(0, "/home/ubuntu/research/prdupecheck/agentdup/src")
-from agentdup.text import tokens
+sys.path.insert(0, "/home/ubuntu/research/prdupecheck/jinx_pr/src")
+from jinx_pr.text import tokens
 D = "/home/ubuntu/research/prdupecheck/data/"
 B = pickle.load(open(D + "bench.pkl", "rb")); Q = B["queries"]
 F = pd.read_parquet(D + "features_lex.parquet")

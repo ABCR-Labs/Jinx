@@ -1,0 +1,11 @@
+{
+ "tag": "bge_diff",
+ "model": "BAAI/bge-small-en-v1.5",
+ "variant": "diff",
+ "maxlen": 512,
+ "n": 76209,
+ "dim": 384,
+ "gpu": "L4",
+ "seconds": 144.0,
+ "ms_per_pr_gpu": 1.89
+}

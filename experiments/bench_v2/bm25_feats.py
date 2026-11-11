@@ -1,9 +1,9 @@
 """Extra lexical/code strategy features per (query, candidate): BM25 on raw and template-stripped text, BM25 on diff text."""
 import pickle, sys, math, collections, os, numpy as np, pandas as pd
 from multiprocessing import Pool
-sys.path.insert(0, "/home/ubuntu/research/prdupecheck/agentdup/src")
-from agentdup.text import tokens
-from agentdup.templates import TemplateModel
+sys.path.insert(0, "/home/ubuntu/research/prdupecheck/jinx_pr/src")
+from jinx_pr.text import tokens
+from jinx_pr.templates import TemplateModel
 D = "/home/ubuntu/research/prdupecheck/data/"
 B = pickle.load(open(D + "bench.pkl", "rb")); Q = B["queries"]; need = sorted(B["need"])
 pr = pd.read_parquet(D + "pull_request.parquet", columns=["id", "title", "body", "agent"]).set_index("id").loc[need]

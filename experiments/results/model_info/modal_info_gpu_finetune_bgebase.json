@@ -1,0 +1,47 @@
+{
+ "gpu": "L4",
+ "folds": [
+  {
+   "fold": 0,
+   "base": "BAAI/bge-reranker-base",
+   "train_pairs": 34896,
+   "test_pairs": 8695,
+   "train_s": 678.1,
+   "predict_s": 121.0
+  },
+  {
+   "fold": 1,
+   "base": "BAAI/bge-reranker-base",
+   "train_pairs": 34892,
+   "test_pairs": 8699,
+   "train_s": 668.5,
+   "predict_s": 120.4
+  },
+  {
+   "fold": 2,
+   "base": "BAAI/bge-reranker-base",
+   "train_pairs": 34821,
+   "test_pairs": 8770,
+   "train_s": 668.3,
+   "predict_s": 121.9
+  },
+  {
+   "fold": 3,
+   "base": "BAAI/bge-reranker-base",
+   "train_pairs": 34868,
+   "test_pairs": 8723,
+   "train_s": 668.1,
+   "predict_s": 118.9
+  },
+  {
+   "fold": 4,
+   "base": "BAAI/bge-reranker-base",
+   "train_pairs": 34887,
+   "test_pairs": 8704,
+   "train_s": 674.0,
+   "predict_s": 121.1
+  }
+ ],
+ "train_s_total": 3357.0,
+ "predict_ms_per_pair_gpu": 13.84
+}

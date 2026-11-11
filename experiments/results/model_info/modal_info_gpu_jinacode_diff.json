@@ -1,0 +1,11 @@
+{
+ "tag": "jinacode_diff",
+ "model": "jinaai/jina-embeddings-v2-base-code",
+ "variant": "diff",
+ "maxlen": 512,
+ "n": 76209,
+ "dim": 768,
+ "gpu": "L4",
+ "seconds": 620.2,
+ "ms_per_pr_gpu": 8.138
+}
