@@ -1,0 +1,146 @@
+{
+ "all cross-author": {
+  "n": 342,
+  "Jinx": {
+   "R@1": 0.901,
+   "R@5": 0.971,
+   "MRR": 0.932
+  },
+  "All signals, LR": {
+   "R@1": 0.906,
+   "R@5": 0.974,
+   "MRR": 0.935
+  },
+  "INTRUDE + time": {
+   "R@1": 0.81,
+   "R@5": 0.953,
+   "MRR": 0.873
+  },
+  "contrib-guard": {
+   "R@1": 0.778,
+   "R@5": 0.918,
+   "MRR": 0.843
+  },
+  "Claude Haiku + Jinx": {
+   "R@1": 0.898,
+   "R@5": 0.971,
+   "MRR": 0.932
+  },
+  "Links only": {
+   "R@1": 0.839,
+   "R@5": 0.924,
+   "MRR": 0.882
+  },
+  "Jinx - INTRUDE R@1 [d, lo, hi]": [
+   0.091,
+   0.048,
+   0.13
+  ],
+  "Jinx - INTRUDE R@5 [d, lo, hi]": [
+   0.018,
+   -0.011,
+   0.051
+  ],
+  "Jinx - INTRUDE MRR [d, lo, hi]": [
+   0.059,
+   0.027,
+   0.091
+  ]
+ },
+ "audit-valid (duplicate+replacement)": {
+  "n": 290,
+  "Jinx": {
+   "R@1": 0.914,
+   "R@5": 0.983,
+   "MRR": 0.944
+  },
+  "All signals, LR": {
+   "R@1": 0.928,
+   "R@5": 0.986,
+   "MRR": 0.952
+  },
+  "INTRUDE + time": {
+   "R@1": 0.838,
+   "R@5": 0.979,
+   "MRR": 0.899
+  },
+  "contrib-guard": {
+   "R@1": 0.831,
+   "R@5": 0.966,
+   "MRR": 0.892
+  },
+  "Claude Haiku + Jinx": {
+   "R@1": 0.914,
+   "R@5": 0.983,
+   "MRR": 0.945
+  },
+  "Links only": {
+   "R@1": 0.879,
+   "R@5": 0.966,
+   "MRR": 0.92
+  },
+  "Jinx - INTRUDE R@1 [d, lo, hi]": [
+   0.076,
+   0.031,
+   0.108
+  ],
+  "Jinx - INTRUDE R@5 [d, lo, hi]": [
+   0.003,
+   -0.019,
+   0.026
+  ],
+  "Jinx - INTRUDE MRR [d, lo, hi]": [
+   0.045,
+   0.012,
+   0.068
+  ]
+ },
+ "audit-valid incl. subsumed": {
+  "n": 329,
+  "Jinx": {
+   "R@1": 0.909,
+   "R@5": 0.982,
+   "MRR": 0.941
+  },
+  "All signals, LR": {
+   "R@1": 0.918,
+   "R@5": 0.982,
+   "MRR": 0.945
+  },
+  "INTRUDE + time": {
+   "R@1": 0.821,
+   "R@5": 0.967,
+   "MRR": 0.884
+  },
+  "contrib-guard": {
+   "R@1": 0.799,
+   "R@5": 0.936,
+   "MRR": 0.862
+  },
+  "Claude Haiku + Jinx": {
+   "R@1": 0.906,
+   "R@5": 0.982,
+   "MRR": 0.941
+  },
+  "Links only": {
+   "R@1": 0.857,
+   "R@5": 0.942,
+   "MRR": 0.899
+  },
+  "Jinx - INTRUDE R@1 [d, lo, hi]": [
+   0.088,
+   0.046,
+   0.125
+  ],
+  "Jinx - INTRUDE R@5 [d, lo, hi]": [
+   0.015,
+   -0.01,
+   0.044
+  ],
+  "Jinx - INTRUDE MRR [d, lo, hi]": [
+   0.057,
+   0.026,
+   0.085
+  ]
+ }
+}

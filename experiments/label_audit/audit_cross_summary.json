@@ -1,0 +1,36 @@
+{
+ "model": "claude-haiku-4-5",
+ "n": 342,
+ "label_counts": {
+  "replacement": 197,
+  "duplicate": 93,
+  "subsumed": 39,
+  "related": 9,
+  "unclear": 4
+ },
+ "precision_strict (duplicate+replacement) [mean, lo, hi]": [
+  0.847953216374269,
+  0.8099415204678363,
+  0.8859649122807017
+ ],
+ "precision_loose (+subsumed) [mean, lo, hi]": [
+  0.9619883040935673,
+  0.9415204678362573,
+  0.97953216374269
+ ],
+ "by relation": {
+  "cross-author": {
+   "n": 342,
+   "labels": {
+    "replacement": 197,
+    "duplicate": 93,
+    "subsumed": 39,
+    "related": 9,
+    "unclear": 4
+   }
+  }
+ },
+ "cost_usd": 0.513,
+ "input_tokens": 425183,
+ "output_tokens": 17562
+}

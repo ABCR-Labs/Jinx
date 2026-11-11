@@ -10,9 +10,11 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [ ] H: accept the narrower claim (beats bots; better Recall@1/MRR and fewer false alarms than INTRUDE + time)
 
 ## 2. Benchmark (artifact)
-- [ ] D: release files (queries, queues, labels, features) + data card + Zenodo-ready bundle
-- [ ] D: label audit, Claude Haiku on 200 random pairs (about $1) + spot checks; report silver-label precision
-- [ ] D: limitation noted: no agent-human pairs (no working GitHub token)
+- [x] D: release files (queries, queues, labels, features) + data card (`docs/DATA_CARD.md`, `experiments/bench_v2/export_release.py`)
+- [ ] H: approve uploading the release (Zenodo / Hugging Face, about 680 MB)
+- [x] D: label audit, Claude Haiku on 200 random + all 342 cross-author pairs ($0.82): strict precision 79% / 85% (`experiments/label_audit/`)
+- [ ] D: human spot-check of 30 audit labels
+- [x] D: limitation noted: no agent-human pairs (no working GitHub token)
 
 ## 3. Tool (Jinx)
 - [x] D: library, CLI, GitHub Action, README, 11 unit tests
@@ -40,4 +42,4 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [ ] H: approve submission (nothing is submitted without approval)
 
 ## 6. Budget
-- Spent: Anthropic $7.25 (cap $20); Modal about $8.5 (cap $20). Planned: about $1 (label audit).
+- Spent: Anthropic $8.08 (cap $20); Modal about $8.5 (cap $20).
