@@ -3,3 +3,12 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 build/
+
+# LaTeX build files (PDFs are committed)
+paper/**/*.aux
+paper/**/*.log
+paper/**/*.bbl
+paper/**/*.blg
+paper/**/*.fls
+paper/**/*.fdb_latexmk
+paper/**/*.out

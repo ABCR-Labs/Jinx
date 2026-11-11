@@ -1,0 +1,22 @@
+% Tool-demo paper (candidate: FSE 2027 Tool Demos, ACM 4+1 pages; ICPC Tool Demo uses IEEE). Venue not final.
+\documentclass[sigconf,review]{acmart}
+\usepackage{booktabs}
+\input{../generated/numbers}
+\newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
+\setcopyright{none}
+\begin{document}
+\title{Jinx: Catching Duplicate Pull Requests from Coding Agents}
+\author{\todo{authors}}
+\begin{abstract}
+Coding agents open many pull requests, and some repeat work that is already open. Jinx is a CPU-only GitHub Action and CLI that compares a new PR with the repository's open PRs and comments with ranked likely duplicates and plain reasons (shared files, overlapping changed lines, shared issue, similar text after removing agent boilerplate). On \nPairs{} duplicate pairs from AIDev, Jinx ranks the true duplicate first for \ROnejinx{} of cross-author pairs, against \ROnecg{} for the best existing duplicate-PR bot, with \FARjinx\% false alarms, in about 22\,ms per PR without an LLM. \todo{video URL, repo URL, usage evidence}
+\end{abstract}
+\maketitle
+\section{Introduction}\todo{problem, existing tools (bots, commercial review tools), what Jinx adds}
+\section{Jinx}\todo{architecture figure; template stripping; signals; logistic model; reasons; Action workflow; CLI example}
+\section{Evaluation}\todo{head-to-head vs bots and classic detector (Table); latency; false alarms}
+\begin{table}[t]\centering\caption{Cross-author pairs ($n=\nCross$).}\resizebox{\columnwidth}{!}{\input{../generated/tab_main}}\end{table}
+\section{Usage and Limitations}\todo{deployment evidence; limits: intent-level duplicates, silver labels}
+\section{Availability}\todo{repo, PyPI \texttt{jinx-pr}, video, license MIT}
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{../refs}
+\end{document}
