@@ -17,9 +17,9 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 ## 3. Tool (Jinx)
 - [x] D: library, CLI, GitHub Action, README, 11 unit tests
 - [x] D: renamed AgentDup -> Jinx (`jinx-pr` / `jinx_pr` / `jinx`)
-- [ ] D: ship trained weights (`src/jinx_pr/data/weights*.json` are placeholders)
-- [ ] D: feature-parity check: package features == benchmark features
-- [ ] D: end-to-end CLI tests on real AIDev PRs
+- [x] D: ship trained weights (`experiments/bench_v2/train_package_weights.py`)
+- [x] D: feature-parity check: package features == benchmark features (0 difference on 200 queries)
+- [x] D: end-to-end CLI tests on real AIDev PRs (`tests/test_e2e_aidev.py`)
 - [ ] D: run the Action on a private sandbox repo with test PRs
 - [ ] D: clean Ruff warnings in `experiments/` scripts
 - [ ] H: rename GitHub repo `ABCR-Labs/agentdup` -> `jinx-pr` (Settings; Devin lacks admin)

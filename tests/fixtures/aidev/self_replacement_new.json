@@ -1,0 +1,51 @@
+{
+ "number": 158,
+ "title": "fix: align skill name with install directory",
+ "body": "Fixes #155\n\n## Summary\n- change the generated skill frontmatter name to `todoist-cli`\n- derive the install directory from the same skill name constant so the manifest and folder stay aligned\n- update skill installer tests to cover the expected frontmatter value\n\n## Testing\n- npm test",
+ "author": "gnapse",
+ "agent": "OpenAI_Codex",
+ "created_at": "2026-03-16T16:37:30+00:00",
+ "closed_at": "2026-03-16T17:35:51+00:00",
+ "html_url": "https://github.com/Doist/todoist-cli/pull/158",
+ "files": [
+  "src/__tests__/skill.test.ts",
+  "src/lib/skills/content.ts",
+  "src/lib/skills/create-installer.ts"
+ ],
+ "hunks": [
+  [
+   "src/__tests__/skill.test.ts",
+   204,
+   211
+  ],
+  [
+   "src/__tests__/skill.test.ts",
+   234,
+   241
+  ],
+  [
+   "src/__tests__/skill.test.ts",
+   297,
+   304
+  ],
+  [
+   "src/lib/skills/content.ts",
+   1,
+   5
+  ],
+  [
+   "src/lib/skills/create-installer.ts",
+   23,
+   30
+  ]
+ ],
+ "added_hashes": [
+  -5923520255225854850,
+  -5923520252836673125,
+  -4724564443445806882,
+  -1935995957350180855
+ ],
+ "linked_issues": [
+  4080971006
+ ]
+}
