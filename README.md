@@ -1,10 +1,10 @@
-# AgentDup
+# Doppel
 
 Find likely **duplicate pull requests** in a repository's open-PR queue, built for PRs opened by coding agents
 (Copilot, Codex, Devin, Claude Code, Cursor, Jules).
 
 Agent PRs share long boilerplate ("## Summary ... ## Testing ... Generated with ..."), so plain text similarity
-says two unrelated agent PRs look alike, and misses a real duplicate written in different words. AgentDup:
+says two unrelated agent PRs look alike, and misses a real duplicate written in different words. Doppel:
 
 1. **removes agent template text** (lines learned from 361k agent PRs in the AIDev dataset, plus lines repeated
    across the current queue);
@@ -13,13 +13,13 @@ says two unrelated agent PRs look alike, and misses a real duplicate written in 
 4. adds context (same author, time gap) and an optional **local** embedding model.
 
 A small logistic model combines these into one score, and every match comes with plain reasons.
-No LLM, no API key, runs on CPU.
+No LLM, no API key, runs on CPU. (Formerly named AgentDup.)
 
 ## 30-second quickstart
 
 ```bash
-pip install ./agentdup            # or: pip install "./agentdup[embed]" for the optional local embedding model
-agentdup check examples/new_pr.json --open-queue examples/open_prs.jsonl
+pip install .                   # from the repo root; pip install ".[embed]" adds the optional local embedding model
+doppel check examples/new_pr.json --open-queue examples/open_prs.jsonl
 ```
 
 ```
@@ -37,15 +37,15 @@ Add `--json` for machine-readable output, `--embed` to use the local embedding m
 
 ## GitHub Action
 
-`action.yml` runs AgentDup on `pull_request_target` (opened/reopened), compares the new PR with up to
+`action.yml` runs Doppel on `pull_request_target` (opened/reopened), compares the new PR with up to
 `max-open-prs` open PRs, and posts (or updates) one comment when a score passes `threshold`.
-It only reads PRs and writes one comment with the workflow token. See `.github/workflows/agentdup.yml`.
+It only reads PRs and writes one comment with the workflow token. See `.github/workflows/doppel.yml`.
 
 ## Learn templates for your own PRs
 
 ```bash
-agentdup learn-templates corpus.jsonl -o my_templates.json   # JSON-lines with agent, repo, body
-agentdup check new.json --open-queue open.jsonl --templates my_templates.json
+doppel learn-templates corpus.jsonl -o my_templates.json   # JSON-lines with agent, repo, body
+doppel check new.json --open-queue open.jsonl --templates my_templates.json
 ```
 
 ## Development
@@ -56,5 +56,5 @@ pip install pytest ruff && python -m pytest -q && ruff check src tests
 
 ## Benchmark and strategy study
 
-`experiments/` holds the live-queue benchmark on AIDev and a comparison of 60+ duplicate-detection strategies (lexical, code overlap, embeddings, existing bots, learned models, cross-encoders, LLM judges, cascades). Read `experiments/report/REPORT.md` (or open `experiments/report/agentdup_strategy_report.html`). Raw results are in `experiments/results/`, run logs in `experiments/logs/`.
+`experiments/` holds the live-queue benchmark on AIDev and a comparison of 60+ duplicate-detection strategies (lexical, code overlap, embeddings, existing bots, learned models, cross-encoders, LLM judges, cascades). Read `experiments/report/REPORT.md` (or open `experiments/report/doppel_strategy_report.html`). Raw results are in `experiments/results/`, run logs in `experiments/logs/`.
 License: MIT.

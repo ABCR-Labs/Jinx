@@ -1,4 +1,4 @@
-from agentdup.pr import PR, parse_diff
+from doppel.pr import PR, parse_diff
 
 DIFF = """diff --git a/auth/session.py b/auth/session.py
 --- a/auth/session.py

@@ -1,5 +1,5 @@
-# Example workflow for a repository that wants AgentDup comments on new PRs.
-name: agentdup
+# Example workflow for a repository that wants Doppel comments on new PRs.
+name: doppel
 on:
   pull_request_target:
     types: [opened, reopened]

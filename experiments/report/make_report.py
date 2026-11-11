@@ -9,7 +9,7 @@ S = pd.read_csv(R + "strategies_by_group.csv"); PC = pd.read_csv(R + "paired_cro
 FA = pd.read_csv(R + "false_alarms.csv"); PF = pd.read_csv(R + "paired_false_alarms.csv"); OC = pd.read_csv(R + "operating_curve.csv")
 RP = pd.read_csv(R + "random_pair_vs_live_queue.csv"); SM = json.load(open(R + "summary.json")); ER = pd.read_csv(R + "errors_cross_author.csv")
 CC = pd.read_csv(R + "class_counts.csv", index_col=0)
-BASE = "AgentDup + MiniLM, LR (current tool)"; WANG = "INTRUDE + time (Wang et al. 2019), LR"; CG = "contrib-guard/phoenix (bot, exact port)"
+BASE = "Doppel + MiniLM, LR (current tool)"; WANG = "INTRUDE + time (Wang et al. 2019), LR"; CG = "contrib-guard/phoenix (bot, exact port)"
 X = S[S.group == "cross-author"].set_index("method"); NX = int(X.n.iloc[0])
 def v(m, k="R@1", g=None):
     d = X if g is None else S[S.group == g].set_index("method"); return d.loc[m, k]
@@ -19,8 +19,8 @@ def pd_(ref, m, k):
     r = PC[(PC.reference == ref) & (PC.method == m)].iloc[0]; return r[k] * 100, r[k + " lo"] * 100, r[k + " hi"] * 100
 def pts(t): return f"{t[0]:+.1f} points [{t[1]:+.1f}, {t[2]:+.1f}]"
 def sig(t): return t[1] > 0 or t[2] < 0
-OURS = lambda m: m.startswith("AgentDup") or m.startswith("All signals") or m.startswith("Cascade") or "+ AgentDup" in m or "re-rank" in m or m.startswith("Fine-tuned")
-# kill rule: best non-AgentDup strategy (does not use AgentDup's score or features) on cross-author R@5
+OURS = lambda m: m.startswith("Doppel") or m.startswith("All signals") or m.startswith("Cascade") or "+ Doppel" in m or "re-rank" in m or m.startswith("Fine-tuned")
+# kill rule: best non-Doppel strategy (does not use Doppel's score or features) on cross-author R@5
 indep = [m for m in X.index if not OURS(m)]
 best_b = X.loc[indep].sort_values(["R@5", "R@1"], ascending=False).index[0]
 k5 = pd_(best_b, BASE, "dR@5") if best_b in set(PC.reference) else None
@@ -36,7 +36,7 @@ _w = PC[PC.reference == WANG]; NSIG5 = int((_w["dR@5 lo"] > 0).sum())
 _b = PC[PC.reference == BASE]; _sb = _b[(_b["dR@1 lo"] > 0) | (_b["dR@5 lo"] > 0) | (_b["dMRR lo"] > 0)]
 SIGB = list(_sb.method); NSIGB = len(SIGB)
 L = []; w = L.append
-w("# AgentDup strategy study: which duplicate-PR detection strategy works on coding-agent PRs?\n")
+w("# Doppel strategy study: which duplicate-PR detection strategy works on coding-agent PRs?\n")
 w("All numbers in this file are produced by `experiments/report/make_report.py` from `experiments/results/`. "
   "Benchmark: AIDev (CC BY 4.0, hao-li/AIDev on Hugging Face), live-queue evaluation. Nothing here used OpenAI. Jev (TypeSafe) was **not** run: its weights are not public and the user cancelled it; it is listed as future work only.\n")
 w("## 1. Plain-English summary\n")
@@ -44,19 +44,19 @@ w("- **Task.** When a coding agent opens a new pull request (PR), find the alrea
   "Each method ranks every PR that was open at that moment (the *live queue*; median 40 PRs, p90 314).")
 w(f"- **Hard case = cross-author pairs** ({NX} pairs, two different authors). Self-replacement pairs (same author re-opens their own work) are easy for almost every method.")
 w(f"- **Best top-1 on cross-author:** `{X.sort_values(['R@1','MRR'], ascending=False).index[0]}` with Recall@1 {civ(X.sort_values(['R@1','MRR'], ascending=False).index[0], 'R@1')}. "
-  f"Current AgentDup tool: {civ(BASE, 'R@1')}. Classic research detector ({WANG}): {civ(WANG, 'R@1')}. Best existing bot ({CG}): {civ(CG, 'R@1')}.")
-w(f"- **Best Recall@5 on cross-author:** `{best_any}` with {civ(best_any, 'R@5')}. AgentDup: {civ(BASE, 'R@5')}.")
-w(f"- **Kill rule (pre-registered by the user): \"if AgentDup does not beat the best baseline on cross-author Recall@5 by a meaningful, CI-backed margin, say so plainly.\"** "
-  f"Best baseline that does not use AgentDup's own signals: `{best_b}` (Recall@5 {v(best_b,'R@5'):.3f}). AgentDup minus baseline: {pts(k5)}. "
+  f"Current Doppel tool: {civ(BASE, 'R@1')}. Classic research detector ({WANG}): {civ(WANG, 'R@1')}. Best existing bot ({CG}): {civ(CG, 'R@1')}.")
+w(f"- **Best Recall@5 on cross-author:** `{best_any}` with {civ(best_any, 'R@5')}. Doppel: {civ(BASE, 'R@5')}.")
+w(f"- **Kill rule (pre-registered by the user): \"if AgentDup does not beat the best baseline on cross-author Recall@5 by a meaningful, CI-backed margin, say so plainly.\"** (AgentDup was the tool's earlier name.) "
+  f"Best baseline that does not use Doppel's own signals: `{best_b}` (Recall@5 {v(best_b,'R@5'):.3f}). Doppel minus baseline: {pts(k5)}. "
   + ("**The kill rule PASSES.**" if k5[1] > 0 else "**The kill rule FAILS: the confidence interval includes zero.**")
   + f" Strategies with a CI-backed Recall@5 gain over `{WANG}`: {NSIG5} of {len(PC[PC.reference == WANG])}.")
-w(f"- **Did any new strategy beat the current AgentDup tool?** Strategies with a CI-backed gain over it on Recall@1, Recall@5 or MRR: {NSIGB}"
+w(f"- **Did any new strategy beat the current Doppel tool?** Strategies with a CI-backed gain over it on Recall@1, Recall@5 or MRR: {NSIGB}"
   + (" (" + "; ".join(SIGB) + ")." if SIGB else ". The best new ones (all-signals LR, cascades with re-rankers or LLM judges) are within noise of it."))
 d1 = pd_(WANG, BASE, "dR@1"); dm = pd_(WANG, BASE, "dMRR"); dc5 = pd_(CG, BASE, "dR@5"); dc1 = pd_(CG, BASE, "dR@1")
 w(f"- **What is CI-backed:** vs the classic detector, Recall@1 {pts(d1)} and MRR {pts(dm)}. vs the best existing bot, Recall@5 {pts(dc5)} and Recall@1 {pts(dc1)}.")
 fb, fw = FA.set_index("method").loc[BASE], FA.set_index("method").loc[WANG]
 pf = PF[(PF.reference == WANG) & (PF.method == BASE)].iloc[0]
-w(f"- **False alarms** (alert on a PR that has no duplicate, at a matched threshold): AgentDup {fb.FAR*100:.1f}% [{fb['FAR lo']*100:.1f}, {fb['FAR hi']*100:.1f}] vs classic {fw.FAR*100:.1f}% "
+w(f"- **False alarms** (alert on a PR that has no duplicate, at a matched threshold): Doppel {fb.FAR*100:.1f}% [{fb['FAR lo']*100:.1f}, {fb['FAR hi']*100:.1f}] vs classic {fw.FAR*100:.1f}% "
   f"(difference {pf.dFAR*100:+.1f} points [{pf['dFAR lo']*100:+.1f}, {pf['dFAR hi']*100:+.1f}]).")
 lk = "Links only (same issue / #ref)"
 w(f"- **Label-bias warning.** A trivial rule that only checks \"same linked issue\" or \"#number mentioned in the text\" gets cross-author Recall@1 {v(lk):.3f}. "
@@ -77,8 +77,8 @@ w("| Family | What it does | Strategies |\n|---|---|---|")
 desc = {"0 trivial": "newest open PR first", "1 lexical": "word overlap of title + description", "2 code": "overlap of changed files, hunks, identical lines, or BM25 on the diff",
         "3 links": "same linked issue or explicit #ref", "4 embedding": "cosine of a neural sentence/code embedding", "5 existing bot": "matching logic of public duplicate-PR bots",
         "6 unsupervised hybrid": "reciprocal-rank fusion (RRF) of several signals, no training", "7 supervised": "logistic regression (LR) / gradient boosting trained on repo-grouped folds",
-        "8 re-ranker on top-k": "cross-encoder re-scores AgentDup's top 10", "9 LLM judge on top-k": "LLM answers duplicate yes/no for each of AgentDup's top k",
-        "10 stacked cascade (ours)": "LR over AgentDup score + re-ranker / LLM scores on the top 10"}
+        "8 re-ranker on top-k": "cross-encoder re-scores Doppel's top 10", "9 LLM judge on top-k": "LLM answers duplicate yes/no for each of Doppel's top k",
+        "10 stacked cascade (ours)": "LR over Doppel score + re-ranker / LLM scores on the top 10"}
 for f, g in sorted(X.reset_index().groupby("family"), key=lambda t: FK(t[0])): w(f"| {f} | {desc.get(f,'')} | {'; '.join(g.method)} |")
 w("\nTraining uses 5 repository-grouped folds (no repository appears in both train and test). Confidence intervals: repository-cluster bootstrap, 95%.\n")
 w("## 4. Best strategy of each family, cross-author\n")
@@ -86,7 +86,7 @@ w("| Family | Best strategy | Recall@1 [95% CI] | Recall@5 [95% CI] | MRR [95% C
 for _, r in fam_best.iterrows(): w(f"| {r.family} | {r.method} | {civ(r.method,'R@1')} | {civ(r.method,'R@5')} | {civ(r.method,'MRR')} |")
 w("\n## 5. Which strategy for which kind of duplicate (Recall@1)\n")
 gl = [g for g in S.group.unique() if g != "all labelled"]
-w("| Group | n | best strategy | its Recall@1 | AgentDup | INTRUDE + time | contrib-guard | best non-AgentDup |\n|---|---|---|---|---|---|---|---|")
+w("| Group | n | best strategy | its Recall@1 | Doppel | INTRUDE + time | contrib-guard | best non-Doppel |\n|---|---|---|---|---|---|---|---|")
 for g in gl:
     d = S[S.group == g].set_index("method"); b = d.sort_values(["R@1", "MRR"], ascending=False).index[0]
     bi = d.loc[[m for m in d.index if not OURS(m)]].sort_values(["R@1", "MRR"], ascending=False).index[0]
@@ -118,7 +118,7 @@ w("| Component | Hardware | Numbers |\n|---|---|---|")
 for k, x in lat.items(): w(f"| {k} | {x.get('gpu', 'CPU' if 'cpu' in k or 'lexical' in k else '') if isinstance(x, dict) else ''} | {json.dumps(x)} |")
 cf = R + "costs/modal_billing.json"
 if os.path.exists(cf): w(f"\nModal billing for app `agentdup-study`: {json.dumps(json.load(open(cf)))}")
-w("\n## 10. Error analysis (current AgentDup tool, cross-author pairs it does not rank first)\n")
+w("\n## 10. Error analysis (current Doppel tool, cross-author pairs it does not rank first)\n")
 w(f"{len(ER)} of {NX} cross-author queries are missed at rank 1.\n")
 w("| By class | misses |\n|---|---|\n" + "\n".join(f"| {k} | {n} |" for k, n in ER["class"].value_counts().items()))
 w(f"\nTop-1 was a PR by the *same author as the new PR* in {ER['top-1 same author as new PR'].mean()*100:.0f}% of misses (the author's own other open work). "
@@ -127,7 +127,7 @@ w("## 11. Limitations\n")
 w("- Silver labels from comments; no new human labels. The 142 hand-labelled duplicates in the 600-PR AIDev sample have no partner PR and could not be used for ranking.")
 w("- Agent-vs-human duplicates are not covered.")
 w("- PRSense, Simili, vector-triage and PRism are local re-implementations with free models (their shipped versions need OpenAI/Gemini/GitHub Models keys). contrib-guard (phoenix) is an exact port.")
-w("- LLM judges and re-rankers only see AgentDup's top-k, so their Recall@k is capped by AgentDup's Recall@k. Claude Haiku was run on cross-author + negative queries only (budget).")
+w("- LLM judges and re-rankers only see Doppel's top-k, so their Recall@k is capped by Doppel's Recall@k. Claude Haiku was run on cross-author + negative queries only (budget).")
 w("- Commercial review tools (CodeRabbit, Copilot review, Qodo, Greptile, ...) were compared from their documentation only, not run.")
 w("- Jev (TypeSafe System One) was not evaluated.\n")
 w("## 12. Reproduce\n")

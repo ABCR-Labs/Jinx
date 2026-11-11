@@ -1,4 +1,4 @@
-from agentdup.templates import TemplateModel, normalize_line, queue_common_lines
+from doppel.templates import TemplateModel, normalize_line, queue_common_lines
 
 
 def test_normalize():

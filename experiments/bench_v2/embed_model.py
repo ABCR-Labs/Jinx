@@ -1,8 +1,8 @@
 """Embed benchmark PR texts with a local sentence-transformers model. usage: embed_model.py MODEL VARIANT TAG [maxlen]"""
 import pickle, sys, time, numpy as np, pandas as pd, torch
-sys.path.insert(0, "/home/ubuntu/research/prdupecheck/agentdup/src")
+sys.path.insert(0, "/home/ubuntu/research/prdupecheck/doppel/src")
 from sentence_transformers import SentenceTransformer
-from agentdup.templates import TemplateModel
+from doppel.templates import TemplateModel
 torch.set_num_threads(4)
 D = "/home/ubuntu/research/prdupecheck/data/"
 model, variant, tag = sys.argv[1:4]; maxlen = int(sys.argv[4]) if len(sys.argv) > 4 else 256

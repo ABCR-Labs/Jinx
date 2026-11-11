@@ -1,6 +1,6 @@
 import pytest
 
-from agentdup import PR, TemplateModel
+from doppel import PR, TemplateModel
 
 TEMPLATE = "## Summary\n{0}\n\n## Testing\n- Ran the unit tests\n\nGenerated with [Claude Code](https://claude.ai/code)"
 

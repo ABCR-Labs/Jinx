@@ -2,9 +2,9 @@ import json
 
 from conftest import make
 
-from agentdup import Detector
-from agentdup.cli import main
-from agentdup.features import hunk_overlap
+from doppel import Detector
+from doppel.cli import main
+from doppel.features import hunk_overlap
 
 
 def test_hunk_overlap():

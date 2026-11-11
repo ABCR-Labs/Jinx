@@ -1,7 +1,7 @@
 """Export compact PR texts for GPU jobs on Modal: embedding inputs (raw/stripped/diff) and pair-judge views."""
 import pickle, sys, pandas as pd
-sys.path.insert(0, "/home/ubuntu/research/prdupecheck/agentdup/src")
-from agentdup.templates import TemplateModel
+sys.path.insert(0, "/home/ubuntu/research/prdupecheck/doppel/src")
+from doppel.templates import TemplateModel
 import pairtext
 from pairtext import pr_text, D
 need = sorted(pickle.load(open(D + "bench.pkl", "rb"))["need"])

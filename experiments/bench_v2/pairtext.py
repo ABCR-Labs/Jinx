@@ -1,7 +1,7 @@
 """Compact text view of a PR for pairwise models (cross-encoder, LLM judge)."""
 import pickle, sys, pandas as pd
-sys.path.insert(0, "/home/ubuntu/research/prdupecheck/agentdup/src")
-from agentdup.templates import TemplateModel
+sys.path.insert(0, "/home/ubuntu/research/prdupecheck/doppel/src")
+from doppel.templates import TemplateModel
 D = "/home/ubuntu/research/prdupecheck/data/"
 _pr = _diff = _files = _tm = None
 

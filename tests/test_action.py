@@ -1,4 +1,4 @@
-from agentdup import action
+from doppel import action
 
 
 class FakeGH:

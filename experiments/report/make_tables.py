@@ -15,7 +15,7 @@ def group_table(g, top=None):
     n = int(d.n.iloc[0]) if len(d) else 0
     rows = [f"| {r.family} | {r.method} | {ci(r,'R@1')} | {ci(r,'R@5')} | {ci(r,'MRR')} |" for _, r in d.iterrows()]
     return f"**{g}** (n = {n})\n\n| Family | Strategy | Recall@1 [95% CI] | Recall@5 [95% CI] | MRR [95% CI] |\n|---|---|---|---|---|\n" + "\n".join(rows) + "\n"
-REP = ["All signals, LR", "AgentDup + MiniLM, LR (current tool)", "AgentDup lexical, LR", "INTRUDE + time (Wang et al. 2019), LR",
+REP = ["All signals, LR", "Doppel + MiniLM, LR (current tool)", "Doppel lexical, LR", "INTRUDE + time (Wang et al. 2019), LR",
        "contrib-guard/phoenix (bot, exact port)", "TF-IDF raw text (Li et al. 2017)", "BM25 raw text", "BGE-small template-stripped",
        "Jina code embeddings v2 on diff", "Code overlap sum (files+hunks+lines)", "Links only (same issue / #ref)"]
 def best_of_family(g):
