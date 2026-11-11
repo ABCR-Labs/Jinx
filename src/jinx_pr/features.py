@@ -57,5 +57,5 @@ def code_features(new: PR, cand: PR) -> dict:
 def link_features(new: PR, cand: PR) -> dict:
     return {
         "same_issue": float(bool(new.linked_issues & cand.linked_issues)),
-        "mention_ref": float(cand.number in new.mentions or new.number in cand.mentions),
+        "mention_ref": float(cand.number in new.mentions),  # forward-only: the older PR may be edited later
     }

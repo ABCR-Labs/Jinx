@@ -1,13 +1,13 @@
 {
  "queries": 300,
  "cpu_threads": 4,
- "queue_median": 36.5,
+ "queue_median": 7.0,
  "lexical": {
-  "median_ms": 22.1,
-  "p90_ms": 198.1
+  "median_ms": 6.1,
+  "p90_ms": 39.7
  },
  "minilm": {
-  "median_ms": 706.7,
-  "p90_ms": 3675.4
+  "median_ms": 351.4,
+  "p90_ms": 2297.0
  }
 }

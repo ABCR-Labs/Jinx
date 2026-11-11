@@ -3,6 +3,7 @@ import json
 import os
 import pathlib
 
+import numpy as np
 import pandas as pd
 
 H = os.path.dirname(os.path.abspath(__file__))
@@ -57,6 +58,14 @@ for tag, f in [("Rand", "audit_random200_summary.json"), ("Cross", "audit_cross_
     s, lo = a["precision_strict (duplicate+replacement) [mean, lo, hi]"], a["precision_loose (+subsumed) [mean, lo, hi]"]
     nm("audit" + tag + "Strict", f"{100 * s[0]:.1f}"); nm("audit" + tag + "StrictLo", f"{100 * s[1]:.1f}"); nm("audit" + tag + "StrictHi", f"{100 * s[2]:.1f}")
     nm("audit" + tag + "Loose", f"{100 * lo[0]:.1f}"); nm("audit" + tag + "N", a["n"])
+# audit precision on the cross-author pairs that remain on open-only queues
+_lab = pd.read_json(os.path.join(EXP, "label_audit", "audit_cross_labels.jsonl"), lines=True)
+_lab = _lab[_lab.qi.isin(pd.read_parquet(os.path.join(RES, "ranks.parquet")).index)]
+_v = _lab.label.isin(["duplicate", "replacement"]).values.astype(float)
+_b = np.random.default_rng(0).choice(_v, (2000, len(_v))).mean(1)
+nm("auditOpenN", len(_v)); nm("auditOpenStrict", f"{100 * _v.mean():.1f}")
+nm("auditOpenStrictLo", f"{100 * np.quantile(_b, .025):.1f}"); nm("auditOpenStrictHi", f"{100 * np.quantile(_b, .975):.1f}")
+nm("auditOpenLoose", f"{100 * _lab.label.isin(['duplicate', 'replacement', 'subsumed']).mean():.1f}")
 c = json.loads(pathlib.Path(os.path.join(EXP, "label_audit", "clean_subset_results.json")).read_text())["audit-valid (duplicate+replacement)"]
 nm("cleanN", c["n"])
 for m, t in [("R@1", "RO"), ("R@5", "RF")]:
@@ -91,14 +100,14 @@ nm("abIntrudeOpen", ab("benchmark queues (as in paper)", "INTRUDE + time + cand_
 nm("nGraceCand", 18)  # ablation log: cross-author gold pairs whose queue held a PR already closed at query time
 nm("ROnehaikuAlone", r1(CA, find("LLM judge Claude Haiku 4.5 re-rank top-5")))
 FA = pd.read_csv(os.path.join(RES, "false_alarms.csv")); PFA = pd.read_csv(os.path.join(RES, "paired_false_alarms.csv"))
-for tag, m in [("links", "Links only (same issue / #ref)"), ("haiku", "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5"), ("cg", CG),
+for tag, m in [("links", "Links only (same issue / #ref)"), ("haiku", "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5"), ("qwen", "LLM judge Qwen2.5-14B + Jinx (avg) top-5"), ("cg", CG),
                ("tfidf", "TF-IDF raw text (Li et al. 2017)")]:
     nm("FARx" + tag, f"{100 * float(FA[FA.method == m].FAR.iloc[0]):.1f}")
     q = PFA[(PFA.reference == JINX) & (PFA.method == m)].iloc[0]
     nm("dFAR" + tag, f"{100 * q.dFAR:+.1f}"); nm("dFAR" + tag + "Lo", f"{100 * q['dFAR lo']:+.1f}"); nm("dFAR" + tag + "Hi", f"{100 * q['dFAR hi']:+.1f}")
 OC = pd.read_csv(os.path.join(RES, "operating_curve.csv")); occ = OC.columns[2]
 oc = lambda m, t: f"{100 * float(OC[(OC.method == m) & (OC['FAR target'] == t)][occ].iloc[0]):.0f}"
-for tag, m in [("jinx", JINX), ("haiku", "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5"), ("intrude", INTR), ("links", "Links only (same issue / #ref)"),
+for tag, m in [("jinx", JINX), ("haiku", "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5"), ("qwen", "LLM judge Qwen2.5-14B + Jinx (avg) top-5"), ("intrude", INTR), ("links", "Links only (same issue / #ref)"),
                ("cg", CG)]:
     nm("OCone" + tag, oc(m, 0.01)); nm("OCfive" + tag, oc(m, 0.05))
 # Impact: cost of duplicates and a replay of day-0 warnings
@@ -117,5 +126,23 @@ rp = RP[(RP.method == JINX) & (RP.group == CA)].iloc[0]
 nm("replayWarn", f"{100 * rp['correct warning at open']:.0f}"); nm("replayWarnLate", f"{100 * rp['correct warning, human took >24h']:.0f}")
 nm("replayHours", f"{rp['hours saved (sum, correct warnings)']:,.0f}".replace(",", "{,}"))
 nm("replayEffort", int(rp["reviews+comments before flag avoided"])); nm("replayFA", f"{rp['false alarms per 100 PRs without duplicate']:.1f}")
+nm("replayWarnLo", f"{100 * rp['correct warning lo']:.0f}"); nm("replayWarnHi", f"{100 * rp['correct warning hi']:.0f}")
+nm("replayWrong", f"{100 * rp['wrong-PR warning at open']:.0f}")
+for tag, m in [("Intrude", INTR), ("Cg", CG)]:
+    r_ = RP[(RP.method == m) & (RP.group == CA)].iloc[0]
+    nm("replayWarn" + tag, f"{100 * r_['correct warning at open']:.0f}"); nm("replayFA" + tag, f"{r_['false alarms per 100 PRs without duplicate']:.1f}")
+nm("dupN", x["n"])
+nm("dupBotOnly", DC["pairs skipped because only a bot wrote the duplicate comment"])
+# queue cap, bootstrap count, link rule without tie-break, judge coverage
+SJ = json.loads(pathlib.Path(os.path.join(RES, "summary.json")).read_text())
+nm("nBoot", f"{SJ['n_bootstrap']:,}".replace(",", "{,}"))
+nm("capAll", SJ["cap_dropped"]["all"]); nm("capCross", SJ["cap_dropped"]["cross-author"])
+_j = S[(S.group == CA) & (S.method == JINX)].iloc[0]
+nm("ROnejinxDeployed", f"{_j['R@1'] * _j.n / (_j.n + SJ['cap_dropped']['cross-author']):.3f}")
+nm("ROnelinksraw", f"{float(S[(S.group == CA) & (S.method == 'Links only, no tie-break (same issue / #ref)')]['R@1'].iloc[0]):.3f}")
+nm("ROnecgClassD", f"{float(S[(S.group == 'cross-author, class D. no shared files (intent-level)') & (S.method == CG)]['R@1'].iloc[0]):.2f}")
+_cov = SJ.get("judge_coverage", {}).get("LLM judge Claude Haiku 4.5 + Jinx (avg) top-5", 1.0)
+nm("judgeCovHaiku", f"{100 * _cov:.0f}")
+nm("judgeNote", "" if _cov > 0.99 else f"Haiku was run on an earlier candidate set and scored {100 * _cov:.0f}\\% of the current top-5 candidates; the rest keep Jinx's score, so its results are approximate.")
 pathlib.Path(OUT, "numbers_extra.tex").write_text("\n".join(mac) + "\n")
 print(len(mac), "macros")
