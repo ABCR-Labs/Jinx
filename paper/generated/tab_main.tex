@@ -1,0 +1,14 @@
+\begin{tabular}{lcccc}\toprule
+Strategy & R@1 & R@5 & MRR & False alarms \% [95\% CI] \\\midrule
+Jinx (ours) & 0.901 & 0.971 & 0.932 & 2.5 [1.9, 3.3] \\
+All signals, LR & 0.906 & 0.974 & 0.935 & 1.6 [1.1, 2.1] \\
+Jinx + BGE rerank + Qwen-7B & 0.901 & 0.974 & 0.931 & 2.8 [2.2, 3.5] \\
+Claude Haiku 4.5 + Jinx & 0.898 & 0.971 & 0.932 & 1.8 [1.3, 2.3] \\
+Qwen2.5-14B + Jinx & 0.871 & 0.971 & 0.917 & 2.9 [2.3, 3.7] \\
+Claude Haiku 4.5 alone & 0.842 & 0.971 & 0.902 & 5.4 [4.6, 6.1] \\
+INTRUDE + time~\cite{ren2019intrude,wang2019time} & 0.810 & 0.953 & 0.873 & 4.6 [3.7, 5.7] \\
+contrib-guard (bot) & 0.778 & 0.918 & 0.843 & 11.7 [8.9, 14.6] \\
+Links only & 0.839 & 0.924 & 0.882 & 3.8 [3.0, 4.8] \\
+TF-IDF~\cite{li2017detecting} & 0.757 & 0.921 & 0.832 & 9.4 [7.8, 10.9] \\
+BGE-small embedding & 0.763 & 0.915 & 0.830 & 6.4 [5.3, 7.5] \\
+\bottomrule\end{tabular}
