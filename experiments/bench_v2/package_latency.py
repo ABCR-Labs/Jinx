@@ -1,6 +1,7 @@
 """End-to-end CPU latency of the installed package (Detector.rank) per new PR, with and without the MiniLM embedder.
 
-Times 300 random live-queue queries (4 CPU threads), including feature extraction, embedding and scoring.
+Times 300 random open-only queues (at most 200 open PRs each) (4 CPU threads), including feature extraction, embedding and scoring.
+Excludes GitHub API calls, pip install and the one-off model download/load.
 Writes experiments/results/package_latency.json.
 """
 import json
@@ -49,8 +50,11 @@ def as_dict(i):
 
 torch.set_num_threads(4)
 rng = np.random.default_rng(1)
-idx = rng.choice(len(Q), 300, replace=False)
-cases = [(PR.from_dict(as_dict(Q[i]["q"])), [PR.from_dict(as_dict(int(c))) for c in Q[i]["cand"]]) for i in idx]
+# open-only queues, at most the 200 most recent open PRs (what the Action sees)
+O = F[F.cand_open > 0]
+O = O[O.groupby("qi").log_gap_hours.rank(method="first") <= 200].groupby("qi").cand.apply(list)
+idx = rng.choice(np.array(O.index), 300, replace=False)
+cases = [(PR.from_dict(as_dict(Q[i]["q"])), [PR.from_dict(as_dict(int(c))) for c in O[i]]) for i in idx]
 out = {"queries": len(cases), "cpu_threads": 4, "queue_median": float(np.median([len(c) for _, c in cases]))}
 for name, det in [("lexical", Detector()), ("minilm", Detector(embedder=Embedder()))]:
     det.rank(*cases[0])

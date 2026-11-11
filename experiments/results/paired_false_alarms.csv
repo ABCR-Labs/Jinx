@@ -10,6 +10,7 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "Jinx + MiniLM, LR (current tool)",Identical changed lines,0.3203342618384401,0.27279992953043075,0.36309823651078055
 "Jinx + MiniLM, LR (current tool)",Code overlap sum (files+hunks+lines),0.2216474333465977,0.17454486269516653,0.2691655448895644
 "Jinx + MiniLM, LR (current tool)",Links only (same issue / #ref),-0.005968961400716275,-0.012987599678962167,0.0004538755137057143
+"Jinx + MiniLM, LR (current tool)","Links only, no tie-break (same issue / #ref)",0.005968961400716275,-0.0014577746498242547,0.013779718387743538
 "Jinx + MiniLM, LR (current tool)",MiniLM raw text,0.02865101472343812,0.016237686807980423,0.04535129829370772
 "Jinx + MiniLM, LR (current tool)",MiniLM template-stripped,0.02825308396339037,0.01547457468101076,0.04506027795327522
 "Jinx + MiniLM, LR (current tool)",MiniLM on diff,0.07162753680859531,0.046476926923095324,0.09784493227586442
@@ -34,9 +35,9 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "Jinx + MiniLM, LR (current tool)","All signals, gradient boosting",0.0015917230401910067,-0.005587114290189527,0.00911194799084303
 "Jinx + MiniLM, LR (current tool)",Cross-encoder ms-marco MiniLM re-rank top-10,0.04257859132510943,0.03082239185844088,0.057058207232301934
 "Jinx + MiniLM, LR (current tool)",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,0.020692399522483088,0.013467362011150197,0.029106911132512278
-"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-base re-rank top-10,0.3489852765618782,0.31531940932486807,0.37887096333524234
+"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-base re-rank top-10,0.34460803820135294,0.31188675979630454,0.37398422608627996
 "Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,0.029048945483485872,0.020981246368141533,0.03781955485835105
-"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,0.02626343016315161,0.01496035154696572,0.036908914116277725
+"Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,0.024671707122960605,0.014478100728100728,0.034347150718977454
 "Jinx + MiniLM, LR (current tool)",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,0.008356545961002786,0.0019771639466314977,0.014642813261617841
 "Jinx + MiniLM, LR (current tool)",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,-0.004377238360525269,-0.009725575628508376,0.00043543160797073177
 "Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-1.5B re-rank top-5,0.1663350576999602,0.13344622528784353,0.20194907810829377
@@ -51,12 +52,12 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.0031834460803820135,-0.008035714285714285,0.0009575251363240921
 "Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B re-rank top-10,0.0,-0.005921953075706241,0.005639179755671898
 "Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.0031834460803820135,-0.008035714285714285,0.0009575251363240921
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-5,-0.00477516912057302,-0.010591117569837985,0.0006493657715943441
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.004377238360525269,-0.008126860321833613,-0.0004683731160253327
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-10,-0.00477516912057302,-0.010591117569837985,0.0006493657715943441
-"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.004377238360525269,-0.008126860321833613,-0.0004683731160253327
-"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 re-rank top-5,0.0,-0.007706151930326698,0.006607906332482596
-"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.008356545961002786,-0.014234911590855865,-0.003398711395729359
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-5,0.029844807003581376,0.016621523034425115,0.041393109729325625
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.003581376840429765,-0.007078535551986879,0.0004220126259638855
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-10,0.11619578193394349,0.08171190392955577,0.15997416400744568
+"Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.0019896538002387586,-0.005826087146311865,0.0023598552030936514
+"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 re-rank top-5,0.01631516116195782,0.009484491645929613,0.02327851909434967
+"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,0.0031834460803820135,-0.001986873373499422,0.008695652173913044
 "Jinx + MiniLM, LR (current tool)",Cascade: Jinx + BGE-reranker-base (stacked LR),0.02347791484281735,0.01716046862855767,0.03013707114011968
 "Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.003979307600477517,-0.009196474784319402,0.00034353830444311547
 "Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.002785515320334262,-0.0072969919298126245,0.0011202667186446958
@@ -75,6 +76,7 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "INTRUDE + time (Wang et al. 2019), LR",Identical changed lines,0.31754874651810583,0.2696301043539942,0.36187481148874534
 "INTRUDE + time (Wang et al. 2019), LR",Code overlap sum (files+hunks+lines),0.21886191802626342,0.1716804857275854,0.26784831207408805
 "INTRUDE + time (Wang et al. 2019), LR",Links only (same issue / #ref),-0.008754476721050538,-0.016674970310116635,-0.0021002452986811056
+"INTRUDE + time (Wang et al. 2019), LR","Links only, no tie-break (same issue / #ref)",0.0031834460803820135,-0.00466093738069569,0.010936935899662588
 "INTRUDE + time (Wang et al. 2019), LR",MiniLM raw text,0.02586549940310386,0.014112721478628411,0.04073747700394217
 "INTRUDE + time (Wang et al. 2019), LR",MiniLM template-stripped,0.025467568643056108,0.013806813807040902,0.04070963347857071
 "INTRUDE + time (Wang et al. 2019), LR",MiniLM on diff,0.06884202148826105,0.04362490771880896,0.09605499412753804
@@ -99,9 +101,9 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "INTRUDE + time (Wang et al. 2019), LR","All signals, gradient boosting",-0.001193792280143255,-0.008412331638262781,0.005673026206207311
 "INTRUDE + time (Wang et al. 2019), LR",Cross-encoder ms-marco MiniLM re-rank top-10,0.03979307600477517,0.028551726529771806,0.0534617432811686
 "INTRUDE + time (Wang et al. 2019), LR",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,0.017906884202148827,0.011348725044964725,0.024863688720325884
-"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-base re-rank top-10,0.34619976124154395,0.31160160077405447,0.3765739803741184
+"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-base re-rank top-10,0.3418225228810187,0.3083660109302533,0.3710406204739485
 "INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,0.02626343016315161,0.018834424851285093,0.03327802405261448
-"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,0.02347791484281735,0.010696318673282254,0.0351351826176141
+"INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,0.021886191802626343,0.009881544747423357,0.03256139242118994
 "INTRUDE + time (Wang et al. 2019), LR",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,0.005571030640668524,-0.0032011830218454302,0.013194094582114556
 "INTRUDE + time (Wang et al. 2019), LR",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,-0.00716275368085953,-0.013977187545517739,-0.0013672565318272674
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-1.5B re-rank top-5,0.16354954237962593,0.1318983196357603,0.19759960948260055
@@ -116,12 +118,12 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.005968961400716275,-0.012941284316086606,-0.0004609158147481715
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B re-rank top-10,-0.002785515320334262,-0.010971234667306916,0.0038242599154057716
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.005968961400716275,-0.012941284316086606,-0.0004609158147481715
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-5,-0.007560684440907282,-0.015293628885914283,-0.0011964361174849048
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.00716275368085953,-0.013190499742533626,-0.0022620621282220775
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-10,-0.007560684440907282,-0.015293628885914283,-0.0011964361174849048
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.00716275368085953,-0.013190499742533626,-0.0022620621282220775
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 re-rank top-5,-0.002785515320334262,-0.01227774517629636,0.005136952076932162
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.011142061281337047,-0.018798539480858426,-0.005038608513477137
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-5,0.027059291683247114,0.011528498928606308,0.039096564021994816
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.006366892160764027,-0.012486146972233747,-0.0014214837306525342
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-10,0.11341026661360923,0.07941898332879165,0.15854794576643416
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.00477516912057302,-0.011131649210394848,0.000537952240131226
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 re-rank top-5,0.013529645841623557,0.006045321018328814,0.019979129504102744
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,0.0003979307600477517,-0.0055252149799791435,0.005754384266068662
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + BGE-reranker-base (stacked LR),0.020692399522483088,0.014612459933927301,0.026802893892709588
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.006764822920811779,-0.014508178250173705,-0.0013111530332797527
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.005571030640668524,-0.012673752053355835,-0.00033756449731850343
@@ -140,6 +142,7 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "contrib-guard/phoenix (bot, exact port)",Identical changed lines,0.2833267011539992,0.2395170944298235,0.3212721823039711
 "contrib-guard/phoenix (bot, exact port)",Code overlap sum (files+hunks+lines),0.18463987266215678,0.1418853221110809,0.22597414593942605
 "contrib-guard/phoenix (bot, exact port)",Links only (same issue / #ref),-0.04297652208515718,-0.058937904711868445,-0.026446556523348687
+"contrib-guard/phoenix (bot, exact port)","Links only, no tie-break (same issue / #ref)",-0.03103859928372463,-0.047542745432912766,-0.012879433756930363
 "contrib-guard/phoenix (bot, exact port)",MiniLM raw text,-0.008356545961002786,-0.023590455141677322,0.0071622209144151
 "contrib-guard/phoenix (bot, exact port)",MiniLM template-stripped,-0.008754476721050538,-0.024643334671035143,0.007557993910837835
 "contrib-guard/phoenix (bot, exact port)",MiniLM on diff,0.0346199761241544,0.012521985867387089,0.0543090411861442
@@ -164,9 +167,9 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "contrib-guard/phoenix (bot, exact port)","All signals, gradient boosting",-0.0354158376442499,-0.04801842403230961,-0.021619787481392705
 "contrib-guard/phoenix (bot, exact port)",Cross-encoder ms-marco MiniLM re-rank top-10,0.005571030640668524,-0.010267501667139849,0.023036671550846093
 "contrib-guard/phoenix (bot, exact port)",Cross-encoder ms-marco MiniLM + Jinx (avg) top-10,-0.01631516116195782,-0.029748261194296605,-0.0023456858299075044
-"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-base re-rank top-10,0.31197771587743733,0.28049055855487043,0.3409664212395874
+"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-base re-rank top-10,0.30760047751691205,0.2764296865043966,0.3365266983968125
 "contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-base + Jinx (avg) top-10,-0.007958615200955034,-0.02095242517305386,0.006476217774008675
-"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,-0.010744130521289296,-0.025643086816720256,0.004776304631460327
+"contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-v2-m3 re-rank top-10,-0.012335853561480302,-0.026917575538957732,0.002965097410048864
 "contrib-guard/phoenix (bot, exact port)",Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10,-0.02865101472343812,-0.04265430542821609,-0.014016031882197673
 "contrib-guard/phoenix (bot, exact port)",Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10,-0.041384799044966177,-0.05574110213526837,-0.02604012433670234
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-1.5B re-rank top-5,0.1293274970155193,0.08922241340763151,0.16937427282072454
@@ -181,12 +184,12 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5,-0.04019100676482292,-0.05484606233811458,-0.024650764420298864
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B re-rank top-10,-0.03700756068444091,-0.05181593343515057,-0.02154757880898286
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10,-0.04019100676482292,-0.05484606233811458,-0.024650764420298864
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-5,-0.04178272980501393,-0.05614691720306078,-0.026513000231369974
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.041384799044966177,-0.056345501041975506,-0.025627624433538113
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-10,-0.04178272980501393,-0.05614691720306078,-0.026513000231369974
-"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.041384799044966177,-0.056345501041975506,-0.025627624433538113
-"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 re-rank top-5,-0.03700756068444091,-0.051349148538516076,-0.02311297108124558
-"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.04536410664544369,-0.059426416619654414,-0.029770945544063714
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-5,-0.00716275368085953,-0.025462066346204026,0.010955958064214151
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.04058893752487067,-0.055532742506550596,-0.024993686868686905
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-10,0.07918822124950259,0.03900850863747154,0.12704682872541304
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.03899721448467967,-0.054122855731152046,-0.023213931232866376
+"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 re-rank top-5,-0.020692399522483088,-0.03314705510730853,-0.007128810609163283
+"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.033824114604058896,-0.04728758826022221,-0.019949400502462553
 "contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + BGE-reranker-base (stacked LR),-0.013529645841623557,-0.02715674026035954,0.0008750870386753919
 "contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.040986868284918425,-0.05545826203374171,-0.026133408953717366
 "contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.03979307600477517,-0.054123722992160374,-0.02482418050234144

@@ -18,7 +18,7 @@ inputs:
     default: "3"
   embed:
     description: Also use the local MiniLM text model (runs on the runner CPU, no API). "false" = lexical signals only
-    default: "true"
+    default: "false"
 runs:
   using: composite
   steps:

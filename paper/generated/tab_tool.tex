@@ -1,0 +1,8 @@
+\begin{tabular}{@{}lcccc@{}}\toprule
+Method & R@1 & Flagged & False alarms \% & Explains code \\\midrule
+\rowcolor{jinxrow}Jinx, default (lexical) & 0.917 & 47\% & 1.9 [1.3, 2.7] & yes \\
+Jinx with MiniLM & 0.927 & 46\% & 1.8 [1.2, 2.5] & yes \\
+INTRUDE + time & 0.914 & 47\% & 2.0 [1.3, 3.0] & no \\
+contrib-guard (bot) & 0.914 & 46\% & 5.5 [4.0, 7.0] & no \\
+Link rule & 0.936 & 47\% & 1.2 [0.7, 1.7] & no \\
+\bottomrule\end{tabular}

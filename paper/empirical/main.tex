@@ -10,13 +10,14 @@
 \definecolor{wingreen}{HTML}{009E73}
 \input{../generated/numbers}
 \input{../generated/numbers_extra}
+\InputIfFileExists{../generated/randlive_band}{}{}
 \begin{document}
 \title{How You Build the Queue Decides the Winner:\\Re-Evaluating Duplicate Pull Request Detection on Coding-Agent PRs}
 \author{\IEEEauthorblockN{Harshul Jain, Saurabh Yergattikar, Tanya Sah}\IEEEauthorblockA{Independent Researchers}}
 \maketitle
 
 \begin{abstract}\normalfont
-Coding agents open many pull requests (PRs) that repeat work already waiting for review. We ask how well duplicate-PR detectors work on these PRs when they are tested the way they are used: a new PR arrives, and the tool must find its duplicate among the PRs open in the repository at that moment. From the public AIDev dataset we build \nPairs{} duplicate pairs (\nCross{} opened by different authors) and \nNeg{} PRs with no duplicate, and we compare \nStrategies{} strategies, from text matching and existing bots to embeddings, re-rankers and LLM judges. We report three findings. First, duplicates are costly: for cross-author pairs, \dupLateOneH\% were flagged by a person more than an hour after the second PR opened, \dupLateOneD\% more than a day later, and in \dupEffort\% of cases someone had already commented on or reviewed the doomed PR. Second, small choices in how the open-PR queue is built change which method wins. When the queue also holds PRs closed in the previous seven days, our learned detector Jinx beats a classic research detector by \dGsevenIntrude{} points of Recall@1. When the queue holds only open PRs, as a deployed tool sees it, the two are tied (\ROnejinx{} vs \ROneintrude), and a simple rule that checks for a shared issue or a cross-reference does as well (\ROnelinks). Third, the methods differ much more in false alarms than in recall: Jinx raises \FARjinx\% false alarms, against \FARxcg\% for the best existing bot, while an LLM judge on Jinx's top five lowers this to \FARxhaiku\%. Duplicates that change different files remain hard for every method.
+Coding agents open many pull requests (PRs) that repeat work already waiting for review. A duplicate-PR detector must spot such a PR when it opens, by comparing it with the PRs that are open in the repository at that moment. We test how well detectors do this on agent PRs, using \nPairs{} duplicate pairs (\nCross{} opened by different authors) and \nNeg{} PRs with no duplicate from the public AIDev dataset. We compare \nStrategies{} strategies, from word matching and existing bots to neural text models and large language models (LLMs). Our main finding is that the way the test queue is built decides the winner. If the queue also keeps PRs closed in the last seven days, a learned detector ranks the right PR first \dGsevenIntrude{} percentage points more often than a classic research detector. If the queue holds only open PRs, as a real tool sees it, the learned detector, the classic detector and a simple rule that checks for a shared issue or a link all rank the right PR first \ROnetfidfRaw--\ROnelinks{} of the time, with no clear winner. The methods differ more in false alarms (\FARxlinks\% for the link rule and \FARjinx\% for the learned detector, against \FARxcg\% for the best existing bot) than in ranking. Duplicates are also costly: \dupLateOneD\% of cross-author duplicates are noticed only after a day. Duplicates that change different files remain hard for every method.
 \end{abstract}
 
 \section{Introduction}
@@ -24,21 +25,20 @@ AI coding agents such as Codex, Copilot, Devin, Cursor and Claude Code now open 
 
 Detecting duplicate PRs is an established research problem~\cite{li2017detecting,ren2019intrude,wang2019time,jiang2023duphunter,liao2024dupllm,galbraith2025duplicate}, and several small bots now offer it on GitHub. Most detectors were scored on balanced sets of random PR pairs~\cite{ren2019intrude}. A deployed tool faces a different task: when a PR opens, it must rank the PRs that are open at that moment and decide whether to warn anyone. Work on duplicate bug reports showed that unrealistic set-ups can make methods look better than they are~\cite{zhang2023howfar}. We find that the same is true for PRs, and that even a ``realistic'' set-up can mislead if the queue is not built exactly as the tool would see it.
 
-We first built a live-queue benchmark whose queues also kept PRs closed in the previous seven days, and our learned detector, Jinx, won clearly. An independent review of our own draft asked whether this design favoured Jinx, because one of its signals is whether the older PR is still open. It did. With open-only queues the advantage disappears. We report both results because the contrast is itself a finding about how duplicate detectors should be evaluated.
+A queue that also keeps PRs closed in the last seven days looks harmless, and our own first benchmark used it. It favours any method that knows whether the older PR is still open, and under it a learned detector, Jinx~\cite{jinxtool}, wins clearly. With open-only queues the advantage disappears. We report both designs because the contrast is itself a finding about how duplicate detectors should be evaluated.
 
 Our contributions are:
 \begin{itemize}
 \item a measurement of what duplicate agent PRs cost maintainers: how long they go unnoticed and how much review they absorb;
 \item \emph{LiveQueue}, a benchmark of \nPairs{} duplicate pairs and \nNeg{} PRs without a duplicate, built from \nPRs{} agent PRs, where each new PR comes with the PRs open at that time;
-\item a comparison of \nStrategies{} strategies, including six open-source duplicate-PR bots and five LLM judges, with repository-level confidence intervals;
-\item evidence that two evaluation choices, random pairs and recently closed PRs in the queue, change which method appears best; and
-\item Jinx, an open-source tool, with all code, scores and results.
+\item a comparison of \nStrategies{} strategies, including three open-source duplicate-PR bots and five LLM judges, with repository-level confidence intervals; and
+\item evidence that two evaluation choices, random pairs and recently closed PRs in the queue, change which method appears best.
 \end{itemize}
 
 \section{Research Questions}
 \begin{itemize}
 \item[\textbf{RQ1}] What do duplicate agent PRs cost, and how long do they go unnoticed?
-\item[\textbf{RQ2}] How well do detectors find duplicates in the real open-PR queue, and how often do they raise false alarms?
+\item[\textbf{RQ2}] How well do detectors find duplicates in the open-only queue, and how often do they raise false alarms?
 \item[\textbf{RQ3}] How much do evaluation choices change the conclusions?
 \item[\textbf{RQ4}] Which duplicates remain hard, and do LLMs help?
 \end{itemize}
@@ -51,71 +51,82 @@ We use AIDev v5~\cite{li2026aidev}, a public dataset (CC BY 4.0) of PRs opened b
 Maintainers and authors often say why they close a PR, for example ``superseded by \#123''. We search PR comments for five phrases (\emph{duplicate of}, \emph{superseded by}, \emph{in favor of}, \emph{replaced by}, \emph{same as}) followed by a PR number, as earlier datasets did~\cite{yu2018dataset,galbraith2025duplicate}. No person checked each pair, so we call these \emph{silver} labels. In each pair, the newer PR is the \emph{query} and the older PR is the duplicate the tool should find.
 
 \subsection{Building the queue}
-For each query, the queue holds the PRs in the same repository that were open when the query was created, capped at the 200 most recent, which is what the Jinx GitHub Action fetches. We keep a pair only if its duplicate is in this queue, which leaves \nPairs{} pairs; the 200-PR cap removes 29 pairs (1.6\%) whose duplicate was still open. To measure false alarms we add \nNeg{} \emph{no-duplicate queries}: merged PRs from the same repositories with no duplicate-like comment. A good tool should stay quiet on these. Link signals use only the query's own title and description, because the older PR's text in the dataset may have been edited after the duplicate was found.
+We use two names for queue designs throughout. The \emph{open-only queue} of a query holds the PRs in the same repository that were open when the query was created, capped at the 200 most recent (what a GitHub Action can fetch cheaply). The \emph{7-day queue} also holds PRs that closed less than seven days before the query. Unless stated otherwise, results use the open-only queue. We keep a pair only if its duplicate is in the queue, which leaves \nPairs{} pairs. The 200-PR cap removes \capAll{} further pairs whose duplicate was still open (\capCross{} cross-author); a deployed tool would miss these, so we also report Recall@1 with them counted as misses. To measure false alarms we add \nNeg{} \emph{no-duplicate queries}: merged PRs from the same repositories with no duplicate-like comment. A good tool should stay quiet on these. Link signals use only the query's own title and description, because the older PR's text in the dataset may have been edited after the duplicate was found.
 
-In RQ3 we compare this with the queue design of our first draft, which also kept PRs that had closed less than seven days before the query ($n=\nPairsGseven$ pairs, \nCrossGseven{} cross-author).
+In RQ3 we compare with the 7-day queue ($n=\nPairsGseven$ pairs, \nCrossGseven{} cross-author).
 
 \subsection{Relations and kinds of duplicates}
 Of the \nPairs{} pairs, \nSelf{} are \emph{self-replacements}, where the same author opened both PRs, and \nCross{} are \emph{cross-author} pairs (\nSameAgent{} with the same agent, \nCrossAgent{} with different agents). We focus on cross-author pairs, because a maintainer cannot spot them from the author's name. We also sort pairs by shared code: (A) \emph{code twin}, at least half of the changed lines identical; (B) \emph{partial overlap}; (C) \emph{same files, different code}; and (D) \emph{no shared files}, where the PRs reach the same goal through different files.
 
 \subsection{How good are the labels?}
-Some silver labels are not true duplicates; a small fix may be closed ``in favor of'' a large PR that includes it. We asked Claude Haiku 4.5 to read each pair and label it as duplicate, replacement, subsumed, related or unclear. In \auditRandN{} random pairs, \auditRandStrict\% (95\% CI \auditRandStrictLo--\auditRandStrictHi\%) were duplicates or replacements, and \auditRandLoose\% when subsumed pairs are included. For the \auditCrossN{} cross-author pairs the numbers are \auditCrossStrict\% and \auditCrossLoose\%. This is an LLM estimate, not a human check, and the same model also appears as a judge in RQ4; a human check of 100 pairs is planned.
+Some silver labels are not true duplicates; a small fix may be closed ``in favor of'' a large PR that includes it. We asked Claude Haiku 4.5 to read each pair and label it as duplicate, replacement, subsumed, related or unclear. In \auditRandN{} random pairs, \auditRandStrict\% (95\% CI \auditRandStrictLo--\auditRandStrictHi\%) were duplicates or replacements, and \auditRandLoose\% when subsumed pairs are included. For the \auditOpenN{} cross-author pairs in our open-only sample the numbers are \auditOpenStrict\% (CI \auditOpenStrictLo--\auditOpenStrictHi\%) and \auditOpenLoose\%. This is an LLM estimate, not a human check; a human check of 100 pairs is planned.
 
 \section{Strategies}
-We tested \nStrategies{} strategies in seven families: simple rules (newest PR first, TF-IDF~\cite{li2017detecting} and BM25 on raw text, template-stripped text or the diff); code overlap (shared files, overlapping line ranges, identical added lines); links (shared issue or a cross-reference); embeddings (MiniLM, BGE-small and BGE-base, UniXcoder, CodeBERT, Jina-code); existing bots (contrib-guard in two versions, Simili, PRSense, PRism, vector-triage, re-implemented with local models where they needed a paid service); learned combinations (logistic regression (LR) or gradient boosting over the INTRUDE signals plus a time feature~\cite{ren2019intrude,wang2019time}, which we call \emph{INTRUDE + time}, over the Jinx signals, and over all signals); and re-rankers and LLM judges that re-score the top 5 or 10 candidates from Jinx (three cross-encoders, one fine-tuned BGE re-ranker, Qwen2.5 at 1.5B, 7B, Coder-7B and 14B, and Claude Haiku 4.5).
+We tested \nStrategies{} strategies in seven families (Table~\ref{tab:families}). INTRUDE~\cite{ren2019intrude} is a classic research detector that combines text, code and issue signals; we add the time between the PRs~\cite{wang2019time} and call the result \emph{INTRUDE + time}. Jinx~\cite{jinxtool} is a logistic-regression (LR) combination of text, code and context signals that we release as a tool; here it is one learned strategy among several. The \emph{link rule} ranks candidates by a shared linked issue plus a mention of the candidate's PR number in the new PR, and breaks ties by TF-IDF; we also report it without the tie-break. Re-rankers and LLM judges re-score the top 5 or 10 candidates from Jinx; candidates they did not score keep Jinx's score.
 
-\begin{figure*}[t]\centering\resizebox{\textwidth}{!}{\input{../figures/arch}}
-\caption{How Jinx works. It compares a new PR with each open PR using text, code and context signals, combines them into one score, and explains each likely match in plain words.}\label{fig:arch}\end{figure*}
-
-Jinx (Fig.~\ref{fig:arch}) removes repeated agent boilerplate and compares the new PR with each open PR using text similarity (TF-IDF and a local MiniLM embedding), code overlap and context (shared issue, cross-reference, same author or agent, time gap). An LR model turns these signals into one score, and each signal that contributes becomes a short reason.
+\begin{table}[t]\centering\caption{Strategy families.}\label{tab:families}
+\small\begin{tabular}{@{}p{0.27\columnwidth}p{0.66\columnwidth}@{}}\toprule
+Family & Examples\\\midrule
+Simple rules & newest PR first; TF-IDF~\cite{li2017detecting} and BM25 (word-overlap scores that weight rare words more) on raw text, text with agent boilerplate removed, or the diff\\
+Code overlap & shared files, overlapping line ranges, identical added lines\\
+Links & shared issue, mention of the other PR's number\\
+Embeddings & small neural models that map text to vectors: MiniLM, BGE, UniXcoder, CodeBERT, Jina-code\\
+Existing bots & contrib-guard (exact port), Simili and PRSense (re-implemented with local models)\\
+Learned & LR or gradient boosting over INTRUDE + time, Jinx, or all signals\\
+Re-rankers, LLM judges & three cross-encoders and a fine-tuned BGE re-ranker (read both PRs together); Qwen2.5 1.5B/7B/Coder-7B/14B and Claude Haiku 4.5 asked whether two PRs are duplicates\\\bottomrule
+\end{tabular}\end{table}
 
 \section{How We Measure}
-All learned strategies use five-fold cross-validation in which each fold holds out whole repositories. \emph{Recall@1} is the share of queries whose true duplicate is ranked first, \emph{Recall@5} the share where it is in the top five, and \emph{MRR} rewards placing it near the top. For false alarms, each strategy gets a score threshold from its training folds (the median top score of cross-author duplicates), and we count how often the top candidate of a no-duplicate query passes it. Recall@1 is a ranking measure; at this threshold a tool actually \emph{flags} only about half of the duplicates. All 95\% confidence intervals use 2{,}000 bootstrap samples drawn by repository. Comparisons between two methods use paired differences on the same queries. Subgroup results are exploratory.
+All learned strategies use five-fold cross-validation in which each fold holds out whole repositories. \emph{Recall@1} is the share of queries whose true duplicate is ranked first, and \emph{Recall@5} the share where it is in the top five.
 
-Before running the study we fixed one success test for Jinx: a clear, CI-backed gain over the best baseline on cross-author Recall@5. It fails in every setting we report.
+For false alarms, each strategy gets a score threshold from its training folds (the median top score of cross-author duplicates), and we count how often the top candidate of a held-out no-duplicate query passes it. Recall@1 is a ranking measure; at this threshold a tool actually \emph{flags} only about half of the duplicates.
+
+All 95\% confidence intervals (CIs) use \nBoot{} bootstrap samples drawn by repository. Comparisons between two methods use paired differences, with both methods scored on the same queries. CIs are not adjusted for multiple comparisons, so a single CI that just excludes zero is weak evidence; subgroup results are exploratory.
+
+Before the study we fixed one success test: Jinx's cross-author Recall@5 must beat the strongest baseline that does not use Jinx's signals, with a 95\% CI above zero. It fails in every setting. On open-only queues all strong methods reach Recall@5 of at least \RFiveintrude, so no method can show a clear gain.
 
 \section{Results}
 \subsection{RQ1: What do duplicates cost?}
-For each labelled pair we found the comment that marked the duplicate and measured the time from the second PR opening, the first moment a tool could warn, to that comment. For cross-author pairs the median was \dupDelayMedMin{} minutes, but \dupLateOneH\% took more than an hour, \dupLateOneD\% more than a day and \dupLateSevenD\% more than a week (mean \dupDelayMeanH{} hours). In \dupEffort\% of cross-author cases a person had commented on or reviewed the PR that was later closed before the duplicate was noticed: \dupComments{} human comments and \dupReviews{} reviews in total. The closed PRs added a median of \dupLinesMed{} lines each, and across all relations \dupAllLines{} million added lines were thrown away.
+For each cross-author pair in our open-only sample ($n=\dupN$) we found the first comment by a person that marked the duplicate and measured the time from the second PR opening, the first moment a tool could warn, to that comment. For cross-author pairs the median was \dupDelayMedMin{} minutes, but \dupLateOneH\% took more than an hour, \dupLateOneD\% more than a day and \dupLateSevenD\% more than a week (mean \dupDelayMeanH{} hours). In \dupEffort\% of cases a person commented on or reviewed the PR that was later closed in the window between the second PR opening and the duplicate comment: \dupComments{} human comments and \dupReviews{} reviews in total. The closed PRs added a median of \dupLinesMed{} lines; we do not know how much of that code was reused in the PR that was kept.
 
-If Jinx had commented when each new PR opened, it would have named the right duplicate in \replayWarn\% of cross-author cases, \replayWarnLate\% of those that people took more than a day to notice, at \replayFA{} false alarms per 100 PRs without a duplicate. This replay is an upper bound on attention saved, since a warning still has to be read.
+We then replayed each pair: had a detector commented when the new PR opened, at its own threshold, would it have named the right duplicate? Jinx would have done so in \replayWarn\% of cases (CI \replayWarnLo--\replayWarnHi\%), INTRUDE + time in \replayWarnIntrude\% and contrib-guard in \replayWarnCg\%, with \replayFA, \replayFAIntrude{} and \replayFACg{} false alarms per 100 PRs without a duplicate. A further \replayWrong\% of Jinx's warnings on these pairs named the wrong PR. The benefit is therefore not specific to one detector, and it is an upper bound: a warning still has to be read, and duplicates that no one marked are not counted.
 
-\subsection{RQ2: Detectors on the real queue}
+\subsection{RQ2: Detectors on the open-only queue}
 \begin{table}[t]\centering
-\caption{Cross-author pairs on real-use queues ($n=\nCross$); false alarms on \nNeg{} PRs without a duplicate, with 95\% CIs. Underlined: best baseline. Green cell and $\dagger$: significantly more false alarms than Jinx; $\ddagger$: significantly fewer. The last column is Jinx minus the row in Recall@1 points, with a paired 95\% CI.}\label{tab:main}
-\resizebox{\columnwidth}{!}{\input{../generated/tab_main}}\end{table}
+\caption{Cross-author pairs on open-only queues ($n=\nCross$) and false alarms on \nNeg{} PRs without a duplicate. Bold: best in column. $\dagger$/$\ddagger$: more/fewer false alarms than Jinx, paired 95\% CI excludes zero. Last column: row minus Jinx in Recall@1 percentage points, paired 95\% CI (unadjusted). Recall@5 differences are all within noise.}\label{tab:main}
+\setlength{\tabcolsep}{3pt}\footnotesize\resizebox{\columnwidth}{!}{\input{../generated/tab_main}}\end{table}
 
-Table~\ref{tab:main} gives the main results. On real-use queues, the strong methods are close: Jinx reaches \ROnejinx, INTRUDE + time \ROneintrude, contrib-guard \ROnecg, plain TF-IDF \ROnetfidfRaw{} and the link rule \ROnelinks. Every Recall@1 difference between Jinx and these baselines has a confidence interval that includes zero, and so does Recall@5 (Jinx \RFivejinx{}, INTRUDE + time \RFiveintrude).
+Table~\ref{tab:main} gives the main results. On open-only queues, the strong methods are close: Jinx reaches \ROnejinx, INTRUDE + time \ROneintrude, contrib-guard \ROnecg, plain TF-IDF \ROnetfidfRaw{} and the link rule \ROnelinks{} (\ROnelinksraw{} without its TF-IDF tie-break). Every Recall@1 difference between Jinx and these baselines has a CI that includes zero, and so does Recall@5 (Jinx \RFivejinx{}, INTRUDE + time \RFiveintrude). Counting the \capCross{} cross-author pairs hidden by the 200-PR cap as misses lowers Jinx's Recall@1 to \ROnejinxDeployed.
 
 \begin{figure}[t]\centering\includegraphics[width=\columnwidth]{../generated/fig_far.pdf}
-\caption{False alarms on PRs with no duplicate, with 95\% CIs. Each method uses the threshold at which it flags about half of the cross-author duplicates.}\label{fig:far}\end{figure}
+\caption{False alarms on PRs with no duplicate (open-only queues), with 95\% CIs. Each method uses the threshold at which it flags about half of the cross-author duplicates.}\label{fig:far}\end{figure}
 
-The methods differ more in how often they cry wolf (Fig.~\ref{fig:far}). Jinx raises \FARjinx\% false alarms. The best existing bot raises \FARxcg\% (difference \dFARcg{} points, CI \dFARcgLo{} to \dFARcgHi) and TF-IDF \FARxtfidf\% (\dFARtfidf, CI \dFARtfidfLo{} to \dFARtfidfHi). INTRUDE + time (\FARintrude\%) and the link rule (\FARxlinks\%) are not clearly different from Jinx.
+The methods differ more in how often they raise false alarms (Fig.~\ref{fig:far}). Jinx raises \FARjinx\% false alarms. The best existing bot raises \FARxcg\% (difference \dFARcg{} points, CI \dFARcgLo{} to \dFARcgHi) and TF-IDF \FARxtfidf\% (\dFARtfidf, CI \dFARtfidfLo{} to \dFARtfidfHi). INTRUDE + time (\FARintrude\%) is not clearly different from Jinx, and the link rule (\FARxlinks\%) is at least as quiet.
 
 \subsection{RQ3: Evaluation choices change the winner}
 \begin{figure}[t]\centering\includegraphics[width=\columnwidth]{../generated/fig_queues.pdf}
-\caption{Cross-author Recall@1 under two queue designs. Orange: queues that also hold PRs closed in the previous 7 days. Blue: real-use queues with open PRs only, with 95\% CIs. The large gaps between methods in the first design vanish in the second.}\label{fig:queues}\end{figure}
+\caption{Cross-author Recall@1 under the two queue designs, with 95\% CIs. Orange: 7-day queue. Blue: open-only queue. The large gaps between methods in the 7-day queue vanish in the open-only queue.}\label{fig:queues}\end{figure}
 
-Fig.~\ref{fig:queues} compares the two queue designs. With PRs closed in the previous seven days in the queue, Jinx reaches \Gsevenjinx, INTRUDE + time \Gsevenintrude, contrib-guard \Gsevencg{} and TF-IDF \Gseventfidf; Jinx's lead over INTRUDE + time is \dGsevenIntrude{} points (CI \dGsevenIntrudeLo{} to \dGsevenIntrudeHi). Closed PRs are always wrong answers, and Jinx has a signal for ``the older PR is still open''. Removing that signal drops Jinx to \abJinxNoOpen; giving it to INTRUDE + time lifts that method to \abIntrudeOpen. Most of the gain came from the queue design, not from better duplicate detection.
+Fig.~\ref{fig:queues} compares the two queue designs. In the 7-day queue, Jinx reaches \Gsevenjinx, INTRUDE + time \Gsevenintrude, contrib-guard \Gsevencg{} and TF-IDF \Gseventfidf; Jinx's lead over INTRUDE + time is \dGsevenIntrude{} points (CI \dGsevenIntrudeLo{} to \dGsevenIntrudeHi). In that design closed PRs were almost always wrong answers (the true duplicate was already closed in only \nGraceCand{} of \nCrossGseven{} cross-author pairs), and Jinx has a signal for ``the older PR is still open''. In the 7-day queue, removing that signal drops Jinx to \abJinxNoOpen; giving it to INTRUDE + time lifts that method to \abIntrudeOpen. Most of the gain came from the queue design, not from better duplicate detection.
 
 \begin{figure}[t]\centering\includegraphics[width=\columnwidth]{../generated/fig_randlive.pdf}
-\caption{Each dot is one strategy: AUC on random PR pairs (x) against live-queue Recall@1 (y).}\label{fig:randlive}\end{figure}
+\caption{Each dot is one strategy. AUC on random PR pairs (x; the chance that a random duplicate pair scores higher than a random non-duplicate pair) against open-only queue Recall@1 (y). The two agree on which methods are weak, but in the shaded band \bandN{} combined methods have AUC above 0.98 and Recall@1 from \bandLo{} to \bandHi.}\label{fig:randlive}\end{figure}
 
-Random-pair scoring hides differences in the other direction (Fig.~\ref{fig:randlive}). The two scorings agree on the broad order (Kendall $\tau=\kendallTau$), mostly because weak methods are weak under both. Among strong methods, random-pair AUC is close to 1 and says little about which method ranks the right PR first.
+Random pairs have the opposite problem: they make strong methods look the same (Fig.~\ref{fig:randlive}). The two scorings agree on the broad order (Kendall $\tau=\kendallTau$, a rank agreement from $-1$ to 1), mostly because weak methods are weak under both. Among strong methods, random-pair AUC is close to 1 and says little about which method ranks the right PR first.
 
 \subsection{RQ4: Hard duplicates and LLMs}
 \begin{figure}[t]\centering\includegraphics[width=\columnwidth]{../generated/fig_heatmap.pdf}
-\caption{Recall@1 by kind of duplicate (number of pairs in brackets), cross-author unless noted. Best value per row in bold; Jinx outlined. Small groups have wide uncertainty.}\label{fig:heatmap}\end{figure}
+\caption{Recall@1 by kind of duplicate, cross-author unless noted. Best value per row in bold (rows with $n\ge30$ only); Jinx outlined. *The link rule falls back to TF-IDF when there is no link.}\label{fig:heatmap}\end{figure}
 
-Code twins are easy: every combined method ranks them first at least \classAMin{} of the time (Fig.~\ref{fig:heatmap}). Duplicates that share no files (class D, $n=\nClassD$) are harder: Jinx \ROnejinxClassD, INTRUDE + time \ROneintrudeClassD, Haiku + Jinx \ROnehaikuClassD. The link rule does well on these, which suggests that many intent-level duplicates are found through a shared issue. On the \nNoLink{} cross-author pairs with no link at all, Jinx reaches \ROnejinxNoLink{} and INTRUDE + time \ROneintrudeNoLink.
+Code twins are easy: every combined method ranks them first at least \classAMin{} of the time (Fig.~\ref{fig:heatmap}). Duplicates that share no files (class D, $n=\nClassD$) are harder: Jinx \ROnejinxClassD, INTRUDE + time \ROneintrudeClassD. The link rule and contrib-guard (\ROnecgClassD) both beat Jinx here, which suggests that many intent-level duplicates are found through a shared issue or a similar description. On the \nNoLink{} cross-author pairs with no link at all, Jinx reaches \ROnejinxNoLink{} and INTRUDE + time \ROneintrudeNoLink.
 
 \begin{figure}[t]\centering\includegraphics[width=\columnwidth]{../generated/fig_operating.pdf}
-\caption{Share of cross-author duplicates ranked first and flagged, for a fixed false-alarm budget on PRs without a duplicate.}\label{fig:operating}\end{figure}
+\caption{Share of cross-author duplicates ranked first and flagged, for a fixed false-alarm budget on PRs without a duplicate. Thresholds are set on training folds; the curves are descriptive (no CIs). Star: Jinx at its shipped threshold.}\label{fig:operating}\end{figure}
 
-LLM judges do not rank more duplicates first: Claude Haiku 4.5 averaged with Jinx reaches \ROnehaiku, within noise of Jinx, and the Qwen judges add nothing. They help in a different way. Averaging Haiku with Jinx lowers false alarms to \FARxhaiku\% (CI of the difference \dFARhaikuLo{} to \dFARhaikuHi{} points), and at a 1\% false-alarm budget it catches \OConehaiku\% of cross-author duplicates against \OConejinx\% for Jinx and \OConelinks\% for the link rule (Fig.~\ref{fig:operating}). This costs an API call per candidate, and our run cost \$\costHaiku.
+LLM judges, asked whether two PRs are duplicates, do not rank more duplicates first. Qwen2.5-14B averaged with Jinx on Jinx's top five reaches \ROneqwenFourteenAvg{} (Jinx \ROnejinx) with \FARxqwen\% false alarms (CI of the difference \dFARqwenLo{} to \dFARqwenHi{} points), so it is not clearly quieter either, and it needs a GPU. At a strict 1\% false-alarm budget the link rule catches \OConelinks\% of cross-author duplicates, against \OConejinx\% for Jinx and \OConeintrude\% for INTRUDE + time (Fig.~\ref{fig:operating}). Our Claude Haiku 4.5 scores were computed for the 7-day queue and cover only \judgeCovHaiku\% of the current top-5 candidates, so we do not report Haiku results for the open-only queue.
 
 \begin{figure}[t]\centering\includegraphics[width=\columnwidth]{../generated/fig_pareto.pdf}
-\caption{Accuracy against time per new PR (median). Jinx times are end to end for the installed package on 4 CPU threads; added models are measured on top of Jinx with MiniLM.}\label{fig:pareto}\end{figure}
+\caption{Cross-author Recall@1 (with 95\% CI) against time per new PR (median, log scale). Jinx times are for the installed package on 4 CPU threads, excluding GitHub API calls and model loading; added models are measured on top of Jinx with MiniLM. Differences in Recall@1 are within noise.}\label{fig:pareto}\end{figure}
 
 Fig.~\ref{fig:pareto} shows cost. Without MiniLM, Jinx needs \latJinx\,ms per PR at the median (\latJinxPninety\,ms at the 90th percentile); with MiniLM, \latMini\,s (\latMiniPninety\,s). Re-rankers and LLM judges add more time without a clear gain in Recall@1.
 
@@ -124,18 +135,18 @@ Fig.~\ref{fig:pareto} shows cost. Without MiniLM, Jinx needs \latJinx\,ms per PR
 
 \emph{Links.} People who close a duplicate often link the other PR, which makes link signals look strong. We count only links in the new PR's own text and report pairs with no link.
 
-\emph{Queue design.} The seven-day window was our own earlier choice and was stated in our data card, but none of us saw its effect until an independent review. Other choices, such as the 200-PR cap, may matter too.
+\emph{Queue design.} Our first benchmark used the 7-day queue, which shows how easily such a choice slips in. Other choices may matter too; the 200-PR cap alone hides \capCross{} cross-author duplicates.
 
-\emph{Generality.} We use one dataset and only agent PRs, so we cannot compare agent and human duplicates. Some bots were re-implemented and may behave differently from the deployed versions.
+\emph{Generality.} We use one dataset and only agent PRs, so we cannot compare agent and human duplicates. Two bots were re-implemented and may behave differently from the deployed versions. The cost and replay analyses use historical comments only; no detector was run on live repositories.
 
 \section{Related Work}
 Li et al.\ detected duplicate PRs with TF-IDF and ranked earlier PRs for each new PR~\cite{li2017detecting}, and released DupPR~\cite{yu2018dataset}. INTRUDE added code and issue signals~\cite{ren2019intrude}, and later work added time~\cite{wang2019time}, graph embeddings~\cite{jiang2023duphunter}, LLM summaries~\cite{liao2024dupllm} and issue-to-PR links~\cite{galbraith2025duplicate}; see the review in~\cite{benchekaya2026slr} and studies of competing PRs~\cite{zhang2018competing,li2022redundancy}. These works studied PRs by people and did not test how queue construction affects results. Studies of failed agent PRs list duplicates among the main causes~\cite{ehsani2026fail,alam2026unmerged,nakashima2026rejected,abujadallah2026rejection}; others study conflicts between concurrent agent PRs~\cite{xu2026conflicts}, coordination before a PR exists~\cite{sarkar2026before} and cross-references between PRs~\cite{khemissi2026humans}. For duplicate bug reports, realistic evaluation shrank reported gains~\cite{zhang2023howfar}, and CUPID combines an LLM with retrieval~\cite{cupid2023}.
 
 \section{Conclusion}
-Duplicate agent PRs cost maintainers real attention, and a warning when the PR opens could save much of it. But which detector looks best depends on how the evaluation is built. Random pairs make strong methods look alike, and keeping recently closed PRs in the queue rewarded a signal that a deployed tool cannot use. On the real open-PR queue, a learned combination, a classic detector, plain TF-IDF and a simple link rule rank duplicates about equally well; they differ mainly in false alarms, where an LLM judge helps. We recommend that duplicate-PR studies build queues exactly as the tool will see them, report false alarms with confidence intervals, and report a simple link rule as a baseline.
+Duplicate agent PRs cost maintainers real attention, and a warning when the PR opens could save much of it. But which detector looks best depends on how the evaluation is built. Random pairs make strong methods look alike, and keeping recently closed PRs in the queue rewarded a signal that only helps when closed PRs are in the queue. On the open-only queue, a learned combination, a classic detector, plain TF-IDF and a simple link rule rank duplicates about equally well; they differ mainly in false alarms. We recommend that duplicate-PR studies build queues exactly as the tool will see them, report false alarms with confidence intervals, and report a simple link rule as a baseline.
 
 \section*{Data Availability}
-The benchmark, code, raw scores, logs and the Jinx tool will be released under open licences with the camera-ready version.
+The benchmark, code, raw scores and logs will be released under open licences with the camera-ready version; the Jinx tool is described separately~\cite{jinxtool}.
 \bibliographystyle{IEEEtran}
 \bibliography{../refs}
 \end{document}

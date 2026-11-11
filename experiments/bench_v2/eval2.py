@@ -10,7 +10,7 @@ from sklearn.metrics import roc_auc_score
 from scipy.stats import kendalltau
 D = "/home/ubuntu/research/prdupecheck/data/"
 OUT = os.environ.get("OUT", "/home/ubuntu/research/prdupecheck/jinx_pr/experiments/results/"); os.makedirs(OUT, exist_ok=True)
-NB = int(os.environ.get("NB", 500))
+NB = int(os.environ.get("NB", 2000))
 B = pickle.load(open(D + "bench.pkl", "rb")); Q = B["queries"]
 P = pd.read_parquet(D + "pull_request.parquet", columns=["id", "repo_url", "title", "number", "user", "agent"]).set_index("id")
 F = pd.read_parquet(D + "features.parquet")
@@ -19,7 +19,10 @@ F = F.merge(pd.read_parquet(D + "feat_bm25.parquet"), on=["qi", "cand"], how="le
 # QUEUE=grace7: the original queues, which also hold PRs closed in the previous 7 days (results_grace7/).
 QUEUE = os.environ.get("QUEUE", "open200")
 if QUEUE == "open200":
-    F = F[F.cand_open > 0].copy(); F = F[F.groupby("qi").log_gap_hours.rank(method="first") <= 200].reset_index(drop=True)
+    F = F[F.cand_open > 0].copy(); F["_rk"] = F.groupby("qi").log_gap_hours.rank(method="first")
+    CAP_DROPPED = sorted(int(q) for q in set(F[F.gold & (F._rk > 200)].qi)); F = F[F._rk <= 200].drop(columns="_rk").reset_index(drop=True)
+else:
+    CAP_DROPPED = []
 qidx = np.array([Q[q]["q"] for q in F.qi])
 # Forward-only mentions: count a link only if the new PR's own title/body names the older PR. The older PR's text in the
 # AIDev snapshot may have been edited after the duplicate was found, which a live run would not see.
@@ -60,6 +63,7 @@ add("Changed-files Jaccard", "2 code", F.file_jacc); add("Hunk overlap", "2 code
 add("Identical changed lines", "2 code", F.line_contain)
 add("Code overlap sum (files+hunks+lines)", "2 code", F.file_jacc + F.hunk_overlap + F.line_contain)
 add("Links only (same issue / #ref)", "3 links", F.same_issue + F.mention_ref + 1e-3 * F.text_tfidf_raw)
+add("Links only, no tie-break (same issue / #ref)", "3 links", F.same_issue + F.mention_ref)
 add("MiniLM raw text", "4 embedding", F.cos_raw); add("MiniLM template-stripped", "4 embedding", F.emb_cos)
 add("MiniLM on diff", "4 embedding", F.cos_diff)
 for tag, nm in [("bge_raw", "BGE-small raw text"), ("bge_stripped", "BGE-small template-stripped"), ("bge_diff", "BGE-small on diff"), ("bgebase_stripped", "BGE-base template-stripped"), ("unix_diff", "UniXcoder (code model) on diff"), ("unix_stripped", "UniXcoder template-stripped text"), ("codebert_diff", "CodeBERT (mean-pooled) on diff"), ("jinacode_diff", "Jina code embeddings v2 on diff")]:
@@ -106,6 +110,7 @@ BASE = "Jinx + MiniLM, LR (current tool)"
 F["_r"] = F.groupby("qi")[BASE].rank(ascending=False, method="first")
 F.loc[F._r <= 10, ["qi", "cand", BASE, "_r"]].rename(columns={BASE: "base", "_r": "rank"}).to_parquet(D + "top10.parquet")
 xq_all = meta.index[(~meta.neg) & (meta.self == False)]
+COVER = {}
 def rerank(name, file, col, k, combine=False, scope=None, sig=False, fam="8 re-ranker on top-k"):
     if not os.path.exists(D + file): return
     R_ = pd.read_parquet(D + file)[["qi", "cand", col]]
@@ -115,7 +120,9 @@ def rerank(name, file, col, k, combine=False, scope=None, sig=False, fam="8 re-r
     s = x[col].values.astype(float)
     if sig: s = 1 / (1 + np.exp(-s))
     if combine: s = 0.5 * s + 0.5 * x[BASE].values
-    val = np.where(covered & (x._r <= k) & ~np.isnan(s), 10 + np.nan_to_num(s), x[BASE].values)
+    inband = covered & (x._r <= k)
+    COVER[name] = float((inband & ~np.isnan(s)).sum() / max(inband.sum(), 1))
+    val = np.where(inband, 10 + np.where(np.isnan(s), x[BASE].values, s), x[BASE].values)
     add(name, fam, val)
 negset = set(meta.index[meta.neg])
 rerank("Cross-encoder ms-marco MiniLM (CPU) re-rank top-10", "ce_scores.parquet", "ce", 10, sig=True)
@@ -145,7 +152,8 @@ def stack(name, files):
         trm = top & x.qi.isin(set(meta.index[tr])) & ~x.other_gold; tem = top & x.qi.isin(set(meta.index[te]))
         sc = StandardScaler().fit(x.loc[trm, cols]); mdl = LogisticRegression(C=1.0, class_weight="balanced", max_iter=3000).fit(sc.transform(x.loc[trm, cols]), x.loc[trm, "y"])
         x.loc[tem, "s"] = mdl.predict_proba(sc.transform(x.loc[tem, cols]))[:, 1]
-    add(name, "10 stacked cascade (ours)", np.where(x.s.notna(), 10 + x.s.fillna(0), x[BASE].values))
+    COVER[name] = float(top.sum() / max((x._r <= 10).sum(), 1))
+    add(name, "10 stacked cascade (ours)", np.where(x.s.notna(), 10 + x.s.fillna(0), np.where(x._r <= 10, 10 + x[BASE], x[BASE])))
 stack("Cascade: Jinx + BGE-reranker-base (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase")])
 stack("Cascade: Jinx + Qwen2.5-7B judge (stacked LR)", [("llm_qwen7.parquet", "p_yes")])
 stack("Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR)", [("llm_qwencoder7.parquet", "p_yes")])
@@ -219,11 +227,16 @@ for c in METHODS:
     FARR[c] = np.array(far, float)
     lo, hi = boot(FARR[c][:, None], meta.repo.reindex(fq))
     fa.append({"family": S[c], "method": c, "FAR": np.mean(far), "FAR lo": lo[0], "FAR hi": hi[0], "cross-author correct alerts": np.mean(hit)})
-    nv = np.sort(t1.reindex(negq).values)
     for target in [0.01, 0.02, 0.05, 0.10, 0.20]:
-        thr = nv[int((1 - target) * len(nv))]
-        curve.append({"method": c, "FAR target": target, "cross-author detected (top-1 correct, above thr)":
-                      float(np.mean((t1.reindex(xq).values > thr) & (R[c].reindex(xq).values == 1)))})
+        det, fal, dq, nq = [], [], [], []
+        for tr, te in folds:
+            nv = np.sort(t1.reindex([q for q in meta.index[tr] if meta.neg[q]]).values); thr = nv[min(int((1 - target) * len(nv)), len(nv) - 1)]
+            tex = [q for q in meta.index[te] if q in set(xq)]; ten = [q for q in meta.index[te] if meta.neg[q]]
+            det += list((t1.reindex(tex).values > thr) & (R[c].reindex(tex).values == 1)); dq += tex
+            fal += list(t1.reindex(ten).values > thr); nq += ten
+        det = np.array(det, float); lo, hi = boot(det[:, None], meta.repo.reindex(dq))
+        curve.append({"method": c, "FAR target": target, "cross-author detected (top-1 correct, above thr)": det.mean(),
+                      "detected lo": lo[0], "detected hi": hi[0], "realised FAR": float(np.mean(fal))})
 fpd = []
 for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR", "contrib-guard/phoenix (bot, exact port)"]:
     for c in METHODS:
@@ -262,7 +275,8 @@ if os.path.exists(D + "llm_haiku45.parquet"):
     if os.path.exists(D + "llm_haiku45_cost.json"): lat["claude haiku45 API"].update(json.load(open(D + "llm_haiku45_cost.json")))
 json.dump({"latency": lat, "kendall_tau random-pair AUC vs live-queue cross-author R@1": [tau.statistic, tau.pvalue],
            "classes": {str(k): v for k, v in meta[lab].cls.value_counts().items()}, "n_methods": len(METHODS),
-           "gb_features": ALL}, open(OUT + "summary.json", "w"), indent=1, default=float)
+           "gb_features": ALL, "n_bootstrap": NB, "judge_coverage": COVER,
+           "cap_dropped": {"all": len(CAP_DROPPED), "cross-author": sum(1 for q in CAP_DROPPED if not Q[q]["self"])}}, open(OUT + "summary.json", "w"), indent=1, default=float)
 pd.set_option("display.width", 250); pd.set_option("display.max_rows", 500)
 for gname in ["cross-author", "all labelled"]:
     print("\n==", gname); print(res[res.group == gname].sort_values("R@1", ascending=False)[["family", "method", "R@1", "R@5", "MRR"]].round(3).to_string(index=False))

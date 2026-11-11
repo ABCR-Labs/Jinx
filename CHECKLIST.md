@@ -54,3 +54,15 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [ ] H: GitHub token (read-only, public repos) for a shadow-mode run on live repos
 - [ ] D: second review round on the reframed papers
 
+
+## Round-2 review (paper/reviews/round2/)
+- [x] LLM/re-ranker rows: unscored candidates now keep Jinx's score; judge coverage stored in `summary.json`
+- [x] Cost analysis on the open-only sample, human flags only, effort counted only after the second PR opened
+- [x] Replay compares Jinx, INTRUDE + time and contrib-guard, with repo-bootstrap CIs and wrong-PR warnings
+- [x] 200-PR cap misses reported (11 cross-author); deployed Recall@1 with them counted as misses
+- [x] Package `mention_ref` is forward-only, matching training; Action default `embed: "false"`
+- [x] Link rule without TF-IDF tie-break reported; table redesigned; consistent figure colours and names
+- [x] Empirical paper no longer claims Jinx as a contribution; tool demo cites the study; shared table/figure removed from the demo
+- [ ] Decide: re-run Claude Haiku on open-only top-5 candidates (~$1.2) — current scores cover 30%, so Haiku results are omitted
+- [ ] Make repo public, publish `jinx-pr` on PyPI, record demo video, add an Action PR-comment screenshot (tool-track availability)
+- [ ] Human 100-pair label check

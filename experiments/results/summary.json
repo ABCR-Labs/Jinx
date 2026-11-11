@@ -223,8 +223,8 @@
   }
  },
  "kendall_tau random-pair AUC vs live-queue cross-author R@1": [
-  0.6819937613864485,
-  1.2184959809442045e-15
+  0.6997644399081561,
+  1.0999629281574727e-16
  ],
  "classes": {
   "A. code twin (>=50% identical changed lines)": 951,
@@ -232,7 +232,7 @@
   "D. no shared files (intent-level)": 117,
   "C. same files, different code": 41
  },
- "n_methods": 66,
+ "n_methods": 67,
  "gb_features": [
   "text_tfidf",
   "title_tfidf",
@@ -262,5 +262,44 @@
   "cos_unix_stripped",
   "cos_codebert_diff",
   "cos_jinacode_diff"
- ]
+ ],
+ "n_bootstrap": 2000,
+ "judge_coverage": {
+  "Cross-encoder ms-marco MiniLM re-rank top-10": 0.9151713487277541,
+  "Cross-encoder ms-marco MiniLM + Jinx (avg) top-10": 0.9151713487277541,
+  "Cross-encoder BGE-reranker-base re-rank top-10": 0.9151713487277541,
+  "Cross-encoder BGE-reranker-base + Jinx (avg) top-10": 0.9151713487277541,
+  "Cross-encoder BGE-reranker-v2-m3 re-rank top-10": 0.9151713487277541,
+  "Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10": 0.9151713487277541,
+  "Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-1.5B re-rank top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-1.5B + Jinx (avg) top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-1.5B re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-1.5B + Jinx (avg) top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-7B re-rank top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-7B + Jinx (avg) top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-7B re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-7B + Jinx (avg) top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-Coder-7B re-rank top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-Coder-7B re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-14B re-rank top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-14B + Jinx (avg) top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-14B re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-14B + Jinx (avg) top-10": 0.9151713487277541,
+  "LLM judge Claude Haiku 4.5 re-rank top-5": 0.29767358304140845,
+  "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5": 0.29767358304140845,
+  "Cascade: Jinx + BGE-reranker-base (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + Qwen2.5-7B judge (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + Qwen2.5-14B judge (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + fine-tuned BGE-reranker (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR)": 0.9151713487277541
+ },
+ "cap_dropped": {
+  "all": 29,
+  "cross-author": 11
+ }
 }
