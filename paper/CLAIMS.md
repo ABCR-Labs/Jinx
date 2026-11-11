@@ -18,3 +18,6 @@ Every number in either paper must come from a file below. Numbers in the LaTeX c
 | Links-only R@1 (label bias) | 0.839 | `strategies_by_group.csv` |
 | 23.7% of failed agent PRs are duplicates | 142 / 600 | Ehsani et al. 2026 (arXiv:2601.15195) |
 | Jinx median CPU latency | 22 ms/query (p90 229) | `experiments/results/summary.json` -> `latency` -> `lexical features ms/query` |
+| Silver-label precision, strict (random 200) | 0.790 [0.735, 0.845] | `experiments/label_audit/audit_random200_summary.json` |
+| Silver-label precision, strict (cross-author 342) | 0.848 [0.810, 0.886] | `experiments/label_audit/audit_cross_summary.json` |
+| Jinx - INTRUDE R@1 on audit-valid cross-author (n=290) | +7.6 [+3.1, +10.8] | `experiments/label_audit/clean_subset_results.json` |
