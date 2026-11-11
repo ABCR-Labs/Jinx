@@ -49,7 +49,7 @@ class Match:
 
 
 def load_weights(name: str) -> dict:
-    return json.loads(resources.files("agentdup").joinpath(f"data/{name}").read_text())
+    return json.loads(resources.files("jinx_pr").joinpath(f"data/{name}").read_text())
 
 
 class Detector:

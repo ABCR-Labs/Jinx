@@ -1,4 +1,4 @@
-"""Zero-shot cross-encoder (ms-marco MiniLM-L6) re-ranking of AgentDup's top-10 for every benchmark query."""
+"""Zero-shot cross-encoder (ms-marco MiniLM-L6) re-ranking of Jinx's top-10 for every benchmark query."""
 import pickle, time, json, numpy as np, pandas as pd, torch
 from sentence_transformers import CrossEncoder
 from pairtext import pr_text, D

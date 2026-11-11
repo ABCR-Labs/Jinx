@@ -1,0 +1,8 @@
+{
+ "tag": "ce_msmarco",
+ "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+ "pairs": 43591,
+ "gpu": "L4",
+ "seconds": 41.6,
+ "ms_per_pair_gpu": 0.954
+}
