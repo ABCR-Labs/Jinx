@@ -52,7 +52,7 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [x] D: shipped weights retrained on real-use queues; Action `embed` input (MiniLM on by default); end-to-end package latency (`experiments/bench_v2/package_latency.py`)
 - [ ] H: 100-pair human label check (two labellers)
 - [ ] H: GitHub token (read-only, public repos) for a shadow-mode run on live repos
-- [ ] D: second review round on the reframed papers
+- [x] D: second review round on the reframed papers (fixes below)
 
 
 ## Round-2 review (paper/reviews/round2/)
