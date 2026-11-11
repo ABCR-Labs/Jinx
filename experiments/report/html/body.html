@@ -1,7 +1,7 @@
 <div id="root"></div>
 <script type="text/jsx">
 const D = data;
-const BASE = "Doppel + MiniLM, LR (current tool)", WANG = "INTRUDE + time (Wang et al. 2019), LR", CG = "contrib-guard/phoenix (bot, exact port)";
+const BASE = "Jinx + MiniLM, LR (current tool)", WANG = "INTRUDE + time (Wang et al. 2019), LR", CG = "contrib-guard/phoenix (bot, exact port)";
 const famKey = (f) => parseInt(f, 10);
 const families = [...new Set(D.rows.map((r) => r.f))].sort((a, b) => famKey(a) - famKey(b));
 const famColor = Object.fromEntries(families.map((f) => {
@@ -79,7 +79,7 @@ function Strategies() {
 
 function ByClass() {
   const cols = [BASE, "All signals, LR", WANG, CG, "Links only (same issue / #ref)", "TF-IDF raw text (Li et al. 2017)", "BGE-small template-stripped"];
-  const short = { [BASE]: "Doppel", "All signals, LR": "All signals LR", [WANG]: "INTRUDE+time", [CG]: "contrib-guard", "Links only (same issue / #ref)": "Links only", "TF-IDF raw text (Li et al. 2017)": "TF-IDF", "BGE-small template-stripped": "BGE-small" };
+  const short = { [BASE]: "Jinx", "All signals, LR": "All signals LR", [WANG]: "INTRUDE+time", [CG]: "contrib-guard", "Links only (same issue / #ref)": "Links only", "TF-IDF raw text (Li et al. 2017)": "TF-IDF", "BGE-small template-stripped": "BGE-small" };
   return (
     <div className="flex flex-col gap-3">
       <Text size={12} className="text-secondary">Recall@1 per duplicate class or relation. The best strategy per row is shown on the right; bold = highest of the listed columns.</Text>
@@ -137,7 +137,7 @@ function Paired() {
 
 function FalseAlarms() {
   const fa = [...D.fa].sort((a, b) => a.far - b.far);
-  const pick = [BASE, "All signals, LR", WANG, CG, "LLM judge Claude Haiku 4.5 + Doppel (avg) top-5", "Cascade: Doppel + BGE-reranker-base (stacked LR)", "BGE-small template-stripped", "TF-IDF raw text (Li et al. 2017)"].filter((m) => D.oc.some((o) => o.m === m));
+  const pick = [BASE, "All signals, LR", WANG, CG, "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5", "Cascade: Jinx + BGE-reranker-base (stacked LR)", "BGE-small template-stripped", "TF-IDF raw text (Li et al. 2017)"].filter((m) => D.oc.some((o) => o.m === m));
   const ts = [...new Set(D.oc.map((o) => o.t))].sort((a, b) => a - b);
   const line = ts.map((t) => Object.fromEntries([["t", `${Math.round(t * 100)}%`], ...pick.map((m, i) => ["s" + i, +(100 * D.oc.find((o) => o.m === m && o.t === t).v).toFixed(1)])]));
   const cfg = Object.fromEntries(pick.map((m, i) => ["s" + i, { label: m, color: chartColors[i % chartColors.length] }]));
@@ -208,7 +208,7 @@ function Costs() {
 function Errors() {
   return (
     <div className="flex flex-col gap-3">
-      <Text size={12} className="text-secondary">{D.errors.length} of {nX} cross-author pairs where the current Doppel tool does not rank the true duplicate first.</Text>
+      <Text size={12} className="text-secondary">{D.errors.length} of {nX} cross-author pairs where the current Jinx tool does not rank the true duplicate first.</Text>
       <Table>
         <TableHeader><TableRow><TableHead>New PR</TableHead><TableHead>True duplicate</TableHead><TableHead>Ranked first instead</TableHead><TableHead className="text-right">Rank</TableHead><TableHead>Class</TableHead><TableHead>Top-1 by same author</TableHead></TableRow></TableHeader>
         <TableBody>{D.errors.map((e, i) => <TableRow key={i}><TableCell><Text size={12}>{e["new PR"]}</Text></TableCell><TableCell><Text size={12}>{e["true duplicate"]}</Text></TableCell><TableCell><Text size={12}>{e["ranked first instead"]}</Text></TableCell><TableCell className="text-right">{e["rank of true duplicate"]}</TableCell><TableCell><Text size={12}>{e["class"]}</Text></TableCell><TableCell>{e["top-1 same author as new PR"] ? "yes" : "no"}</TableCell></TableRow>)}</TableBody>
@@ -221,13 +221,13 @@ function Report() {
   const killPass = kill.dR5_lo > 0;
   const fb = D.fa.find((r) => r.m === BASE), fw = D.fa.find((r) => r.m === WANG);
   return (
-    <PageLayout title="Doppel strategy study" subtitle={`Which duplicate-PR detection strategy works on coding-agent PRs? ${D.n_methods} strategies, AIDev live queues, repository-cluster bootstrap CIs.`} themeToggle>
+    <PageLayout title="Jinx strategy study" subtitle={`Which duplicate-PR detection strategy works on coding-agent PRs? ${D.n_methods} strategies, AIDev live queues, repository-cluster bootstrap CIs.`} themeToggle>
       <BannerCard variant={killPass ? "info" : "warning"} title={killPass ? "Kill rule passes" : "Kill rule fails: no CI-backed Recall@5 gain over the classic detector"}>
-        Doppel vs INTRUDE + time on cross-author Recall@5: {(kill.dR5 * 100).toFixed(1)} points [{(kill.dR5_lo * 100).toFixed(1)}, {(kill.dR5_hi * 100).toFixed(1)}]. CI-backed gains: Recall@1 {(kill.dR1 * 100).toFixed(1)} points [{(kill.dR1_lo * 100).toFixed(1)}, {(kill.dR1_hi * 100).toFixed(1)}], MRR {(kill.dMRR * 100).toFixed(1)} points, and fewer false alarms ({pct(fb.far)}% vs {pct(fw.far)}%).
+        Jinx vs INTRUDE + time on cross-author Recall@5: {(kill.dR5 * 100).toFixed(1)} points [{(kill.dR5_lo * 100).toFixed(1)}, {(kill.dR5_hi * 100).toFixed(1)}]. CI-backed gains: Recall@1 {(kill.dR1 * 100).toFixed(1)} points [{(kill.dR1_lo * 100).toFixed(1)}, {(kill.dR1_hi * 100).toFixed(1)}], MRR {(kill.dMRR * 100).toFixed(1)} points, and fewer false alarms ({pct(fb.far)}% vs {pct(fw.far)}%).
       </BannerCard>
       <StatsRow>
         <StatCard label={`Best Recall@1, cross-author (n=${nX})`}><StatCardValue>{f3(bestR1.R1)}</StatCardValue><StatCardCaption>{bestR1.m}</StatCardCaption></StatCard>
-        <StatCard label="Doppel (current tool)"><StatCardValue>{f3(X(BASE).R1)}</StatCardValue><StatCardCaption>Recall@5 {f3(X(BASE).R5)}</StatCardCaption></StatCard>
+        <StatCard label="Jinx (current tool)"><StatCardValue>{f3(X(BASE).R1)}</StatCardValue><StatCardCaption>Recall@5 {f3(X(BASE).R5)}</StatCardCaption></StatCard>
         <StatCard label="Classic detector (INTRUDE + time)"><StatCardValue>{f3(X(WANG).R1)}</StatCardValue><StatCardCaption>Recall@5 {f3(X(WANG).R5)}</StatCardCaption></StatCard>
         <StatCard label="Best existing bot (contrib-guard)"><StatCardValue>{f3(X(CG).R1)}</StatCardValue><StatCardCaption>Recall@5 {f3(X(CG).R5)}</StatCardCaption></StatCard>
       </StatsRow>
@@ -243,7 +243,7 @@ function Report() {
         <TabsPanel value="l" className="pt-4"><Costs /></TabsPanel>
         <TabsPanel value="e" className="pt-4"><Errors /></TabsPanel>
       </TabsRoot>
-      <Footnote>Data: AIDev (hao-li/AIDev, CC BY 4.0), silver duplicate labels from PR comments. Cross-author = the two PRs have different authors. LLM judges and re-rankers re-score Doppel's top-k only. Claude Haiku was run on cross-author and no-duplicate queries only. Jev was not run. No OpenAI models were used. Generated from experiments/results by experiments/report/html/export_data.py.</Footnote>
+      <Footnote>Data: AIDev (hao-li/AIDev, CC BY 4.0), silver duplicate labels from PR comments. Cross-author = the two PRs have different authors. LLM judges and re-rankers re-score Jinx's top-k only. Claude Haiku was run on cross-author and no-duplicate queries only. Jev was not run. No OpenAI models were used. Generated from experiments/results by experiments/report/html/export_data.py.</Footnote>
     </PageLayout>
   );
 }

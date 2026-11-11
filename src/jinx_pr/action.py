@@ -12,7 +12,7 @@ import urllib.request
 from .pr import PR
 from .scorer import Detector
 
-MARKER = "<!-- doppel:v1 -->"
+MARKER = "<!-- jinx_pr:v1 -->"
 API = os.environ.get("GITHUB_API_URL", "https://api.github.com")
 
 
@@ -52,7 +52,7 @@ def pr_from_api(gh: GitHub, d: dict) -> PR:
 
 def render(new: PR, matches, threshold: float) -> str:
     rows = [m for m in matches if m.score >= threshold]
-    lines = [MARKER, f"**Doppel:** this PR may duplicate {len(rows)} open PR(s).", ""]
+    lines = [MARKER, f"**Jinx:** this PR may duplicate {len(rows)} open PR(s).", ""]
     for m in rows:
         lines.append(f"- #{m.number} (score {m.score:.2f}): " + "; ".join(m.reasons))
     lines += ["", "_Automated hint, not a decision. A maintainer should confirm before closing anything._"]
@@ -85,7 +85,7 @@ def main() -> int:
     with open(os.environ["GITHUB_EVENT_PATH"]) as fh:
         event = json.load(fh)
     if "pull_request" not in event:
-        print("doppel: not a pull_request event, skipping")
+        print("jinx_pr: not a pull_request event, skipping")
         return 0
     thr = os.environ.get("INPUT_THRESHOLD") or None
     gh = GitHub(os.environ["INPUT_GITHUB_TOKEN"], os.environ["GITHUB_REPOSITORY"])
@@ -96,7 +96,7 @@ def main() -> int:
         int(os.environ.get("INPUT_MAX_OPEN_PRS", "200")),
         int(os.environ.get("INPUT_TOP", "3")),
     )
-    print(body or "doppel: no likely duplicates")
+    print(body or "jinx_pr: no likely duplicates")
     return 0
 
 

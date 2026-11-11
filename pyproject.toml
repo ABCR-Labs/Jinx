@@ -3,7 +3,7 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "doppel-pr"
+name = "jinx-pr"
 version = "0.1.0"
 description = "Find likely duplicate pull requests in an open-PR queue, built for PRs opened by coding agents."
 readme = "README.md"
@@ -16,13 +16,13 @@ embed = ["sentence-transformers>=2.2"]
 dev = ["pytest", "ruff"]
 
 [project.scripts]
-doppel = "doppel.cli:main"
+jinx = "jinx_pr.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-doppel = ["data/*.json"]
+jinx_pr = ["data/*.json"]
 
 [tool.ruff]
 line-length = 110

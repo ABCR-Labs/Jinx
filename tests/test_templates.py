@@ -1,4 +1,4 @@
-from doppel.templates import TemplateModel, normalize_line, queue_common_lines
+from jinx_pr.templates import TemplateModel, normalize_line, queue_common_lines
 
 
 def test_normalize():

@@ -3,29 +3,29 @@
 | Family | Strategy | Recall@1 [95% CI] | Recall@5 [95% CI] | MRR [95% CI] |
 |---|---|---|---|---|
 | 7 supervised | All signals, LR | 0.906 [0.87, 0.94] | 0.974 [0.96, 0.99] | 0.935 [0.91, 0.96] |
-| 7 supervised | Doppel + MiniLM, LR (current tool) | 0.901 [0.87, 0.93] | 0.971 [0.95, 0.99] | 0.932 [0.91, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.901 [0.86, 0.93] | 0.974 [0.96, 0.99] | 0.931 [0.90, 0.96] |
-| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | 0.898 [0.86, 0.94] | 0.971 [0.95, 0.99] | 0.932 [0.91, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.898 [0.86, 0.93] | 0.971 [0.95, 0.99] | 0.930 [0.90, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 0.895 [0.86, 0.93] | 0.971 [0.95, 0.99] | 0.929 [0.90, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 0.895 [0.86, 0.93] | 0.971 [0.95, 0.99] | 0.928 [0.90, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 0.892 [0.86, 0.93] | 0.971 [0.95, 0.99] | 0.927 [0.90, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 0.889 [0.86, 0.92] | 0.971 [0.95, 0.99] | 0.925 [0.90, 0.95] |
-| 7 supervised | Doppel lexical, LR | 0.889 [0.85, 0.93] | 0.971 [0.95, 0.99] | 0.925 [0.90, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 0.886 [0.85, 0.92] | 0.971 [0.95, 0.99] | 0.925 [0.90, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker-base (stacked LR) | 0.883 [0.84, 0.92] | 0.974 [0.96, 0.99] | 0.923 [0.89, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 0.880 [0.85, 0.92] | 0.971 [0.95, 0.99] | 0.922 [0.90, 0.95] |
+| 7 supervised | Jinx + MiniLM, LR (current tool) | 0.901 [0.87, 0.93] | 0.971 [0.95, 0.99] | 0.932 [0.91, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.901 [0.86, 0.93] | 0.974 [0.96, 0.99] | 0.931 [0.90, 0.96] |
+| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | 0.898 [0.86, 0.94] | 0.971 [0.95, 0.99] | 0.932 [0.91, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.898 [0.86, 0.93] | 0.971 [0.95, 0.99] | 0.930 [0.90, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 0.895 [0.86, 0.93] | 0.971 [0.95, 0.99] | 0.929 [0.90, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 0.895 [0.86, 0.93] | 0.971 [0.95, 0.99] | 0.928 [0.90, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 0.892 [0.86, 0.93] | 0.971 [0.95, 0.99] | 0.927 [0.90, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 0.889 [0.86, 0.92] | 0.971 [0.95, 0.99] | 0.925 [0.90, 0.95] |
+| 7 supervised | Jinx lexical, LR | 0.889 [0.85, 0.93] | 0.971 [0.95, 0.99] | 0.925 [0.90, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 0.886 [0.85, 0.92] | 0.971 [0.95, 0.99] | 0.925 [0.90, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker-base (stacked LR) | 0.883 [0.84, 0.92] | 0.974 [0.96, 0.99] | 0.923 [0.89, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 0.880 [0.85, 0.92] | 0.971 [0.95, 0.99] | 0.922 [0.90, 0.95] |
 | 7 supervised | All signals, gradient boosting | 0.877 [0.84, 0.92] | 0.959 [0.94, 0.98] | 0.915 [0.89, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 0.874 [0.84, 0.92] | 0.971 [0.95, 0.99] | 0.919 [0.90, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 0.874 [0.84, 0.91] | 0.971 [0.95, 0.99] | 0.918 [0.89, 0.95] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 0.871 [0.83, 0.91] | 0.971 [0.95, 0.99] | 0.918 [0.89, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 0.871 [0.84, 0.92] | 0.971 [0.95, 0.99] | 0.917 [0.89, 0.95] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 0.871 [0.84, 0.92] | 0.971 [0.95, 0.99] | 0.916 [0.89, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 0.868 [0.83, 0.92] | 0.971 [0.95, 0.99] | 0.916 [0.89, 0.95] |
-| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 0.868 [0.82, 0.92] | 0.965 [0.94, 0.99] | 0.912 [0.88, 0.95] |
-| 7 supervised | Doppel features, gradient boosting | 0.865 [0.83, 0.91] | 0.956 [0.93, 0.98] | 0.908 [0.88, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 0.854 [0.82, 0.90] | 0.971 [0.95, 0.99] | 0.906 [0.88, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 0.851 [0.82, 0.90] | 0.968 [0.95, 0.99] | 0.904 [0.88, 0.94] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 0.874 [0.84, 0.92] | 0.971 [0.95, 0.99] | 0.919 [0.90, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 0.874 [0.84, 0.91] | 0.971 [0.95, 0.99] | 0.918 [0.89, 0.95] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 0.871 [0.83, 0.91] | 0.971 [0.95, 0.99] | 0.918 [0.89, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 0.871 [0.84, 0.92] | 0.971 [0.95, 0.99] | 0.917 [0.89, 0.95] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 0.871 [0.84, 0.92] | 0.971 [0.95, 0.99] | 0.916 [0.89, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 0.868 [0.83, 0.92] | 0.971 [0.95, 0.99] | 0.916 [0.89, 0.95] |
+| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 0.868 [0.82, 0.92] | 0.965 [0.94, 0.99] | 0.912 [0.88, 0.95] |
+| 7 supervised | Jinx features, gradient boosting | 0.865 [0.83, 0.91] | 0.956 [0.93, 0.98] | 0.908 [0.88, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 0.854 [0.82, 0.90] | 0.971 [0.95, 0.99] | 0.906 [0.88, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 0.851 [0.82, 0.90] | 0.968 [0.95, 0.99] | 0.904 [0.88, 0.94] |
 | 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 re-rank top-5 | 0.842 [0.80, 0.90] | 0.971 [0.95, 0.99] | 0.902 [0.88, 0.94] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-5 | 0.839 [0.80, 0.88] | 0.971 [0.95, 0.99] | 0.899 [0.87, 0.93] |
 | 3 links | Links only (same issue / #ref) | 0.839 [0.78, 0.90] | 0.924 [0.88, 0.97] | 0.882 [0.84, 0.93] |
@@ -74,30 +74,30 @@
 
 | Family | Strategy | Recall@1 [95% CI] | Recall@5 [95% CI] | MRR [95% CI] |
 |---|---|---|---|---|
-| 7 supervised | Doppel lexical, LR | 0.903 [0.88, 0.93] | 0.984 [0.98, 0.99] | 0.938 [0.92, 0.95] |
+| 7 supervised | Jinx lexical, LR | 0.903 [0.88, 0.93] | 0.984 [0.98, 0.99] | 0.938 [0.92, 0.95] |
 | 7 supervised | All signals, LR | 0.894 [0.85, 0.93] | 0.975 [0.96, 0.99] | 0.930 [0.89, 0.96] |
-| 7 supervised | Doppel + MiniLM, LR (current tool) | 0.890 [0.84, 0.93] | 0.980 [0.97, 0.99] | 0.927 [0.89, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 0.882 [0.83, 0.92] | 0.980 [0.97, 0.99] | 0.923 [0.88, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.880 [0.83, 0.92] | 0.981 [0.97, 0.99] | 0.922 [0.88, 0.95] |
+| 7 supervised | Jinx + MiniLM, LR (current tool) | 0.890 [0.84, 0.93] | 0.980 [0.97, 0.99] | 0.927 [0.89, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 0.882 [0.83, 0.92] | 0.980 [0.97, 0.99] | 0.923 [0.88, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.880 [0.83, 0.92] | 0.981 [0.97, 0.99] | 0.922 [0.88, 0.95] |
 | 7 supervised | All signals, gradient boosting | 0.879 [0.85, 0.91] | 0.976 [0.96, 0.99] | 0.922 [0.90, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 0.878 [0.83, 0.92] | 0.981 [0.97, 0.99] | 0.921 [0.88, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 0.878 [0.83, 0.92] | 0.982 [0.97, 0.99] | 0.920 [0.88, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 0.876 [0.82, 0.92] | 0.980 [0.97, 0.99] | 0.920 [0.88, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 0.876 [0.82, 0.92] | 0.980 [0.97, 0.99] | 0.920 [0.88, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.875 [0.83, 0.91] | 0.981 [0.97, 0.99] | 0.920 [0.88, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 0.875 [0.82, 0.92] | 0.982 [0.97, 0.99] | 0.920 [0.88, 0.95] |
-| 7 supervised | Doppel features, gradient boosting | 0.874 [0.84, 0.91] | 0.975 [0.96, 0.99] | 0.919 [0.90, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 0.874 [0.82, 0.91] | 0.980 [0.97, 0.99] | 0.919 [0.88, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 0.874 [0.82, 0.91] | 0.980 [0.97, 0.99] | 0.918 [0.88, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 0.873 [0.82, 0.91] | 0.980 [0.97, 0.99] | 0.918 [0.88, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 0.871 [0.82, 0.91] | 0.982 [0.97, 0.99] | 0.916 [0.88, 0.94] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 0.866 [0.82, 0.91] | 0.981 [0.97, 0.99] | 0.915 [0.88, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker-base (stacked LR) | 0.862 [0.81, 0.90] | 0.981 [0.97, 0.99] | 0.911 [0.87, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 0.861 [0.81, 0.90] | 0.980 [0.97, 0.99] | 0.911 [0.87, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 0.858 [0.81, 0.90] | 0.978 [0.97, 0.99] | 0.909 [0.87, 0.94] |
-| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 0.852 [0.80, 0.90] | 0.979 [0.97, 0.99] | 0.906 [0.87, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 0.878 [0.83, 0.92] | 0.981 [0.97, 0.99] | 0.921 [0.88, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 0.878 [0.83, 0.92] | 0.982 [0.97, 0.99] | 0.920 [0.88, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 0.876 [0.82, 0.92] | 0.980 [0.97, 0.99] | 0.920 [0.88, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 0.876 [0.82, 0.92] | 0.980 [0.97, 0.99] | 0.920 [0.88, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.875 [0.83, 0.91] | 0.981 [0.97, 0.99] | 0.920 [0.88, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 0.875 [0.82, 0.92] | 0.982 [0.97, 0.99] | 0.920 [0.88, 0.95] |
+| 7 supervised | Jinx features, gradient boosting | 0.874 [0.84, 0.91] | 0.975 [0.96, 0.99] | 0.919 [0.90, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 0.874 [0.82, 0.91] | 0.980 [0.97, 0.99] | 0.919 [0.88, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 0.874 [0.82, 0.91] | 0.980 [0.97, 0.99] | 0.918 [0.88, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 0.873 [0.82, 0.91] | 0.980 [0.97, 0.99] | 0.918 [0.88, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 0.871 [0.82, 0.91] | 0.982 [0.97, 0.99] | 0.916 [0.88, 0.94] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 0.866 [0.82, 0.91] | 0.981 [0.97, 0.99] | 0.915 [0.88, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker-base (stacked LR) | 0.862 [0.81, 0.90] | 0.981 [0.97, 0.99] | 0.911 [0.87, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 0.861 [0.81, 0.90] | 0.980 [0.97, 0.99] | 0.911 [0.87, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 0.858 [0.81, 0.90] | 0.978 [0.97, 0.99] | 0.909 [0.87, 0.94] |
+| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 0.852 [0.80, 0.90] | 0.979 [0.97, 0.99] | 0.906 [0.87, 0.94] |
 | 7 supervised | INTRUDE + time (Wang et al. 2019), LR | 0.848 [0.82, 0.88] | 0.965 [0.95, 0.98] | 0.902 [0.88, 0.92] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 0.846 [0.79, 0.89] | 0.980 [0.97, 0.99] | 0.902 [0.86, 0.93] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 0.846 [0.79, 0.89] | 0.980 [0.97, 0.99] | 0.902 [0.86, 0.93] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-5 | 0.835 [0.79, 0.87] | 0.980 [0.97, 0.99] | 0.896 [0.86, 0.92] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-10 | 0.813 [0.76, 0.85] | 0.978 [0.97, 0.99] | 0.880 [0.84, 0.91] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-7B re-rank top-5 | 0.806 [0.76, 0.85] | 0.980 [0.97, 0.99] | 0.875 [0.84, 0.90] |
@@ -144,30 +144,30 @@
 
 | Family | Strategy | Recall@1 [95% CI] | Recall@5 [95% CI] | MRR [95% CI] |
 |---|---|---|---|---|
-| 7 supervised | Doppel lexical, LR | 0.906 [0.87, 0.93] | 0.988 [0.98, 1.00] | 0.941 [0.92, 0.96] |
+| 7 supervised | Jinx lexical, LR | 0.906 [0.87, 0.93] | 0.988 [0.98, 1.00] | 0.941 [0.92, 0.96] |
 | 7 supervised | All signals, LR | 0.892 [0.84, 0.93] | 0.976 [0.95, 0.99] | 0.929 [0.89, 0.96] |
-| 7 supervised | Doppel + MiniLM, LR (current tool) | 0.887 [0.83, 0.93] | 0.982 [0.97, 0.99] | 0.925 [0.88, 0.96] |
+| 7 supervised | Jinx + MiniLM, LR (current tool) | 0.887 [0.83, 0.93] | 0.982 [0.97, 0.99] | 0.925 [0.88, 0.96] |
 | 7 supervised | All signals, gradient boosting | 0.879 [0.85, 0.91] | 0.980 [0.97, 0.99] | 0.924 [0.90, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 0.879 [0.82, 0.93] | 0.982 [0.97, 0.99] | 0.922 [0.88, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 0.876 [0.82, 0.92] | 0.982 [0.97, 0.99] | 0.920 [0.88, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 0.876 [0.82, 0.92] | 0.985 [0.97, 1.00] | 0.919 [0.88, 0.95] |
-| 7 supervised | Doppel features, gradient boosting | 0.875 [0.84, 0.91] | 0.979 [0.96, 0.99] | 0.921 [0.90, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 0.875 [0.82, 0.92] | 0.983 [0.97, 0.99] | 0.920 [0.88, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.875 [0.82, 0.92] | 0.983 [0.97, 0.99] | 0.920 [0.88, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 0.875 [0.82, 0.92] | 0.982 [0.97, 0.99] | 0.919 [0.88, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 0.874 [0.82, 0.92] | 0.982 [0.97, 0.99] | 0.919 [0.87, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 0.872 [0.81, 0.92] | 0.982 [0.97, 0.99] | 0.918 [0.87, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 0.871 [0.81, 0.92] | 0.982 [0.97, 0.99] | 0.918 [0.87, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 0.870 [0.81, 0.92] | 0.984 [0.97, 1.00] | 0.917 [0.88, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 0.870 [0.82, 0.92] | 0.985 [0.97, 1.00] | 0.916 [0.87, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.870 [0.82, 0.92] | 0.984 [0.97, 0.99] | 0.917 [0.88, 0.95] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 0.865 [0.81, 0.91] | 0.984 [0.97, 0.99] | 0.915 [0.87, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 0.862 [0.81, 0.91] | 0.982 [0.97, 0.99] | 0.912 [0.87, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 0.860 [0.80, 0.91] | 0.980 [0.97, 0.99] | 0.911 [0.87, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker-base (stacked LR) | 0.858 [0.80, 0.91] | 0.982 [0.97, 0.99] | 0.909 [0.86, 0.94] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 0.879 [0.82, 0.93] | 0.982 [0.97, 0.99] | 0.922 [0.88, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 0.876 [0.82, 0.92] | 0.982 [0.97, 0.99] | 0.920 [0.88, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 0.876 [0.82, 0.92] | 0.985 [0.97, 1.00] | 0.919 [0.88, 0.95] |
+| 7 supervised | Jinx features, gradient boosting | 0.875 [0.84, 0.91] | 0.979 [0.96, 0.99] | 0.921 [0.90, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 0.875 [0.82, 0.92] | 0.983 [0.97, 0.99] | 0.920 [0.88, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.875 [0.82, 0.92] | 0.983 [0.97, 0.99] | 0.920 [0.88, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 0.875 [0.82, 0.92] | 0.982 [0.97, 0.99] | 0.919 [0.88, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 0.874 [0.82, 0.92] | 0.982 [0.97, 0.99] | 0.919 [0.87, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 0.872 [0.81, 0.92] | 0.982 [0.97, 0.99] | 0.918 [0.87, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 0.871 [0.81, 0.92] | 0.982 [0.97, 0.99] | 0.918 [0.87, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 0.870 [0.81, 0.92] | 0.984 [0.97, 1.00] | 0.917 [0.88, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 0.870 [0.82, 0.92] | 0.985 [0.97, 1.00] | 0.916 [0.87, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.870 [0.82, 0.92] | 0.984 [0.97, 0.99] | 0.917 [0.88, 0.95] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 0.865 [0.81, 0.91] | 0.984 [0.97, 0.99] | 0.915 [0.87, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 0.862 [0.81, 0.91] | 0.982 [0.97, 0.99] | 0.912 [0.87, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 0.860 [0.80, 0.91] | 0.980 [0.97, 0.99] | 0.911 [0.87, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker-base (stacked LR) | 0.858 [0.80, 0.91] | 0.982 [0.97, 0.99] | 0.909 [0.86, 0.94] |
 | 7 supervised | INTRUDE + time (Wang et al. 2019), LR | 0.857 [0.82, 0.89] | 0.968 [0.95, 0.99] | 0.908 [0.88, 0.93] |
-| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 0.849 [0.79, 0.90] | 0.982 [0.97, 0.99] | 0.905 [0.86, 0.94] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 0.840 [0.78, 0.89] | 0.982 [0.97, 0.99] | 0.899 [0.85, 0.94] |
+| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 0.849 [0.79, 0.90] | 0.982 [0.97, 0.99] | 0.905 [0.86, 0.94] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 0.840 [0.78, 0.89] | 0.982 [0.97, 0.99] | 0.899 [0.85, 0.94] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-5 | 0.834 [0.78, 0.88] | 0.982 [0.97, 0.99] | 0.895 [0.85, 0.93] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-10 | 0.814 [0.76, 0.86] | 0.980 [0.97, 0.99] | 0.880 [0.84, 0.92] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-7B re-rank top-5 | 0.805 [0.75, 0.85] | 0.982 [0.97, 0.99] | 0.874 [0.83, 0.91] |
@@ -215,29 +215,29 @@
 | Family | Strategy | Recall@1 [95% CI] | Recall@5 [95% CI] | MRR [95% CI] |
 |---|---|---|---|---|
 | 7 supervised | All signals, LR | 0.908 [0.86, 0.95] | 0.965 [0.94, 0.99] | 0.933 [0.90, 0.96] |
-| 7 supervised | Doppel + MiniLM, LR (current tool) | 0.899 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.929 [0.90, 0.96] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 0.899 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.927 [0.89, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 0.899 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.927 [0.89, 0.96] |
-| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 0.895 [0.86, 0.93] | 0.974 [0.95, 0.99] | 0.930 [0.90, 0.96] |
-| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | 0.895 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.927 [0.89, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 0.895 [0.85, 0.93] | 0.965 [0.94, 0.99] | 0.927 [0.90, 0.95] |
+| 7 supervised | Jinx + MiniLM, LR (current tool) | 0.899 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.929 [0.90, 0.96] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 0.899 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.927 [0.89, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 0.899 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.927 [0.89, 0.96] |
+| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 0.895 [0.86, 0.93] | 0.974 [0.95, 0.99] | 0.930 [0.90, 0.96] |
+| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | 0.895 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.927 [0.89, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 0.895 [0.85, 0.93] | 0.965 [0.94, 0.99] | 0.927 [0.90, 0.95] |
 | 7 supervised | All signals, gradient boosting | 0.895 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.926 [0.89, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.895 [0.85, 0.93] | 0.965 [0.94, 0.99] | 0.925 [0.89, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 0.895 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.925 [0.89, 0.96] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 0.890 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.925 [0.89, 0.96] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.890 [0.84, 0.93] | 0.969 [0.94, 0.99] | 0.923 [0.89, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 0.886 [0.84, 0.93] | 0.965 [0.94, 0.99] | 0.922 [0.89, 0.95] |
-| 7 supervised | Doppel lexical, LR | 0.882 [0.83, 0.93] | 0.965 [0.94, 0.99] | 0.919 [0.89, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 0.877 [0.83, 0.92] | 0.969 [0.95, 0.99] | 0.918 [0.89, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 0.877 [0.83, 0.92] | 0.965 [0.94, 0.99] | 0.917 [0.89, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 0.877 [0.84, 0.92] | 0.965 [0.94, 0.99] | 0.917 [0.89, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 0.877 [0.84, 0.92] | 0.965 [0.94, 0.99] | 0.917 [0.89, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 0.877 [0.83, 0.93] | 0.965 [0.94, 0.99] | 0.916 [0.89, 0.95] |
-| 7 supervised | Doppel features, gradient boosting | 0.873 [0.83, 0.92] | 0.961 [0.94, 0.99] | 0.915 [0.88, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 0.873 [0.83, 0.92] | 0.965 [0.94, 0.99] | 0.915 [0.89, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 0.873 [0.83, 0.92] | 0.965 [0.94, 0.99] | 0.914 [0.88, 0.95] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker-base (stacked LR) | 0.868 [0.82, 0.91] | 0.969 [0.94, 0.99] | 0.913 [0.88, 0.94] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 0.864 [0.82, 0.91] | 0.969 [0.94, 0.99] | 0.912 [0.88, 0.94] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.895 [0.85, 0.93] | 0.965 [0.94, 0.99] | 0.925 [0.89, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 0.895 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.925 [0.89, 0.96] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 0.890 [0.85, 0.94] | 0.965 [0.94, 0.99] | 0.925 [0.89, 0.96] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.890 [0.84, 0.93] | 0.969 [0.94, 0.99] | 0.923 [0.89, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 0.886 [0.84, 0.93] | 0.965 [0.94, 0.99] | 0.922 [0.89, 0.95] |
+| 7 supervised | Jinx lexical, LR | 0.882 [0.83, 0.93] | 0.965 [0.94, 0.99] | 0.919 [0.89, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 0.877 [0.83, 0.92] | 0.969 [0.95, 0.99] | 0.918 [0.89, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 0.877 [0.83, 0.92] | 0.965 [0.94, 0.99] | 0.917 [0.89, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 0.877 [0.84, 0.92] | 0.965 [0.94, 0.99] | 0.917 [0.89, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 0.877 [0.84, 0.92] | 0.965 [0.94, 0.99] | 0.917 [0.89, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 0.877 [0.83, 0.93] | 0.965 [0.94, 0.99] | 0.916 [0.89, 0.95] |
+| 7 supervised | Jinx features, gradient boosting | 0.873 [0.83, 0.92] | 0.961 [0.94, 0.99] | 0.915 [0.88, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 0.873 [0.83, 0.92] | 0.965 [0.94, 0.99] | 0.915 [0.89, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 0.873 [0.83, 0.92] | 0.965 [0.94, 0.99] | 0.914 [0.88, 0.95] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker-base (stacked LR) | 0.868 [0.82, 0.91] | 0.969 [0.94, 0.99] | 0.913 [0.88, 0.94] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 0.864 [0.82, 0.91] | 0.969 [0.94, 0.99] | 0.912 [0.88, 0.94] |
 | 3 links | Links only (same issue / #ref) | 0.851 [0.80, 0.90] | 0.934 [0.89, 0.97] | 0.892 [0.85, 0.93] |
 | 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 re-rank top-5 | 0.838 [0.79, 0.90] | 0.965 [0.94, 0.99] | 0.897 [0.86, 0.94] |
 | 7 supervised | INTRUDE + time (Wang et al. 2019), LR | 0.825 [0.77, 0.88] | 0.961 [0.94, 0.98] | 0.883 [0.85, 0.92] |
@@ -286,37 +286,37 @@
 
 | Family | Strategy | Recall@1 [95% CI] | Recall@5 [95% CI] | MRR [95% CI] |
 |---|---|---|---|---|
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.921 [0.87, 0.97] | 0.982 [0.96, 1.00] | 0.948 [0.92, 0.98] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker-base (stacked LR) | 0.912 [0.86, 0.96] | 0.982 [0.96, 1.00] | 0.942 [0.91, 0.98] |
-| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | 0.904 [0.86, 0.97] | 0.982 [0.96, 1.00] | 0.942 [0.91, 0.98] |
-| 7 supervised | Doppel + MiniLM, LR (current tool) | 0.904 [0.87, 0.96] | 0.982 [0.96, 1.00] | 0.939 [0.91, 0.98] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.904 [0.84, 0.97] | 0.982 [0.96, 1.00] | 0.939 [0.90, 0.98] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.921 [0.87, 0.97] | 0.982 [0.96, 1.00] | 0.948 [0.92, 0.98] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker-base (stacked LR) | 0.912 [0.86, 0.96] | 0.982 [0.96, 1.00] | 0.942 [0.91, 0.98] |
+| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | 0.904 [0.86, 0.97] | 0.982 [0.96, 1.00] | 0.942 [0.91, 0.98] |
+| 7 supervised | Jinx + MiniLM, LR (current tool) | 0.904 [0.87, 0.96] | 0.982 [0.96, 1.00] | 0.939 [0.91, 0.98] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.904 [0.84, 0.97] | 0.982 [0.96, 1.00] | 0.939 [0.90, 0.98] |
 | 7 supervised | All signals, LR | 0.904 [0.85, 0.97] | 0.991 [0.98, 1.00] | 0.938 [0.91, 0.98] |
-| 7 supervised | Doppel lexical, LR | 0.904 [0.85, 0.97] | 0.982 [0.96, 1.00] | 0.937 [0.90, 0.98] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 0.895 [0.83, 0.97] | 0.982 [0.96, 1.00] | 0.935 [0.90, 0.98] |
+| 7 supervised | Jinx lexical, LR | 0.904 [0.85, 0.97] | 0.982 [0.96, 1.00] | 0.937 [0.90, 0.98] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 0.895 [0.83, 0.97] | 0.982 [0.96, 1.00] | 0.935 [0.90, 0.98] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-5 | 0.886 [0.84, 0.96] | 0.982 [0.96, 1.00] | 0.935 [0.91, 0.98] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 0.886 [0.83, 0.95] | 0.982 [0.96, 1.00] | 0.933 [0.91, 0.97] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 0.886 [0.83, 0.95] | 0.982 [0.96, 1.00] | 0.932 [0.91, 0.97] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 0.886 [0.84, 0.95] | 0.982 [0.96, 1.00] | 0.930 [0.90, 0.97] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 0.886 [0.83, 0.95] | 0.974 [0.95, 1.00] | 0.928 [0.89, 0.97] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 0.877 [0.83, 0.95] | 0.982 [0.96, 1.00] | 0.926 [0.90, 0.97] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 0.877 [0.83, 0.95] | 0.982 [0.96, 1.00] | 0.926 [0.90, 0.97] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 0.877 [0.82, 0.95] | 0.982 [0.96, 1.00] | 0.925 [0.90, 0.97] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 0.868 [0.80, 0.95] | 0.982 [0.96, 1.00] | 0.922 [0.89, 0.97] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 0.860 [0.79, 0.95] | 0.982 [0.96, 1.00] | 0.917 [0.88, 0.97] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 0.860 [0.79, 0.95] | 0.982 [0.96, 1.00] | 0.917 [0.88, 0.97] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 0.886 [0.83, 0.95] | 0.982 [0.96, 1.00] | 0.933 [0.91, 0.97] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 0.886 [0.83, 0.95] | 0.982 [0.96, 1.00] | 0.932 [0.91, 0.97] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 0.886 [0.84, 0.95] | 0.982 [0.96, 1.00] | 0.930 [0.90, 0.97] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 0.886 [0.83, 0.95] | 0.974 [0.95, 1.00] | 0.928 [0.89, 0.97] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 0.877 [0.83, 0.95] | 0.982 [0.96, 1.00] | 0.926 [0.90, 0.97] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 0.877 [0.83, 0.95] | 0.982 [0.96, 1.00] | 0.926 [0.90, 0.97] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 0.877 [0.82, 0.95] | 0.982 [0.96, 1.00] | 0.925 [0.90, 0.97] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 0.868 [0.80, 0.95] | 0.982 [0.96, 1.00] | 0.922 [0.89, 0.97] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 0.860 [0.79, 0.95] | 0.982 [0.96, 1.00] | 0.917 [0.88, 0.97] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 0.860 [0.79, 0.95] | 0.982 [0.96, 1.00] | 0.917 [0.88, 0.97] |
 | 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 re-rank top-5 | 0.851 [0.78, 0.97] | 0.982 [0.96, 1.00] | 0.913 [0.87, 0.98] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-10 | 0.851 [0.75, 0.96] | 0.982 [0.96, 1.00] | 0.910 [0.85, 0.97] |
-| 7 supervised | Doppel features, gradient boosting | 0.851 [0.76, 0.96] | 0.947 [0.87, 1.00] | 0.893 [0.82, 0.98] |
+| 7 supervised | Jinx features, gradient boosting | 0.851 [0.76, 0.96] | 0.947 [0.87, 1.00] | 0.893 [0.82, 0.98] |
 | 7 supervised | All signals, gradient boosting | 0.842 [0.75, 0.95] | 0.947 [0.91, 1.00] | 0.894 [0.83, 0.97] |
 | 10 stacked cascade (ours) | Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10 | 0.842 [0.73, 0.96] | 0.974 [0.95, 1.00] | 0.892 [0.81, 0.97] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-7B re-rank top-5 | 0.833 [0.77, 0.93] | 0.982 [0.96, 1.00] | 0.898 [0.86, 0.96] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 0.833 [0.77, 0.93] | 0.982 [0.96, 1.00] | 0.898 [0.86, 0.96] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 0.833 [0.77, 0.93] | 0.982 [0.96, 1.00] | 0.898 [0.86, 0.96] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-7B re-rank top-10 | 0.825 [0.76, 0.92] | 0.956 [0.92, 0.99] | 0.884 [0.84, 0.94] |
-| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 0.816 [0.70, 0.95] | 0.947 [0.90, 1.00] | 0.876 [0.79, 0.97] |
+| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 0.816 [0.70, 0.95] | 0.947 [0.90, 1.00] | 0.876 [0.79, 0.97] |
 | 3 links | Links only (same issue / #ref) | 0.816 [0.71, 0.95] | 0.904 [0.81, 1.00] | 0.861 [0.76, 0.97] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 0.807 [0.74, 0.92] | 0.982 [0.96, 1.00] | 0.883 [0.84, 0.95] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 0.798 [0.73, 0.91] | 0.965 [0.94, 1.00] | 0.878 [0.84, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 0.807 [0.74, 0.92] | 0.982 [0.96, 1.00] | 0.883 [0.84, 0.95] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 0.798 [0.73, 0.91] | 0.965 [0.94, 1.00] | 0.878 [0.84, 0.95] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-14B re-rank top-5 | 0.781 [0.71, 0.89] | 0.982 [0.96, 1.00] | 0.865 [0.82, 0.93] |
 | 7 supervised | INTRUDE + time (Wang et al. 2019), LR | 0.781 [0.69, 0.87] | 0.939 [0.85, 0.99] | 0.853 [0.78, 0.92] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-14B re-rank top-10 | 0.737 [0.65, 0.86] | 0.947 [0.91, 0.99] | 0.826 [0.76, 0.91] |
@@ -359,30 +359,30 @@
 | Family | Strategy | Recall@1 [95% CI] | Recall@5 [95% CI] | MRR [95% CI] |
 |---|---|---|---|---|
 | 7 supervised | All signals, LR | 0.864 [0.81, 0.91] | 0.965 [0.94, 0.99] | 0.905 [0.87, 0.94] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 0.864 [0.82, 0.91] | 0.960 [0.94, 0.99] | 0.904 [0.87, 0.94] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.864 [0.81, 0.91] | 0.965 [0.94, 0.99] | 0.904 [0.87, 0.93] |
-| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | 0.859 [0.81, 0.91] | 0.960 [0.94, 0.99] | 0.905 [0.87, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 0.859 [0.82, 0.91] | 0.960 [0.94, 0.99] | 0.901 [0.87, 0.94] |
-| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 0.854 [0.81, 0.90] | 0.970 [0.95, 0.99] | 0.903 [0.87, 0.94] |
-| 7 supervised | Doppel + MiniLM, LR (current tool) | 0.854 [0.81, 0.90] | 0.960 [0.94, 0.99] | 0.901 [0.87, 0.93] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 0.854 [0.81, 0.90] | 0.960 [0.94, 0.99] | 0.899 [0.87, 0.93] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 0.849 [0.80, 0.90] | 0.960 [0.94, 0.99] | 0.898 [0.87, 0.93] |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker-base (stacked LR) | 0.849 [0.79, 0.89] | 0.965 [0.94, 0.99] | 0.898 [0.86, 0.93] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.849 [0.81, 0.90] | 0.960 [0.94, 0.99] | 0.897 [0.87, 0.93] |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 0.844 [0.80, 0.89] | 0.960 [0.94, 0.99] | 0.896 [0.87, 0.93] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 0.844 [0.80, 0.90] | 0.960 [0.94, 0.99] | 0.896 [0.87, 0.93] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 0.844 [0.80, 0.90] | 0.960 [0.94, 0.99] | 0.895 [0.87, 0.94] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 0.839 [0.80, 0.89] | 0.960 [0.94, 0.99] | 0.892 [0.86, 0.93] |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 0.839 [0.80, 0.89] | 0.960 [0.94, 0.99] | 0.892 [0.86, 0.93] |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 0.834 [0.78, 0.88] | 0.960 [0.94, 0.99] | 0.892 [0.86, 0.93] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 0.834 [0.79, 0.89] | 0.960 [0.94, 0.99] | 0.890 [0.86, 0.93] |
-| 7 supervised | Doppel lexical, LR | 0.834 [0.78, 0.88] | 0.960 [0.94, 0.99] | 0.888 [0.86, 0.92] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 0.834 [0.78, 0.89] | 0.960 [0.94, 0.99] | 0.888 [0.85, 0.93] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 0.864 [0.82, 0.91] | 0.960 [0.94, 0.99] | 0.904 [0.87, 0.94] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.864 [0.81, 0.91] | 0.965 [0.94, 0.99] | 0.904 [0.87, 0.93] |
+| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | 0.859 [0.81, 0.91] | 0.960 [0.94, 0.99] | 0.905 [0.87, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 0.859 [0.82, 0.91] | 0.960 [0.94, 0.99] | 0.901 [0.87, 0.94] |
+| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 0.854 [0.81, 0.90] | 0.970 [0.95, 0.99] | 0.903 [0.87, 0.94] |
+| 7 supervised | Jinx + MiniLM, LR (current tool) | 0.854 [0.81, 0.90] | 0.960 [0.94, 0.99] | 0.901 [0.87, 0.93] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 0.854 [0.81, 0.90] | 0.960 [0.94, 0.99] | 0.899 [0.87, 0.93] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 0.849 [0.80, 0.90] | 0.960 [0.94, 0.99] | 0.898 [0.87, 0.93] |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker-base (stacked LR) | 0.849 [0.79, 0.89] | 0.965 [0.94, 0.99] | 0.898 [0.86, 0.93] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.849 [0.81, 0.90] | 0.960 [0.94, 0.99] | 0.897 [0.87, 0.93] |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 0.844 [0.80, 0.89] | 0.960 [0.94, 0.99] | 0.896 [0.87, 0.93] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 0.844 [0.80, 0.90] | 0.960 [0.94, 0.99] | 0.896 [0.87, 0.93] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 0.844 [0.80, 0.90] | 0.960 [0.94, 0.99] | 0.895 [0.87, 0.94] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 0.839 [0.80, 0.89] | 0.960 [0.94, 0.99] | 0.892 [0.86, 0.93] |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 0.839 [0.80, 0.89] | 0.960 [0.94, 0.99] | 0.892 [0.86, 0.93] |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 0.834 [0.78, 0.88] | 0.960 [0.94, 0.99] | 0.892 [0.86, 0.93] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 0.834 [0.79, 0.89] | 0.960 [0.94, 0.99] | 0.890 [0.86, 0.93] |
+| 7 supervised | Jinx lexical, LR | 0.834 [0.78, 0.88] | 0.960 [0.94, 0.99] | 0.888 [0.86, 0.92] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 0.834 [0.78, 0.89] | 0.960 [0.94, 0.99] | 0.888 [0.85, 0.93] |
 | 7 supervised | All signals, gradient boosting | 0.829 [0.77, 0.90] | 0.945 [0.92, 0.98] | 0.881 [0.84, 0.93] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 0.824 [0.77, 0.88] | 0.960 [0.94, 0.99] | 0.884 [0.85, 0.92] |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 0.819 [0.77, 0.88] | 0.965 [0.94, 0.99] | 0.882 [0.85, 0.92] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 0.824 [0.77, 0.88] | 0.960 [0.94, 0.99] | 0.884 [0.85, 0.92] |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 0.819 [0.77, 0.88] | 0.965 [0.94, 0.99] | 0.882 [0.85, 0.92] |
 | 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 re-rank top-5 | 0.809 [0.75, 0.88] | 0.960 [0.94, 0.99] | 0.879 [0.84, 0.93] |
-| 7 supervised | Doppel features, gradient boosting | 0.804 [0.75, 0.87] | 0.935 [0.89, 0.98] | 0.864 [0.82, 0.92] |
+| 7 supervised | Jinx features, gradient boosting | 0.804 [0.75, 0.87] | 0.935 [0.89, 0.98] | 0.864 [0.82, 0.92] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-5 | 0.794 [0.74, 0.85] | 0.960 [0.94, 0.99] | 0.867 [0.83, 0.91] |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-7B re-rank top-5 | 0.769 [0.71, 0.83] | 0.960 [0.94, 0.99] | 0.843 [0.80, 0.89] |
 | 10 stacked cascade (ours) | Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10 | 0.759 [0.69, 0.83] | 0.930 [0.90, 0.97] | 0.830 [0.78, 0.88] |
@@ -431,45 +431,45 @@
 | Duplicate class | n | trivial | lexical | stacked cascade (ours) | code | links | embedding | existing bot | unsupervised hybrid | supervised | re-ranker on top-k | LLM judge on top-k | best overall |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | same issue, different code (classes C/D, shares linked issue) | 35 | 0.31 | 0.86 | 0.91 | 0.29 | 0.94 | 0.86 | 0.83 | 0.74 | 0.91 | 0.94 | 0.91 | Links only (same issue / #ref) (0.94) |
-| same code, different description (code twin, text TF-IDF < 0.3) | 287 | 0.39 | 0.47 | 0.80 | 0.72 | 0.57 | 0.56 | 0.59 | 0.59 | 0.86 | 0.74 | 0.79 | Doppel lexical, LR (0.86) |
-| cross-author, same code, different description | 34 | 0.26 | 0.62 | 0.97 | 0.91 | 0.76 | 0.74 | 0.82 | 0.76 | 0.94 | 0.94 | 0.97 | LLM judge Qwen2.5-14B + Doppel (avg) top-5 (0.97) |
-| class A. code twin (>=50% identical changed lines) | 994 | 0.41 | 0.79 | 0.91 | 0.81 | 0.82 | 0.77 | 0.80 | 0.84 | 0.95 | 0.88 | 0.91 | Doppel lexical, LR (0.95) |
-| cross-author, class A. code twin (>=50% identical changed lines) | 139 | 0.21 | 0.86 | 0.97 | 0.78 | 0.92 | 0.84 | 0.89 | 0.89 | 0.98 | 0.93 | 0.98 | LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 (0.98) |
+| same code, different description (code twin, text TF-IDF < 0.3) | 287 | 0.39 | 0.47 | 0.80 | 0.72 | 0.57 | 0.56 | 0.59 | 0.59 | 0.86 | 0.74 | 0.79 | Jinx lexical, LR (0.86) |
+| cross-author, same code, different description | 34 | 0.26 | 0.62 | 0.97 | 0.91 | 0.76 | 0.74 | 0.82 | 0.76 | 0.94 | 0.94 | 0.97 | LLM judge Qwen2.5-14B + Jinx (avg) top-5 (0.97) |
+| class A. code twin (>=50% identical changed lines) | 994 | 0.41 | 0.79 | 0.91 | 0.81 | 0.82 | 0.77 | 0.80 | 0.84 | 0.95 | 0.88 | 0.91 | Jinx lexical, LR (0.95) |
+| cross-author, class A. code twin (>=50% identical changed lines) | 139 | 0.21 | 0.86 | 0.97 | 0.78 | 0.92 | 0.84 | 0.89 | 0.89 | 0.98 | 0.93 | 0.98 | LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 (0.98) |
 | class B. partial code overlap | 701 | 0.29 | 0.76 | 0.87 | 0.58 | 0.80 | 0.78 | 0.77 | 0.76 | 0.88 | 0.86 | 0.86 | All signals, LR (0.88) |
 | cross-author, class B. partial code overlap | 164 | 0.20 | 0.70 | 0.89 | 0.52 | 0.80 | 0.76 | 0.72 | 0.76 | 0.91 | 0.87 | 0.88 | All signals, LR (0.91) |
-| class C. same files, different code | 44 | 0.45 | 0.73 | 0.86 | 0.43 | 0.68 | 0.68 | 0.68 | 0.70 | 0.89 | 0.86 | 0.86 | Doppel lexical, LR (0.89) |
-| cross-author, class C. same files, different code | 10 | 0.10 | 0.60 | 0.80 | 0.30 | 0.60 | 0.50 | 0.50 | 0.60 | 0.70 | 0.80 | 0.80 | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 (0.80) |
+| class C. same files, different code | 44 | 0.45 | 0.73 | 0.86 | 0.43 | 0.68 | 0.68 | 0.68 | 0.70 | 0.89 | 0.86 | 0.86 | Jinx lexical, LR (0.89) |
+| cross-author, class C. same files, different code | 10 | 0.10 | 0.60 | 0.80 | 0.30 | 0.60 | 0.50 | 0.50 | 0.60 | 0.70 | 0.80 | 0.80 | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 (0.80) |
 | class D. no shared files (intent-level) | 128 | 0.30 | 0.81 | 0.81 | 0.31 | 0.75 | 0.73 | 0.77 | 0.69 | 0.76 | 0.79 | 0.81 | TF-IDF template-stripped (0.81) |
 | cross-author, class D. no shared files (intent-level) | 29 | 0.10 | 0.69 | 0.76 | 0.28 | 0.76 | 0.66 | 0.66 | 0.66 | 0.69 | 0.66 | 0.72 | Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10 (0.76) |
 
 
-**Paired difference vs `Doppel + MiniLM, LR (current tool)`, cross-author (points; CI excludes 0 = significant)**
+**Paired difference vs `Jinx + MiniLM, LR (current tool)`, cross-author (points; CI excludes 0 = significant)**
 
 | Strategy | ΔRecall@1 | ΔRecall@5 | ΔMRR |
 |---|---|---|---|
 | All signals, LR | +0.6 [-1.2, +2.5] | +0.3 [-0.8, +1.1] | +0.2 [-0.9, +1.4] |
-| Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | +0.0 [-2.2, +1.8] | +0.3 [+0.0, +1.0] | -0.1 [-1.3, +0.9] |
-| LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | -0.3 [-2.3, +2.4] | +0.0 [+0.0, +0.0] | -0.0 [-1.1, +1.4] |
-| Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | -0.3 [-2.4, +2.1] | +0.0 [+0.0, +0.0] | -0.2 [-1.3, +1.0] |
-| Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | -0.6 [-2.3, +1.3] | +0.0 [+0.0, +0.0] | -0.4 [-1.3, +0.5] |
-| Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | -0.6 [-3.0, +2.2] | +0.0 [+0.0, +0.0] | -0.3 [-1.5, +1.1] |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-5 | -0.9 [-2.5, +1.2] | +0.0 [+0.0, +0.0] | -0.6 [-1.4, +0.5] |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-10 | -1.2 [-2.9, +0.8] | +0.0 [+0.0, +0.0] | -0.7 [-1.6, +0.3] |
-| Doppel lexical, LR | -1.2 [-3.2, +1.0] | +0.0 [-0.8, +0.9] | -0.7 [-1.9, +0.5] |
-| Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | -1.5 [-3.4, +0.9] | +0.0 [+0.0, +0.0] | -0.7 [-1.7, +0.5] |
-| Cascade: Doppel + BGE-reranker-base (stacked LR) | -1.8 [-4.3, +0.4] | +0.3 [+0.0, +1.0] | -1.0 [-2.3, +0.2] |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | -2.0 [-3.9, +0.5] | +0.0 [+0.0, +0.0] | -1.0 [-2.0, +0.3] |
+| Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | +0.0 [-2.2, +1.8] | +0.3 [+0.0, +1.0] | -0.1 [-1.3, +0.9] |
+| LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | -0.3 [-2.3, +2.4] | +0.0 [+0.0, +0.0] | -0.0 [-1.1, +1.4] |
+| Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | -0.3 [-2.4, +2.1] | +0.0 [+0.0, +0.0] | -0.2 [-1.3, +1.0] |
+| Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | -0.6 [-2.3, +1.3] | +0.0 [+0.0, +0.0] | -0.4 [-1.3, +0.5] |
+| Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | -0.6 [-3.0, +2.2] | +0.0 [+0.0, +0.0] | -0.3 [-1.5, +1.1] |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-5 | -0.9 [-2.5, +1.2] | +0.0 [+0.0, +0.0] | -0.6 [-1.4, +0.5] |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-10 | -1.2 [-2.9, +0.8] | +0.0 [+0.0, +0.0] | -0.7 [-1.6, +0.3] |
+| Jinx lexical, LR | -1.2 [-3.2, +1.0] | +0.0 [-0.8, +0.9] | -0.7 [-1.9, +0.5] |
+| Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | -1.5 [-3.4, +0.9] | +0.0 [+0.0, +0.0] | -0.7 [-1.7, +0.5] |
+| Cascade: Jinx + BGE-reranker-base (stacked LR) | -1.8 [-4.3, +0.4] | +0.3 [+0.0, +1.0] | -1.0 [-2.3, +0.2] |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | -2.0 [-3.9, +0.5] | +0.0 [+0.0, +0.0] | -1.0 [-2.0, +0.3] |
 | All signals, gradient boosting | -2.3 [-5.5, +1.2] | -1.2 [-2.6, +0.4] | -1.7 [-4.0, +0.6] |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | -2.6 [-4.9, +0.0] | +0.0 [+0.0, +0.0] | -1.5 [-2.7, -0.0] |
-| Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | -2.6 [-5.3, +0.4] | +0.0 [+0.0, +0.0] | -1.4 [-2.7, +0.2] |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-5 | -2.9 [-5.6, +0.4] | +0.0 [+0.0, +0.0] | -1.5 [-2.9, +0.2] |
-| Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | -2.9 [-5.5, -0.3] | +0.0 [-0.8, +0.9] | -1.5 [-2.8, -0.0] |
-| Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | -2.9 [-5.5, +0.7] | +0.0 [+0.0, +0.0] | -1.7 [-3.2, +0.4] |
-| Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | -3.2 [-8.4, +1.4] | -0.6 [-3.1, +1.4] | -2.0 [-5.7, +0.9] |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-10 | -3.2 [-6.0, +0.4] | +0.0 [+0.0, +0.0] | -1.7 [-3.1, +0.2] |
-| Doppel features, gradient boosting | -3.5 [-6.8, +0.0] | -1.5 [-4.3, +0.4] | -2.5 [-5.0, +0.2] |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | -4.7 [-7.2, -1.1] | +0.0 [+0.0, +0.0] | -2.7 [-4.2, -0.6] |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | -5.0 [-7.6, -1.3] | -0.3 [-1.5, +0.9] | -2.8 [-4.4, -0.7] |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | -2.6 [-4.9, +0.0] | +0.0 [+0.0, +0.0] | -1.5 [-2.7, -0.0] |
+| Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | -2.6 [-5.3, +0.4] | +0.0 [+0.0, +0.0] | -1.4 [-2.7, +0.2] |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-5 | -2.9 [-5.6, +0.4] | +0.0 [+0.0, +0.0] | -1.5 [-2.9, +0.2] |
+| Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | -2.9 [-5.5, -0.3] | +0.0 [-0.8, +0.9] | -1.5 [-2.8, -0.0] |
+| Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | -2.9 [-5.5, +0.7] | +0.0 [+0.0, +0.0] | -1.7 [-3.2, +0.4] |
+| Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | -3.2 [-8.4, +1.4] | -0.6 [-3.1, +1.4] | -2.0 [-5.7, +0.9] |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-10 | -3.2 [-6.0, +0.4] | +0.0 [+0.0, +0.0] | -1.7 [-3.1, +0.2] |
+| Jinx features, gradient boosting | -3.5 [-6.8, +0.0] | -1.5 [-4.3, +0.4] | -2.5 [-5.0, +0.2] |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | -4.7 [-7.2, -1.1] | +0.0 [+0.0, +0.0] | -2.7 [-4.2, -0.6] |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | -5.0 [-7.6, -1.3] | -0.3 [-1.5, +0.9] | -2.8 [-4.4, -0.7] |
 | LLM judge Claude Haiku 4.5 re-rank top-5 | -5.8 [-9.0, -1.2] | +0.0 [+0.0, +0.0] | -3.0 [-4.8, -0.4] |
 | Links only (same issue / #ref) | -6.1 [-10.9, -0.4] | -4.7 [-9.0, -0.7] | -5.0 [-9.2, -0.5] |
 | LLM judge Qwen2.5-Coder-7B re-rank top-5 | -6.1 [-8.8, -3.1] | +0.0 [+0.0, +0.0] | -3.3 [-4.8, -1.6] |
@@ -519,29 +519,29 @@
 | Strategy | ΔRecall@1 | ΔRecall@5 | ΔMRR |
 |---|---|---|---|
 | All signals, LR | +9.6 [+5.6, +13.4] | +2.0 [-0.8, +5.3] | +6.2 [+2.9, +9.1] |
-| Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | +9.1 [+4.3, +13.1] | +2.0 [-0.6, +5.4] | +5.8 [+2.3, +9.1] |
-| Doppel + MiniLM, LR (current tool) | +9.1 [+5.0, +13.1] | +1.8 [-0.9, +5.2] | +5.9 [+2.7, +9.3] |
-| Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | +8.8 [+4.8, +12.8] | +1.8 [-0.9, +5.2] | +5.7 [+2.6, +8.8] |
-| LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | +8.8 [+5.2, +13.2] | +1.8 [-0.9, +5.2] | +5.9 [+3.0, +9.5] |
-| Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | +8.5 [+4.3, +12.8] | +1.8 [-0.9, +5.2] | +5.7 [+2.6, +8.9] |
-| Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | +8.5 [+4.3, +12.6] | +1.8 [-0.9, +5.2] | +5.5 [+2.2, +8.8] |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-5 | +8.2 [+4.2, +12.4] | +1.8 [-0.9, +5.2] | +5.4 [+2.2, +8.8] |
-| Doppel lexical, LR | +7.9 [+3.7, +12.7] | +1.8 [-0.8, +5.0] | +5.2 [+1.9, +9.1] |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-10 | +7.9 [+3.8, +12.0] | +1.8 [-0.9, +5.2] | +5.2 [+2.0, +8.6] |
-| Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | +7.6 [+4.1, +11.2] | +1.8 [-0.9, +5.2] | +5.2 [+2.3, +8.3] |
-| Cascade: Doppel + BGE-reranker-base (stacked LR) | +7.3 [+2.3, +11.4] | +2.0 [-0.6, +5.4] | +5.0 [+1.5, +8.1] |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | +7.0 [+3.6, +10.7] | +1.8 [-0.9, +5.2] | +4.9 [+2.0, +8.1] |
+| Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | +9.1 [+4.3, +13.1] | +2.0 [-0.6, +5.4] | +5.8 [+2.3, +9.1] |
+| Jinx + MiniLM, LR (current tool) | +9.1 [+5.0, +13.1] | +1.8 [-0.9, +5.2] | +5.9 [+2.7, +9.3] |
+| Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | +8.8 [+4.8, +12.8] | +1.8 [-0.9, +5.2] | +5.7 [+2.6, +8.8] |
+| LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | +8.8 [+5.2, +13.2] | +1.8 [-0.9, +5.2] | +5.9 [+3.0, +9.5] |
+| Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | +8.5 [+4.3, +12.8] | +1.8 [-0.9, +5.2] | +5.7 [+2.6, +8.9] |
+| Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | +8.5 [+4.3, +12.6] | +1.8 [-0.9, +5.2] | +5.5 [+2.2, +8.8] |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-5 | +8.2 [+4.2, +12.4] | +1.8 [-0.9, +5.2] | +5.4 [+2.2, +8.8] |
+| Jinx lexical, LR | +7.9 [+3.7, +12.7] | +1.8 [-0.8, +5.0] | +5.2 [+1.9, +9.1] |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-10 | +7.9 [+3.8, +12.0] | +1.8 [-0.9, +5.2] | +5.2 [+2.0, +8.6] |
+| Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | +7.6 [+4.1, +11.2] | +1.8 [-0.9, +5.2] | +5.2 [+2.3, +8.3] |
+| Cascade: Jinx + BGE-reranker-base (stacked LR) | +7.3 [+2.3, +11.4] | +2.0 [-0.6, +5.4] | +5.0 [+1.5, +8.1] |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | +7.0 [+3.6, +10.7] | +1.8 [-0.9, +5.2] | +4.9 [+2.0, +8.1] |
 | All signals, gradient boosting | +6.7 [+3.2, +10.8] | +0.6 [-1.6, +3.2] | +4.2 [+1.6, +7.0] |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | +6.4 [+3.0, +9.9] | +1.8 [-0.9, +5.2] | +4.5 [+1.7, +7.3] |
-| Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | +6.4 [+2.2, +11.2] | +1.8 [-0.9, +5.2] | +4.6 [+1.3, +8.2] |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-5 | +6.1 [+1.9, +11.0] | +1.8 [-0.9, +5.2] | +4.4 [+1.1, +8.2] |
-| Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | +6.1 [+1.6, +10.5] | +1.8 [-0.7, +4.9] | +4.5 [+1.2, +7.7] |
-| Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | +6.1 [+2.3, +10.7] | +1.8 [-0.9, +5.2] | +4.3 [+1.2, +7.8] |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-10 | +5.8 [+1.7, +10.8] | +1.8 [-0.9, +5.2] | +4.3 [+1.0, +8.1] |
-| Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | +5.8 [+0.0, +11.2] | +1.2 [-2.5, +5.3] | +3.9 [-0.8, +8.2] |
-| Doppel features, gradient boosting | +5.6 [+1.9, +9.6] | +0.3 [-1.6, +2.5] | +3.5 [+1.0, +6.2] |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | +4.4 [+0.6, +9.0] | +1.8 [-0.9, +5.2] | +3.3 [+0.3, +6.8] |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | +4.1 [+0.5, +8.2] | +1.5 [-1.6, +5.1] | +3.2 [+0.2, +6.5] |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | +6.4 [+3.0, +9.9] | +1.8 [-0.9, +5.2] | +4.5 [+1.7, +7.3] |
+| Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | +6.4 [+2.2, +11.2] | +1.8 [-0.9, +5.2] | +4.6 [+1.3, +8.2] |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-5 | +6.1 [+1.9, +11.0] | +1.8 [-0.9, +5.2] | +4.4 [+1.1, +8.2] |
+| Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | +6.1 [+1.6, +10.5] | +1.8 [-0.7, +4.9] | +4.5 [+1.2, +7.7] |
+| Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | +6.1 [+2.3, +10.7] | +1.8 [-0.9, +5.2] | +4.3 [+1.2, +7.8] |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-10 | +5.8 [+1.7, +10.8] | +1.8 [-0.9, +5.2] | +4.3 [+1.0, +8.1] |
+| Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | +5.8 [+0.0, +11.2] | +1.2 [-2.5, +5.3] | +3.9 [-0.8, +8.2] |
+| Jinx features, gradient boosting | +5.6 [+1.9, +9.6] | +0.3 [-1.6, +2.5] | +3.5 [+1.0, +6.2] |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | +4.4 [+0.6, +9.0] | +1.8 [-0.9, +5.2] | +3.3 [+0.3, +6.8] |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | +4.1 [+0.5, +8.2] | +1.5 [-1.6, +5.1] | +3.2 [+0.2, +6.5] |
 | LLM judge Claude Haiku 4.5 re-rank top-5 | +3.2 [-0.4, +8.3] | +1.8 [-0.9, +5.2] | +3.0 [+0.1, +6.7] |
 | LLM judge Qwen2.5-Coder-7B re-rank top-5 | +2.9 [-0.9, +7.0] | +1.8 [-0.9, +5.2] | +2.6 [-0.4, +6.0] |
 | Links only (same issue / #ref) | +2.9 [-1.1, +7.8] | -2.9 [-5.8, +0.7] | +0.9 [-1.9, +4.2] |
@@ -590,29 +590,29 @@
 | Strategy | ΔRecall@1 | ΔRecall@5 | ΔMRR |
 |---|---|---|---|
 | All signals, LR | +12.9 [+7.5, +17.3] | +5.6 [+1.2, +10.0] | +9.2 [+5.1, +13.1] |
-| Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | +12.3 [+5.8, +17.6] | +5.6 [+1.5, +10.0] | +8.8 [+4.2, +13.3] |
-| Doppel + MiniLM, LR (current tool) | +12.3 [+6.8, +17.0] | +5.3 [+1.2, +9.7] | +9.0 [+4.8, +13.4] |
-| Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | +12.0 [+6.6, +17.0] | +5.3 [+1.2, +9.7] | +8.7 [+4.7, +13.0] |
-| LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | +12.0 [+6.7, +17.3] | +5.3 [+1.2, +9.7] | +8.9 [+5.0, +13.7] |
-| Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | +11.7 [+6.5, +16.7] | +5.3 [+1.2, +9.7] | +8.7 [+4.8, +13.0] |
-| Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | +11.7 [+6.3, +16.5] | +5.3 [+1.2, +9.7] | +8.5 [+4.2, +13.1] |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-5 | +11.4 [+6.2, +16.2] | +5.3 [+1.2, +9.7] | +8.4 [+4.2, +13.0] |
-| Doppel lexical, LR | +11.1 [+5.4, +16.7] | +5.3 [+1.2, +9.7] | +8.2 [+3.9, +13.2] |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-10 | +11.1 [+5.9, +15.9] | +5.3 [+1.2, +9.7] | +8.3 [+4.1, +12.7] |
-| Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | +10.8 [+6.0, +15.2] | +5.3 [+1.2, +9.7] | +8.2 [+4.3, +12.5] |
-| Cascade: Doppel + BGE-reranker-base (stacked LR) | +10.5 [+4.3, +15.8] | +5.6 [+1.5, +10.0] | +8.0 [+3.5, +12.2] |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | +10.2 [+5.5, +14.8] | +5.3 [+1.2, +9.7] | +7.9 [+4.1, +12.3] |
+| Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | +12.3 [+5.8, +17.6] | +5.6 [+1.5, +10.0] | +8.8 [+4.2, +13.3] |
+| Jinx + MiniLM, LR (current tool) | +12.3 [+6.8, +17.0] | +5.3 [+1.2, +9.7] | +9.0 [+4.8, +13.4] |
+| Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | +12.0 [+6.6, +17.0] | +5.3 [+1.2, +9.7] | +8.7 [+4.7, +13.0] |
+| LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | +12.0 [+6.7, +17.3] | +5.3 [+1.2, +9.7] | +8.9 [+5.0, +13.7] |
+| Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | +11.7 [+6.5, +16.7] | +5.3 [+1.2, +9.7] | +8.7 [+4.8, +13.0] |
+| Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | +11.7 [+6.3, +16.5] | +5.3 [+1.2, +9.7] | +8.5 [+4.2, +13.1] |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-5 | +11.4 [+6.2, +16.2] | +5.3 [+1.2, +9.7] | +8.4 [+4.2, +13.0] |
+| Jinx lexical, LR | +11.1 [+5.4, +16.7] | +5.3 [+1.2, +9.7] | +8.2 [+3.9, +13.2] |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-10 | +11.1 [+5.9, +15.9] | +5.3 [+1.2, +9.7] | +8.3 [+4.1, +12.7] |
+| Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | +10.8 [+6.0, +15.2] | +5.3 [+1.2, +9.7] | +8.2 [+4.3, +12.5] |
+| Cascade: Jinx + BGE-reranker-base (stacked LR) | +10.5 [+4.3, +15.8] | +5.6 [+1.5, +10.0] | +8.0 [+3.5, +12.2] |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | +10.2 [+5.5, +14.8] | +5.3 [+1.2, +9.7] | +7.9 [+4.1, +12.3] |
 | All signals, gradient boosting | +9.9 [+6.0, +13.8] | +4.1 [+0.6, +8.0] | +7.3 [+4.2, +10.4] |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | +9.6 [+4.9, +13.9] | +5.3 [+1.2, +9.7] | +7.5 [+3.8, +11.5] |
-| Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | +9.6 [+4.9, +14.8] | +5.3 [+1.2, +9.7] | +7.6 [+3.5, +12.5] |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-5 | +9.4 [+4.8, +14.5] | +5.3 [+1.2, +9.7] | +7.4 [+3.5, +12.4] |
-| Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | +9.4 [+3.6, +14.8] | +5.3 [+1.2, +9.8] | +7.5 [+3.3, +11.8] |
-| Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | +9.4 [+5.2, +13.8] | +5.3 [+1.2, +9.7] | +7.3 [+3.6, +11.9] |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-10 | +9.1 [+4.6, +14.2] | +5.3 [+1.2, +9.7] | +7.3 [+3.4, +12.3] |
-| Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | +9.1 [+3.3, +14.5] | +4.7 [-0.3, +10.0] | +6.9 [+1.9, +12.1] |
-| Doppel features, gradient boosting | +8.8 [+4.7, +12.6] | +3.8 [+0.8, +6.9] | +6.5 [+3.7, +9.5] |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | +7.6 [+3.3, +12.6] | +5.3 [+1.2, +9.7] | +6.3 [+2.6, +11.1] |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | +7.3 [+3.3, +11.8] | +5.0 [+0.6, +9.7] | +6.2 [+2.6, +10.6] |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | +9.6 [+4.9, +13.9] | +5.3 [+1.2, +9.7] | +7.5 [+3.8, +11.5] |
+| Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | +9.6 [+4.9, +14.8] | +5.3 [+1.2, +9.7] | +7.6 [+3.5, +12.5] |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-5 | +9.4 [+4.8, +14.5] | +5.3 [+1.2, +9.7] | +7.4 [+3.5, +12.4] |
+| Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | +9.4 [+3.6, +14.8] | +5.3 [+1.2, +9.8] | +7.5 [+3.3, +11.8] |
+| Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | +9.4 [+5.2, +13.8] | +5.3 [+1.2, +9.7] | +7.3 [+3.6, +11.9] |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-10 | +9.1 [+4.6, +14.2] | +5.3 [+1.2, +9.7] | +7.3 [+3.4, +12.3] |
+| Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | +9.1 [+3.3, +14.5] | +4.7 [-0.3, +10.0] | +6.9 [+1.9, +12.1] |
+| Jinx features, gradient boosting | +8.8 [+4.7, +12.6] | +3.8 [+0.8, +6.9] | +6.5 [+3.7, +9.5] |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | +7.6 [+3.3, +12.6] | +5.3 [+1.2, +9.7] | +6.3 [+2.6, +11.1] |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | +7.3 [+3.3, +11.8] | +5.0 [+0.6, +9.7] | +6.2 [+2.6, +10.6] |
 | LLM judge Claude Haiku 4.5 re-rank top-5 | +6.4 [+1.6, +12.2] | +5.3 [+1.2, +9.7] | +6.0 [+2.3, +10.9] |
 | LLM judge Qwen2.5-Coder-7B re-rank top-5 | +6.1 [+0.7, +11.1] | +5.3 [+1.2, +9.7] | +5.7 [+1.6, +10.1] |
 | Links only (same issue / #ref) | +6.1 [+1.9, +11.3] | +0.6 [-0.7, +2.3] | +3.9 [+1.5, +6.8] |
@@ -660,23 +660,23 @@
 
 | Family | Strategy | False-alarm rate | Cross-author correct alerts |
 |---|---|---|---|
-| 7 supervised | Doppel features, gradient boosting | 1.3% | 46.2% |
+| 7 supervised | Jinx features, gradient boosting | 1.3% | 46.2% |
 | 7 supervised | All signals, LR | 1.6% | 48.8% |
-| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | 1.8% | 48.5% |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 2.4% | 45.6% |
+| 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | 1.8% | 48.5% |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 2.4% | 45.6% |
 | 7 supervised | All signals, gradient boosting | 2.4% | 49.7% |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 2.5% | 45.9% |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 2.5% | 45.9% |
-| 7 supervised | Doppel + MiniLM, LR (current tool) | 2.5% | 47.1% |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 2.5% | 46.2% |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 2.8% | 45.3% |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 2.8% | 45.3% |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 2.8% | 46.2% |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 2.9% | 45.0% |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 2.9% | 45.3% |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 3.1% | 46.2% |
-| 7 supervised | Doppel lexical, LR | 3.2% | 46.8% |
-| 10 stacked cascade (ours) | Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 3.7% | 44.2% |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 2.5% | 45.9% |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 2.5% | 45.9% |
+| 7 supervised | Jinx + MiniLM, LR (current tool) | 2.5% | 47.1% |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 2.5% | 46.2% |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 2.8% | 45.3% |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 2.8% | 45.3% |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 2.8% | 46.2% |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 2.9% | 45.0% |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 2.9% | 45.3% |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 3.1% | 46.2% |
+| 7 supervised | Jinx lexical, LR | 3.2% | 46.8% |
+| 10 stacked cascade (ours) | Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 3.7% | 44.2% |
 | 3 links | Links only (same issue / #ref) | 3.8% | 46.2% |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-7B re-rank top-5 | 4.0% | 43.3% |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-7B re-rank top-10 | 4.0% | 43.0% |
@@ -684,19 +684,19 @@
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-5 | 4.2% | 44.2% |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-14B re-rank top-10 | 4.2% | 42.4% |
 | 9 LLM judge on top-k | LLM judge Qwen2.5-Coder-7B re-rank top-10 | 4.3% | 43.0% |
-| 10 stacked cascade (ours) | Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 4.3% | 41.5% |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 4.5% | 45.6% |
+| 10 stacked cascade (ours) | Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 4.3% | 41.5% |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 4.5% | 45.6% |
 | 7 supervised | INTRUDE + time (Wang et al. 2019), LR | 4.6% | 44.2% |
 | 10 stacked cascade (ours) | Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10 | 4.7% | 45.0% |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 5.0% | 44.2% |
-| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 5.0% | 44.2% |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 5.0% | 44.2% |
+| 9 LLM judge on top-k | LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 5.0% | 44.2% |
 | 9 LLM judge on top-k | LLM judge Claude Haiku 4.5 re-rank top-5 | 5.4% | 57.3% |
 | 4 embedding | BGE-small template-stripped | 6.4% | 42.1% |
 | 4 embedding | BGE-small raw text | 6.9% | 43.3% |
-| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 6.9% | 44.7% |
-| 10 stacked cascade (ours) | Cascade: Doppel + BGE-reranker-base (stacked LR) | 6.9% | 46.8% |
+| 8 re-ranker on top-k | Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 6.9% | 44.7% |
+| 10 stacked cascade (ours) | Cascade: Jinx + BGE-reranker-base (stacked LR) | 6.9% | 46.8% |
 | 4 embedding | BGE-base template-stripped | 7.3% | 43.6% |
-| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 8.8% | 45.9% |
+| 8 re-ranker on top-k | Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 8.8% | 45.9% |
 | 1 lexical | TF-IDF template-stripped | 8.9% | 42.7% |
 | 1 lexical | TF-IDF raw text (Li et al. 2017) | 9.4% | 42.4% |
 | 8 re-ranker on top-k | Cross-encoder BGE-reranker-v2-m3 re-rank top-10 | 10.7% | 43.0% |
@@ -732,44 +732,44 @@
 
 | Strategy | FAR 1% | FAR 2% | FAR 5% | FAR 10% | FAR 20% |
 |---|---|---|---|---|---|
-| LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | 31.3% | 49.7% | 71.3% | 82.7% | 86.5% |
+| LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | 31.3% | 49.7% | 71.3% | 82.7% | 86.5% |
 | All signals, LR | 40.6% | 56.1% | 70.2% | 77.8% | 83.9% |
 | All signals, gradient boosting | 23.4% | 44.7% | 69.0% | 76.9% | 83.0% |
-| Doppel features, gradient boosting | 39.2% | 58.8% | 68.4% | 76.3% | 82.5% |
-| Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 23.1% | 40.4% | 64.0% | 74.9% | 81.3% |
-| Doppel + MiniLM, LR (current tool) | 30.1% | 43.6% | 63.2% | 74.9% | 81.0% |
-| Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 23.7% | 33.0% | 62.6% | 73.4% | 83.0% |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 19.9% | 38.6% | 61.7% | 74.9% | 80.7% |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 19.9% | 38.6% | 61.7% | 74.9% | 81.0% |
-| Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 19.0% | 42.1% | 59.9% | 69.6% | 81.0% |
-| Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 22.2% | 43.6% | 59.9% | 73.7% | 80.7% |
-| Doppel lexical, LR | 19.0% | 35.4% | 58.8% | 72.2% | 78.7% |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 28.4% | 42.7% | 57.0% | 74.0% | 80.1% |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 28.4% | 42.7% | 57.0% | 74.3% | 80.4% |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 12.6% | 27.2% | 56.7% | 71.6% | 78.4% |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 12.6% | 27.2% | 56.4% | 71.3% | 78.1% |
-| Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 20.5% | 31.3% | 55.3% | 71.6% | 82.7% |
-| Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 13.7% | 31.9% | 52.0% | 70.8% | 78.4% |
+| Jinx features, gradient boosting | 39.2% | 58.8% | 68.4% | 76.3% | 82.5% |
+| Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 23.1% | 40.4% | 64.0% | 74.9% | 81.3% |
+| Jinx + MiniLM, LR (current tool) | 30.1% | 43.6% | 63.2% | 74.9% | 81.0% |
+| Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 23.7% | 33.0% | 62.6% | 73.4% | 83.0% |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 19.9% | 38.6% | 61.7% | 74.9% | 80.7% |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 19.9% | 38.6% | 61.7% | 74.9% | 81.0% |
+| Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 19.0% | 42.1% | 59.9% | 69.6% | 81.0% |
+| Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 22.2% | 43.6% | 59.9% | 73.7% | 80.7% |
+| Jinx lexical, LR | 19.0% | 35.4% | 58.8% | 72.2% | 78.7% |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 28.4% | 42.7% | 57.0% | 74.0% | 80.1% |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 28.4% | 42.7% | 57.0% | 74.3% | 80.4% |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 12.6% | 27.2% | 56.7% | 71.6% | 78.4% |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 12.6% | 27.2% | 56.4% | 71.3% | 78.1% |
+| Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 20.5% | 31.3% | 55.3% | 71.6% | 82.7% |
+| Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 13.7% | 31.9% | 52.0% | 70.8% | 78.4% |
 | Links only (same issue / #ref) | 22.8% | 33.3% | 50.9% | 58.2% | 68.4% |
 | LLM judge Qwen2.5-7B re-rank top-5 | 14.6% | 24.9% | 50.9% | 62.9% | 72.5% |
 | LLM judge Qwen2.5-7B re-rank top-10 | 14.6% | 24.3% | 49.4% | 62.3% | 71.1% |
 | Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10 | 17.5% | 26.9% | 48.8% | 58.5% | 69.9% |
-| Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 14.6% | 23.4% | 47.1% | 63.7% | 78.4% |
+| Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 14.6% | 23.4% | 47.1% | 63.7% | 78.4% |
 | LLM judge Qwen2.5-Coder-7B re-rank top-5 | 17.3% | 24.0% | 46.8% | 60.5% | 73.4% |
 | INTRUDE + time (Wang et al. 2019), LR | 12.9% | 22.2% | 46.5% | 57.6% | 68.4% |
 | LLM judge Qwen2.5-14B re-rank top-5 | 12.9% | 26.6% | 46.5% | 65.2% | 70.8% |
 | LLM judge Qwen2.5-14B re-rank top-10 | 12.9% | 26.6% | 46.2% | 63.5% | 68.7% |
 | LLM judge Qwen2.5-Coder-7B re-rank top-10 | 17.3% | 23.7% | 46.2% | 58.2% | 71.1% |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 9.6% | 19.9% | 45.3% | 64.9% | 77.2% |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 9.6% | 19.9% | 45.3% | 64.9% | 77.2% |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 9.6% | 19.9% | 45.3% | 64.9% | 77.2% |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 9.6% | 19.9% | 45.3% | 64.9% | 77.2% |
 | BGE-small template-stripped | 6.1% | 14.0% | 37.1% | 52.0% | 61.1% |
 | BGE-small raw text | 5.8% | 12.6% | 36.5% | 50.3% | 59.6% |
-| Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 5.0% | 15.5% | 36.3% | 52.3% | 66.4% |
-| Cascade: Doppel + BGE-reranker-base (stacked LR) | 5.8% | 14.0% | 33.3% | 58.8% | 78.7% |
+| Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 5.0% | 15.5% | 36.3% | 52.3% | 66.4% |
+| Cascade: Jinx + BGE-reranker-base (stacked LR) | 5.8% | 14.0% | 33.3% | 58.8% | 78.7% |
 | BGE-base template-stripped | 4.1% | 10.2% | 33.3% | 48.8% | 60.2% |
 | TF-IDF template-stripped | 10.2% | 17.3% | 33.0% | 47.1% | 56.1% |
 | TF-IDF raw text (Li et al. 2017) | 10.2% | 15.5% | 32.7% | 46.2% | 55.8% |
-| Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 5.8% | 14.0% | 28.7% | 50.0% | 75.1% |
+| Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 5.8% | 14.0% | 28.7% | 50.0% | 75.1% |
 | Simili-bot (bot, re-impl) | 5.3% | 12.3% | 26.6% | 38.0% | 52.3% |
 | MiniLM raw text | 5.0% | 12.3% | 25.7% | 37.1% | 53.8% |
 | MiniLM template-stripped | 6.4% | 12.0% | 24.9% | 38.3% | 55.0% |
@@ -793,8 +793,8 @@
 | LLM judge Claude Haiku 4.5 re-rank top-5 | 5.6% | 5.6% | 5.6% | 70.5% | 77.8% |
 | Cross-encoder BGE-reranker-base re-rank top-10 | 1.2% | 1.2% | 2.3% | 4.7% | 13.2% |
 | Changed-files Jaccard | 0.0% | 0.0% | 0.0% | 17.0% | 27.8% |
-| Hunk overlap | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | Identical changed lines | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
+| Hunk overlap | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | RRF hybrid: BM25 + embedding | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% |
 | RRF hybrid: BM25 + embedding + code | 0.0% | 0.0% | 0.0% | 0.0% | 45.6% |
 | Recency only (newest open PR first) | 0.0% | 0.0% | 0.0% | 0.6% | 1.8% |
@@ -806,31 +806,31 @@
 |---|---|---|---|---|
 | All signals, LR | 0.991 | 1 | 0.906 | 1 |
 | All signals, gradient boosting | 0.989 | 2 | 0.877 | 14 |
-| Doppel + MiniLM, LR (current tool) | 0.986 | 3 | 0.901 | 2 |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-10 | 0.984 | 4 | 0.874 | 15 |
-| LLM judge Claude Haiku 4.5 + Doppel (avg) top-5 | 0.984 | 5 | 0.898 | 4 |
-| LLM judge Qwen2.5-Coder-7B + Doppel (avg) top-5 | 0.984 | 6 | 0.880 | 13 |
-| Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR) | 0.984 | 7 | 0.886 | 11 |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-10 | 0.984 | 8 | 0.889 | 9 |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-10 | 0.983 | 9 | 0.868 | 20 |
-| LLM judge Qwen2.5-7B + Doppel (avg) top-5 | 0.983 | 10 | 0.892 | 8 |
-| Doppel lexical, LR | 0.983 | 11 | 0.889 | 9 |
-| LLM judge Qwen2.5-14B + Doppel (avg) top-5 | 0.983 | 12 | 0.871 | 17 |
-| Cascade: Doppel + Qwen2.5-14B judge (stacked LR) | 0.982 | 13 | 0.874 | 15 |
+| Jinx + MiniLM, LR (current tool) | 0.986 | 3 | 0.901 | 2 |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10 | 0.984 | 4 | 0.874 | 15 |
+| LLM judge Claude Haiku 4.5 + Jinx (avg) top-5 | 0.984 | 5 | 0.898 | 4 |
+| LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5 | 0.984 | 6 | 0.880 | 13 |
+| Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR) | 0.984 | 7 | 0.886 | 11 |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-10 | 0.984 | 8 | 0.889 | 9 |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-10 | 0.983 | 9 | 0.868 | 20 |
+| LLM judge Qwen2.5-7B + Jinx (avg) top-5 | 0.983 | 10 | 0.892 | 8 |
+| Jinx lexical, LR | 0.983 | 11 | 0.889 | 9 |
+| LLM judge Qwen2.5-14B + Jinx (avg) top-5 | 0.983 | 12 | 0.871 | 17 |
+| Cascade: Jinx + Qwen2.5-14B judge (stacked LR) | 0.982 | 13 | 0.874 | 15 |
 | LLM judge Claude Haiku 4.5 re-rank top-5 | 0.982 | 14 | 0.842 | 25 |
-| Cascade: Doppel + Qwen2.5-7B judge (stacked LR) | 0.982 | 15 | 0.895 | 6 |
-| Cross-encoder BGE-reranker-v2-m3 + Doppel (avg) top-10 | 0.982 | 16 | 0.871 | 17 |
-| Doppel features, gradient boosting | 0.982 | 17 | 0.865 | 22 |
+| Cascade: Jinx + Qwen2.5-7B judge (stacked LR) | 0.982 | 15 | 0.895 | 6 |
+| Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10 | 0.982 | 16 | 0.871 | 17 |
+| Jinx features, gradient boosting | 0.982 | 17 | 0.865 | 22 |
 | LLM judge Qwen2.5-Coder-7B re-rank top-10 | 0.982 | 18 | 0.804 | 31 |
-| Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.982 | 19 | 0.901 | 2 |
-| Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.981 | 20 | 0.898 | 4 |
-| Cascade: Doppel + fine-tuned BGE-reranker (stacked LR) | 0.981 | 21 | 0.895 | 6 |
+| Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR) | 0.982 | 19 | 0.901 | 2 |
+| Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR) | 0.981 | 20 | 0.898 | 4 |
+| Cascade: Jinx + fine-tuned BGE-reranker (stacked LR) | 0.981 | 21 | 0.895 | 6 |
 | LLM judge Qwen2.5-Coder-7B re-rank top-5 | 0.981 | 22 | 0.839 | 26 |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-5 | 0.981 | 23 | 0.854 | 23 |
-| LLM judge Qwen2.5-1.5B + Doppel (avg) top-10 | 0.981 | 24 | 0.851 | 24 |
-| Cascade: Doppel + BGE-reranker-base (stacked LR) | 0.979 | 25 | 0.883 | 12 |
-| Cross-encoder BGE-reranker-base + Doppel (avg) top-10 | 0.978 | 26 | 0.871 | 17 |
-| Cross-encoder ms-marco MiniLM + Doppel (avg) top-10 | 0.978 | 27 | 0.868 | 20 |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-5 | 0.981 | 23 | 0.854 | 23 |
+| LLM judge Qwen2.5-1.5B + Jinx (avg) top-10 | 0.981 | 24 | 0.851 | 24 |
+| Cascade: Jinx + BGE-reranker-base (stacked LR) | 0.979 | 25 | 0.883 | 12 |
+| Cross-encoder BGE-reranker-base + Jinx (avg) top-10 | 0.978 | 26 | 0.871 | 17 |
+| Cross-encoder ms-marco MiniLM + Jinx (avg) top-10 | 0.978 | 27 | 0.868 | 20 |
 | LLM judge Qwen2.5-7B re-rank top-5 | 0.975 | 28 | 0.810 | 29 |
 | INTRUDE + time (Wang et al. 2019), LR | 0.974 | 29 | 0.810 | 29 |
 | LLM judge Qwen2.5-7B re-rank top-10 | 0.972 | 30 | 0.792 | 32 |

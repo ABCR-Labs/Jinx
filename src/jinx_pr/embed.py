@@ -4,7 +4,7 @@ DEFAULT_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 
 class Embedder:
-    """Optional local sentence-embedding model (pip install doppel-pr[embed]). No API calls."""
+    """Optional local sentence-embedding model (pip install jinx-pr[embed]). No API calls."""
 
     def __init__(self, model: str = DEFAULT_MODEL, device: str = "cpu", max_chars: int = 2000):
         from sentence_transformers import SentenceTransformer

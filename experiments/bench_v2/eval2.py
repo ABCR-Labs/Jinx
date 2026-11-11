@@ -1,6 +1,6 @@
 """Dedup strategy study on the AIDev live-queue benchmark.
 Strategies x duplicate classes; Recall@1/5, MRR with repo-cluster bootstrap CIs; paired tests; false alarms;
-operating curves; random-pair vs live-queue evaluation; error analysis. Writes to doppel/experiments/results/."""
+operating curves; random-pair vs live-queue evaluation; error analysis. Writes to jinx_pr/experiments/results/."""
 import pickle, json, os, sys, numpy as np, pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import HistGradientBoostingClassifier
@@ -9,7 +9,7 @@ from sklearn.model_selection import GroupKFold
 from sklearn.metrics import roc_auc_score
 from scipy.stats import kendalltau
 D = "/home/ubuntu/research/prdupecheck/data/"
-OUT = "/home/ubuntu/research/prdupecheck/doppel/experiments/results/"; os.makedirs(OUT, exist_ok=True)
+OUT = "/home/ubuntu/research/prdupecheck/jinx_pr/experiments/results/"; os.makedirs(OUT, exist_ok=True)
 NB = int(os.environ.get("NB", 500))
 B = pickle.load(open(D + "bench.pkl", "rb")); Q = B["queries"]
 P = pd.read_parquet(D + "pull_request.parquet", columns=["id", "repo_url", "title", "number", "user", "agent"]).set_index("id")
@@ -68,10 +68,10 @@ for c in ["bm25_raw", "bm25_stripped", "bm25_diff"]:
     F[c + "_n"] = F[c] / (g[c].transform("max") + 1e-9)  # per-queue normalised BM25 for learners
 ALL = [c + "_n" if c.startswith("bm25") else c for c in ALL]
 TRAINED = {"INTRUDE + time (Wang et al. 2019), LR": ("7 supervised", INTRUDE + ["log_gap_hours"], "lr"),
-           "Doppel lexical, LR": ("7 supervised", LEX, "lr"),
-           "Doppel + MiniLM, LR (current tool)": ("7 supervised", LEX + ["emb_cos"], "lr"),
+           "Jinx lexical, LR": ("7 supervised", LEX, "lr"),
+           "Jinx + MiniLM, LR (current tool)": ("7 supervised", LEX + ["emb_cos"], "lr"),
            "All signals, LR": ("7 supervised", ALL, "lr"),
-           "Doppel features, gradient boosting": ("7 supervised", LEX + ["emb_cos"], "gb"),
+           "Jinx features, gradient boosting": ("7 supervised", LEX + ["emb_cos"], "gb"),
            "All signals, gradient boosting": ("7 supervised", ALL, "gb")}
 folds = list(GroupKFold(n_splits=5).split(meta.index, groups=meta.repo))
 GBIMP = {}
@@ -87,7 +87,7 @@ for name, (fam, cols, kind) in TRAINED.items():
         else:
             mdl = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.05, max_leaf_nodes=31, class_weight="balanced", random_state=0).fit(X[cols], X.y)
             F.loc[tem, name] = mdl.predict_proba(F.loc[tem, cols])[:, 1]
-BASE = "Doppel + MiniLM, LR (current tool)"
+BASE = "Jinx + MiniLM, LR (current tool)"
 # top-10 of the current tool for re-rankers
 F["_r"] = F.groupby("qi")[BASE].rank(ascending=False, method="first")
 F.loc[F._r <= 10, ["qi", "cand", BASE, "_r"]].rename(columns={BASE: "base", "_r": "rank"}).to_parquet(D + "top10.parquet")
@@ -107,7 +107,7 @@ negset = set(meta.index[meta.neg])
 rerank("Cross-encoder ms-marco MiniLM (CPU) re-rank top-10", "ce_scores.parquet", "ce", 10, sig=True)
 for tag, nm in [("ce_msmarco", "ms-marco MiniLM"), ("ce_bgebase", "BGE-reranker-base"), ("ce_bgem3", "BGE-reranker-v2-m3")]:
     rerank(f"Cross-encoder {nm} re-rank top-10", f"rr_{tag}.parquet", tag, 10, sig=True)
-    rerank(f"Cross-encoder {nm} + Doppel (avg) top-10", f"rr_{tag}.parquet", tag, 10, combine=True, sig=True)
+    rerank(f"Cross-encoder {nm} + Jinx (avg) top-10", f"rr_{tag}.parquet", tag, 10, combine=True, sig=True)
 import glob
 ftf = sorted(glob.glob(D + "rr_ft_fold*.parquet"))
 if len(ftf) == 5:
@@ -117,10 +117,10 @@ LLMS = [("qwen15", "Qwen2.5-1.5B"), ("qwen7", "Qwen2.5-7B"), ("qwencoder7", "Qwe
 for tag, nm in LLMS:
     for k in [5, 10]:
         rerank(f"LLM judge {nm} re-rank top-{k}", f"llm_{tag}.parquet", "p_yes", k, fam="9 LLM judge on top-k")
-        rerank(f"LLM judge {nm} + Doppel (avg) top-{k}", f"llm_{tag}.parquet", "p_yes", k, combine=True, fam="9 LLM judge on top-k")
+        rerank(f"LLM judge {nm} + Jinx (avg) top-{k}", f"llm_{tag}.parquet", "p_yes", k, combine=True, fam="9 LLM judge on top-k")
 rerank("LLM judge Claude Haiku 4.5 re-rank top-5", "llm_haiku45.parquet", "p_yes", 5, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
-rerank("LLM judge Claude Haiku 4.5 + Doppel (avg) top-5", "llm_haiku45.parquet", "p_yes", 5, combine=True, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
-# stacked re-ranker: per-fold LR over Doppel score + cross-encoder + LLM judge scores on the top-10 (repo-grouped folds)
+rerank("LLM judge Claude Haiku 4.5 + Jinx (avg) top-5", "llm_haiku45.parquet", "p_yes", 5, combine=True, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
+# stacked re-ranker: per-fold LR over Jinx score + cross-encoder + LLM judge scores on the top-10 (repo-grouped folds)
 def stack(name, files):
     x = F[["qi", "cand", BASE, "_r", "y", "other_gold"]].copy(); cols = [BASE]
     for f, col in files:
@@ -132,13 +132,13 @@ def stack(name, files):
         sc = StandardScaler().fit(x.loc[trm, cols]); mdl = LogisticRegression(C=1.0, class_weight="balanced", max_iter=3000).fit(sc.transform(x.loc[trm, cols]), x.loc[trm, "y"])
         x.loc[tem, "s"] = mdl.predict_proba(sc.transform(x.loc[tem, cols]))[:, 1]
     add(name, "10 stacked cascade (ours)", np.where(x.s.notna(), 10 + x.s.fillna(0), x[BASE].values))
-stack("Cascade: Doppel + BGE-reranker-base (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase")])
-stack("Cascade: Doppel + Qwen2.5-7B judge (stacked LR)", [("llm_qwen7.parquet", "p_yes")])
-stack("Cascade: Doppel + Qwen2.5-Coder-7B judge (stacked LR)", [("llm_qwencoder7.parquet", "p_yes")])
-stack("Cascade: Doppel + Qwen2.5-14B judge (stacked LR)", [("llm_qwen14.parquet", "p_yes")])
-stack("Cascade: Doppel + fine-tuned BGE-reranker (stacked LR)", [("rr_ft.parquet", "ft")])
-stack("Cascade: Doppel + fine-tuned reranker + Qwen2.5-7B (stacked LR)", [("rr_ft.parquet", "ft"), ("llm_qwen7.parquet", "p_yes")])
-stack("Cascade: Doppel + BGE-reranker + Qwen2.5-7B (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase"), ("llm_qwen7.parquet", "p_yes")])
+stack("Cascade: Jinx + BGE-reranker-base (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase")])
+stack("Cascade: Jinx + Qwen2.5-7B judge (stacked LR)", [("llm_qwen7.parquet", "p_yes")])
+stack("Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR)", [("llm_qwencoder7.parquet", "p_yes")])
+stack("Cascade: Jinx + Qwen2.5-14B judge (stacked LR)", [("llm_qwen14.parquet", "p_yes")])
+stack("Cascade: Jinx + fine-tuned BGE-reranker (stacked LR)", [("rr_ft.parquet", "ft")])
+stack("Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR)", [("rr_ft.parquet", "ft"), ("llm_qwen7.parquet", "p_yes")])
+stack("Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase"), ("llm_qwen7.parquet", "p_yes")])
 METHODS = list(S)
 def ranks(col):
     s = F[~F.other_gold][["qi", "gold", col, "tie"]].copy(); s["v"] = s[col] + s.tie

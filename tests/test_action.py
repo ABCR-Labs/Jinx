@@ -1,4 +1,4 @@
-from doppel import action
+from jinx_pr import action
 
 
 class FakeGH:

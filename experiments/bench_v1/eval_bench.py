@@ -24,8 +24,8 @@ INTRUDE = ["title_tfidf_raw", "text_tfidf_raw", "file_jacc", "file_contain", "hu
 TRAINED = {
     "Ren et al. 2019 (INTRUDE clues, LR)": INTRUDE,
     "Wang et al. 2019 (INTRUDE + time, LR)": INTRUDE + ["log_gap_hours"],
-    "Doppel (lexical)": LEX,
-    "Doppel (+ local embedding)": FULL,
+    "Jinx (lexical)": LEX,
+    "Jinx (+ local embedding)": FULL,
     "ablation: no template stripping": [c for c in FULL if c not in ("text_tfidf", "title_tfidf", "emb_cos")] + ["text_tfidf_raw", "title_tfidf_raw", "cos_raw"],
     "ablation: no code overlap": [c for c in FULL if c not in ("file_jacc", "file_contain", "hunk_overlap", "line_contain")],
     "ablation: no issue/reference links": [c for c in FULL if c not in ("same_issue", "mention_ref")],
@@ -108,13 +108,13 @@ for gname, fn in GROUPS.items():
         rows.append({"group": gname, "method": c, "n": len(qs), "R@1": v[:, 0].mean(), "R@5": v[:, 1].mean(), "MRR": v[:, 2].mean(),
                      "R@5 lo": lo[1], "R@5 hi": hi[1], "R@1 lo": lo[0], "R@1 hi": hi[0]})
 res = pd.DataFrame(rows)
-# paired bootstrap: Doppel vs best baseline on cross-author R@5
+# paired bootstrap: Jinx vs best baseline on cross-author R@5
 xq = meta.index[GROUPS["cross-author"](meta)]
-base = [c for c in METHODS if not c.startswith("Doppel") and not c.startswith("ablation")]
+base = [c for c in METHODS if not c.startswith("Jinx") and not c.startswith("ablation")]
 cross = res[res.group == "cross-author"].set_index("method")
 best = cross.loc[base, "R@5"].idxmax()
 paired = {}
-for ours in [m for m in ["Doppel (lexical)", "Doppel (+ local embedding)"] if m in METHODS]:
+for ours in [m for m in ["Jinx (lexical)", "Jinx (+ local embedding)"] if m in METHODS]:
     d = np.stack([(R[ours].reindex(xq).values <= 5).astype(float) - (R[best].reindex(xq).values <= 5).astype(float),
                   1 / R[ours].reindex(xq).values - 1 / R[best].reindex(xq).values], 1)
     lo, hi = boot(d, meta.repo.reindex(xq), nb=5000, seed=7)
@@ -132,7 +132,7 @@ for ours in [m for m in ["Doppel (lexical)", "Doppel (+ local embedding)"] if m 
                                "dR@5 CI": [l2[1], h2[1]], "dMRR": dd[:, 2].mean(), "dMRR CI": [l2[2], h2[2]]}
 bots = [c for c in base if not c.startswith(("Li et al", "Ren et al", "Wang et al", "Plain embedding"))]
 bestbot = cross.loc[bots, "R@5"].idxmax()
-for ours in [m for m in ["Doppel (lexical)", "Doppel (+ local embedding)"] if m in METHODS]:
+for ours in [m for m in ["Jinx (lexical)", "Jinx (+ local embedding)"] if m in METHODS]:
     for gname in ["cross-author", "cross-author, no explicit #ref to gold"]:
         gq = meta.index[GROUPS[gname](meta)]
         dd = np.stack([(R[ours].reindex(gq).values <= k).astype(float) - (R[bestbot].reindex(gq).values <= k).astype(float) for k in (1, 5)]
@@ -162,7 +162,7 @@ for c in METHODS:
         row["cross-author correct alerts@default"] = np.mean(fl.reindex(xq).values & (R[c].reindex(xq).values == 1))
     fa.append(row)
 fa = pd.DataFrame(fa)
-for ours in [m for m in ["Doppel (lexical)", "Doppel (+ local embedding)"] if m in METHODS]:
+for ours in [m for m in ["Jinx (lexical)", "Jinx (+ local embedding)"] if m in METHODS]:
     bfa = fa[fa.method.isin(base)].set_index("method")["FAR@50%train-detection"].idxmin()
     d = (FARQ[ours] - FARQ[bfa].reindex(FARQ[ours].index)).values[:, None]
     lo, hi = boot(d, meta.repo.reindex(FARQ[ours].index), nb=5000, seed=10)

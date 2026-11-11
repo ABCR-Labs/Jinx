@@ -1,7 +1,7 @@
-"""GPU jobs on Modal for the Doppel strategy study.
+"""GPU jobs on Modal for the Jinx strategy study.
 Data lives in the Modal volume `agentdup-data` (uploaded from data/modal_*.parquet).
   embed:  sentence-transformers encoders over 76,209 PRs (raw / stripped / diff views)
-  rerank: cross-encoders over the Doppel top-10 candidates of every query
+  rerank: cross-encoders over the Jinx top-10 candidates of every query
   judge:  open LLM yes/no judges (Jev-style P(yes) from next-token logprobs) via vLLM over the top-10 candidates
 usage: modal run gpu_jobs.py::embed --model M --variant V --tag T
        modal run gpu_jobs.py::rerank --model M --tag T

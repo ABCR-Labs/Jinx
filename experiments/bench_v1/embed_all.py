@@ -1,8 +1,8 @@
 # Local MiniLM embeddings (CPU) for every PR in the benchmark, in the text formats each tool uses.
 import pickle, numpy as np, pandas as pd, time, sys
-sys.path.insert(0, "/home/ubuntu/research/prdupecheck/doppel/src")
+sys.path.insert(0, "/home/ubuntu/research/prdupecheck/jinx_pr/src")
 from sentence_transformers import SentenceTransformer
-from doppel.templates import TemplateModel
+from jinx_pr.templates import TemplateModel
 D = "/home/ubuntu/research/prdupecheck/data/"
 need = sorted(pickle.load(open(D + "bench.pkl", "rb"))["need"])
 pr = pd.read_parquet(D + "pull_request.parquet", columns=["id", "title", "body", "agent"]).set_index("id").loc[need]
