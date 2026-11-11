@@ -133,7 +133,10 @@ w("- Jev (TypeSafe System One) was not evaluated.\n")
 w("## 12. Reproduce\n")
 w("```bash\ncd experiments/bench_v2\npython3 bm25_feats.py            # BM25 features\nbash run_embeds.sh               # CPU MiniLM embeddings (or Modal below)\n"
   "modal run ../modal/gpu_jobs.py::embed_all\nmodal run ../modal/gpu_jobs.py::rerank_all\n"
+  "modal run ../modal/gpu_jobs.py::judge --model Qwen/Qwen2.5-1.5B-Instruct --tag qwen15\n"
   "modal run ../modal/gpu_jobs.py::judge --model Qwen/Qwen2.5-7B-Instruct --tag qwen7\n"
+  "modal run ../modal/gpu_jobs.py::judge --model Qwen/Qwen2.5-Coder-7B-Instruct --tag qwencoder7\n"
+  "modal run ../modal/gpu_jobs.py::judge --model Qwen/Qwen2.5-14B-Instruct --tag qwen14\n"
   "modal run ../modal/gpu_jobs.py::finetune_all\nANTHROPIC_API_KEY=... python3 claude_judge.py   # budget-capped\n"
   "NB=2000 python3 eval2.py\npython3 ../report/make_report.py && python3 ../report/make_tables.py\n```\n")
 w("Full per-group tables for every strategy: `tables.md`. Raw per-query ranks: `experiments/results/ranks.parquet`.")

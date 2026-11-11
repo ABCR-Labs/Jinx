@@ -51,11 +51,16 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "AgentDup + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B + AgentDup (avg) top-5,-0.0006745362563237774,-0.007382166247127741,0.00494978477647983
 "AgentDup + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B re-rank top-10,0.017537942664418212,0.00844629843931826,0.02536503229878909
 "AgentDup + MiniLM, LR (current tool)",LLM judge Qwen2.5-Coder-7B + AgentDup (avg) top-10,-0.0006745362563237774,-0.007382166247127741,0.00494978477647983
+"AgentDup + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-5,0.016526138279932545,0.0078272539646894,0.02378212431086492
+"AgentDup + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + AgentDup (avg) top-5,0.003709949409780776,-0.001743631150744358,0.009165057041983006
+"AgentDup + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-10,0.016863406408094434,0.008264092272667988,0.02403359815713363
+"AgentDup + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + AgentDup (avg) top-10,0.003372681281618887,-0.002197957898524649,0.008917905128435318
 "AgentDup + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 re-rank top-5,0.02866779089376054,0.019991470536637797,0.03610959729036864
 "AgentDup + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 + AgentDup (avg) top-5,-0.00775716694772344,-0.013022560174819153,-0.0035398875899901915
 "AgentDup + MiniLM, LR (current tool)",Cascade: AgentDup + BGE-reranker-base (stacked LR),0.04418212478920742,0.03249767776150783,0.05458445419129427
 "AgentDup + MiniLM, LR (current tool)",Cascade: AgentDup + Qwen2.5-7B judge (stacked LR),-0.001011804384485666,-0.006978801006425359,0.004042825142422204
 "AgentDup + MiniLM, LR (current tool)",Cascade: AgentDup + Qwen2.5-Coder-7B judge (stacked LR),0.0,-0.006602368731081602,0.005608354044137535
+"AgentDup + MiniLM, LR (current tool)",Cascade: AgentDup + Qwen2.5-14B judge (stacked LR),0.017537942664418212,0.009414056269737472,0.02592874857751869
 "AgentDup + MiniLM, LR (current tool)",Cascade: AgentDup + fine-tuned BGE-reranker (stacked LR),0.012141652613827993,0.0054369238978677365,0.018982285614062868
 "AgentDup + MiniLM, LR (current tool)",Cascade: AgentDup + fine-tuned reranker + Qwen2.5-7B (stacked LR),0.0060708263069139965,0.0003125652740987342,0.011853962697328475
 "AgentDup + MiniLM, LR (current tool)",Cascade: AgentDup + BGE-reranker + Qwen2.5-7B (stacked LR),0.0026981450252951096,-0.0033643131344096295,0.007744303500117453
@@ -111,11 +116,16 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B + AgentDup (avg) top-5,-0.021585160202360877,-0.031490507359229994,-0.014026231496348731
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B re-rank top-10,-0.003372681281618887,-0.01530162184625816,0.006255242000279913
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-Coder-7B + AgentDup (avg) top-10,-0.021585160202360877,-0.031490507359229994,-0.014026231496348731
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-5,-0.004384485666104553,-0.01500203749607091,0.004025332778429529
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + AgentDup (avg) top-5,-0.017200674536256323,-0.025286968954248368,-0.010740498546836575
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-10,-0.004047217537942664,-0.014665969459601995,0.004334016267993354
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + AgentDup (avg) top-10,-0.017537942664418212,-0.025589809987150956,-0.010912482154778028
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 re-rank top-5,0.00775716694772344,-0.002911405796448431,0.01613837804642097
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 + AgentDup (avg) top-5,-0.02866779089376054,-0.03685702628103952,-0.022124695958689402
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: AgentDup + BGE-reranker-base (stacked LR),0.02327150084317032,0.012823962901902575,0.03222584664365673
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: AgentDup + Qwen2.5-7B judge (stacked LR),-0.021922428330522766,-0.03077705984763957,-0.014751680075309212
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: AgentDup + Qwen2.5-Coder-7B judge (stacked LR),-0.0209106239460371,-0.030658309266972654,-0.013542374752666014
+"INTRUDE + time (Wang et al. 2019), LR",Cascade: AgentDup + Qwen2.5-14B judge (stacked LR),-0.003372681281618887,-0.0117542443806791,0.0043700319524444
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: AgentDup + fine-tuned BGE-reranker (stacked LR),-0.008768971332209106,-0.01660811242414564,-0.0016867937556450767
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: AgentDup + fine-tuned reranker + Qwen2.5-7B (stacked LR),-0.014839797639123103,-0.0233081149744962,-0.00796154601056084
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: AgentDup + BGE-reranker + Qwen2.5-7B (stacked LR),-0.01821247892074199,-0.02673870196983766,-0.011331206375844746
@@ -171,11 +181,16 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B + AgentDup (avg) top-5,-0.0924114671163575,-0.12025332894953149,-0.06374467387021601
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B re-rank top-10,-0.07419898819561552,-0.10056384032507629,-0.04678420087281009
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-Coder-7B + AgentDup (avg) top-10,-0.0924114671163575,-0.12025332894953149,-0.06374467387021601
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-5,-0.07521079258010117,-0.10225270651492502,-0.04849342732600514
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + AgentDup (avg) top-5,-0.08802698145025295,-0.11832909745474215,-0.05917948103358385
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-10,-0.07487352445193929,-0.10188399359939058,-0.04780286347498959
+"contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + AgentDup (avg) top-10,-0.08836424957841484,-0.11854979992376938,-0.05934646741554326
 "contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 re-rank top-5,-0.06306913996627318,-0.09008324913698745,-0.0359884388825068
 "contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 + AgentDup (avg) top-5,-0.09949409780775717,-0.1287572599074745,-0.07058719784209981
 "contrib-guard/phoenix (bot, exact port)",Cascade: AgentDup + BGE-reranker-base (stacked LR),-0.04755480607082631,-0.07619688871706576,-0.020445713000379687
 "contrib-guard/phoenix (bot, exact port)",Cascade: AgentDup + Qwen2.5-7B judge (stacked LR),-0.09274873524451939,-0.12081312031045435,-0.06462502402157326
 "contrib-guard/phoenix (bot, exact port)",Cascade: AgentDup + Qwen2.5-Coder-7B judge (stacked LR),-0.09173693086003373,-0.12006935934880748,-0.06339464555883523
+"contrib-guard/phoenix (bot, exact port)",Cascade: AgentDup + Qwen2.5-14B judge (stacked LR),-0.07419898819561552,-0.10307425060661395,-0.046508492009733844
 "contrib-guard/phoenix (bot, exact port)",Cascade: AgentDup + fine-tuned BGE-reranker (stacked LR),-0.07959527824620573,-0.10861140604890605,-0.051484336771270824
 "contrib-guard/phoenix (bot, exact port)",Cascade: AgentDup + fine-tuned reranker + Qwen2.5-7B (stacked LR),-0.08566610455311972,-0.11467925456582698,-0.057228764999975895
 "contrib-guard/phoenix (bot, exact port)",Cascade: AgentDup + BGE-reranker + Qwen2.5-7B (stacked LR),-0.08903878583473862,-0.11714694872464525,-0.06100405679513187

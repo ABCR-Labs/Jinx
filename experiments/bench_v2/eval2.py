@@ -135,6 +135,7 @@ def stack(name, files):
 stack("Cascade: AgentDup + BGE-reranker-base (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase")])
 stack("Cascade: AgentDup + Qwen2.5-7B judge (stacked LR)", [("llm_qwen7.parquet", "p_yes")])
 stack("Cascade: AgentDup + Qwen2.5-Coder-7B judge (stacked LR)", [("llm_qwencoder7.parquet", "p_yes")])
+stack("Cascade: AgentDup + Qwen2.5-14B judge (stacked LR)", [("llm_qwen14.parquet", "p_yes")])
 stack("Cascade: AgentDup + fine-tuned BGE-reranker (stacked LR)", [("rr_ft.parquet", "ft")])
 stack("Cascade: AgentDup + fine-tuned reranker + Qwen2.5-7B (stacked LR)", [("rr_ft.parquet", "ft"), ("llm_qwen7.parquet", "p_yes")])
 stack("Cascade: AgentDup + BGE-reranker + Qwen2.5-7B (stacked LR)", [("rr_ce_bgebase.parquet", "ce_bgebase"), ("llm_qwen7.parquet", "p_yes")])

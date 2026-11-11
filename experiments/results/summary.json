@@ -155,6 +155,15 @@
    "seconds": 620.2,
    "ms_per_pr_gpu": 8.138
   },
+  "gpu_qwen14": {
+   "tag": "qwen14",
+   "model": "Qwen/Qwen2.5-14B-Instruct",
+   "pairs": 43591,
+   "gpu": "L40S",
+   "seconds": 5187.5,
+   "ms_per_pair_gpu_batched": 119.003,
+   "prompt_tokens_total": 49530439
+  },
   "gpu_qwen15": {
    "tag": "qwen15",
    "model": "Qwen/Qwen2.5-1.5B-Instruct",
@@ -214,8 +223,8 @@
   }
  },
  "kendall_tau random-pair AUC vs live-queue cross-author R@1": [
-  0.7580966474990368,
-  7.806593674056599e-18
+  0.7486621386066837,
+  9.028727952465525e-19
  ],
  "classes": {
   "A. code twin (>=50% identical changed lines)": 994,
@@ -223,7 +232,7 @@
   "D. no shared files (intent-level)": 128,
   "C. same files, different code": 44
  },
- "n_methods": 61,
+ "n_methods": 66,
  "gb_features": [
   "text_tfidf",
   "title_tfidf",
