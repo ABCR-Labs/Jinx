@@ -1,0 +1,23 @@
+{
+ "cross_author": {
+  "query_index": 453,
+  "repo": "https://api.github.com/repos/huggingface/transformers",
+  "pr": 44134,
+  "queue_size": 19,
+  "expected_duplicate": 44110
+ },
+ "self_replacement": {
+  "query_index": 10,
+  "repo": "https://api.github.com/repos/Doist/todoist-cli",
+  "pr": 158,
+  "queue_size": 14,
+  "expected_duplicate": 157
+ },
+ "no_duplicate": {
+  "query_index": 1871,
+  "repo": "https://api.github.com/repos/kelos-dev/kelos",
+  "pr": 28,
+  "queue_size": 18,
+  "expected_duplicate": null
+ }
+}

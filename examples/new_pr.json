@@ -1,4 +1,102 @@
-{"number": 103, "title": "Increase idle limit for user sessions", "user": {"login": "devin-ai-integration[bot]"},
- "body": "Users are logged out after 5 minutes of inactivity.\n\n## Review checklist\n- [ ] Tests pass\n\nLink to Devin run: https://app.devin.ai/sessions/abc",
- "created_at": "2026-03-02T09:00:00Z",
- "diff": "diff --git a/auth/session.py b/auth/session.py\n--- a/auth/session.py\n+++ b/auth/session.py\n@@ -10,3 +10,3 @@\n-IDLE_TIMEOUT = 300\n+IDLE_TIMEOUT = 3600  # one hour\n"}
+{
+ "number": 44134,
+ "title": "refactor(tvp): use capture_outputs for output tracing",
+ "body": "Migrated from https://github.com/huggingface/transformers/pull/44110 (original account: @fumadari).\n\n## Summary\n- Part of #43979 \u2014 refactors `tvp` to use the `capture_outputs`, `can_return_tuple`, and `merge_with_config_defaults` decorators\n- Simplifies `TvpAttention` to always return `(output, attention_probs)` (hooks decide what to capture)\n- Simplifies `TvpEncodeLayer` and `TvpEncoder` to plain forward without output collection logic\n- Adds `_can_record_outputs = {\"hidden_states\": TvpEncodeLayer, \"attentions\": TvpAttention}` to `TvpPreTrainedModel`\n- Adds `@capture_outputs` to `TvpModel`, `@can_return_tuple` to `TvpForVideoGrounding`\n- Net change: 28 added, 101 removed (-73 lines)\n\n## Test plan\n- [x] All 82 model tests pass (`pytest tests/models/tvp/ -x -q`)\n- [x] `test_capture_outputs_decorator` passes\n- [x] `test_hidden_states_output` and `test_attention_outputs` pass\n- [x] `test_retain_grad_hidden_states_attentions` passes\n\n\ud83e\udd16 Generated with [Claude Code](https://claude.com/claude-code)\n",
+ "author": "dario-fumarola",
+ "agent": "Claude_Code",
+ "created_at": "2026-02-18T21:14:27+00:00",
+ "closed_at": "2026-02-22T02:28:51+00:00",
+ "html_url": "https://github.com/huggingface/transformers/pull/44134",
+ "files": [
+  "src/transformers/models/tvp/modeling_tvp.py"
+ ],
+ "hunks": [
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   23,
+   32
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   349,
+   361
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   385,
+   394
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   427,
+   450
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   453,
+   502
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   520,
+   526
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   709,
+   727
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   735,
+   742
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   761,
+   785
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   810,
+   829
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   840,
+   857
+  ],
+  [
+   "src/transformers/models/tvp/modeling_tvp.py",
+   863,
+   874
+  ]
+ ],
+ "added_hashes": [
+  -6234949597182208704,
+  -6234949597111276482,
+  -6234949597082969226,
+  -6234949597067075612,
+  -6234949596687936574,
+  -6234949596492174358,
+  -6234949596260447961,
+  -6234949596209635997,
+  -6234949595866478382,
+  -6234949595852480167,
+  -6234949595692275344,
+  -6234949595536700687,
+  -6234949595321508850,
+  -6234949595176725570,
+  -6234949595075097959,
+  -6234949594974353019,
+  -6234949594657974751,
+  -6234949594493185090,
+  -6234949594419889991,
+  -6234949594383516668,
+  -6234949593925434604,
+  -6234949593674360367,
+  -6234949593658283157,
+  -6234949593529532779
+ ],
+ "linked_issues": []
+}

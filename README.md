@@ -19,21 +19,35 @@ No LLM, no API key, runs on CPU. (Formerly named AgentDup.)
 
 ```bash
 pip install .                   # from the repo root; pip install ".[embed]" adds the optional local embedding model
-jinx check examples/new_pr.json --open-queue examples/open_prs.jsonl
+jinx check examples/new_pr.json --open-queue examples/open_prs.jsonl --top 2
 ```
 
+The example is a real live queue from AIDev (huggingface/transformers #44134 and the 19 PRs open when it was created; CC BY 4.0).
+
 ```
-PR #103: checked 2 open PRs in 2 ms. 1 likely duplicate(s) (score >= 0.50).
-  DUPLICATE? #101  score 0.82  Fix login timeout
-               - shares 1 of 1 changed files (auth/session.py)
+PR #44134: checked 19 open PRs in 12 ms. 1 likely duplicate(s) (score >= 0.50).
+  DUPLICATE? #44110  score 1.00  refactor(tvp): use capture_outputs for output tracing
+               - one PR links to the other (#44110)
+               - shares 1 of 1 changed files (src/transformers/models/tvp/modeling_tvp.py)
                - 100% of changed line ranges overlap
-             #102  score 0.04  Add dark-mode toggle
-               - weak match
+               - 100% of added lines are identical
+               - similar title/description after removing agent template text (0.92)
+             #44133  score 0.08  refactor(poolformer): use capture_outputs for output tracing
+               - similar title/description after removing agent template text (0.50)
+               - same author (possible re-opened or replacement PR)
 ```
 
 Input is GitHub-API-shaped JSON (`number`, `title`, `body`, `user.login`, `created_at`) plus optional
 `diff` (unified diff text), `files`, `agent`, `linked_issues`. The queue is a JSON list or JSON-lines file.
 Add `--json` for machine-readable output, `--embed` to use the local embedding model.
+
+## Shipped weights
+
+`src/jinx_pr/data/weights.json` (lexical) and `weights_emb.json` (with `--embed`) are logistic models trained on all
+4,832 AIDev live-queue queries by `experiments/bench_v2/train_package_weights.py`, with the same recipe as the
+cross-validated benchmark. Score 0.5 is set by the benchmark threshold rule (2.5% false alarms on PRs with no
+duplicate in cross-validation); pass `--threshold` to trade recall for fewer alerts. `tests/test_e2e_aidev.py` runs the CLI on three
+real AIDev queues.
 
 ## GitHub Action
 
