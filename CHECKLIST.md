@@ -34,8 +34,9 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 ## 5. Papers
 - [x] D: `paper/` set up: IEEE (empirical) and ACM (tool demo) templates, `refs.bib`, tables and numbers generated from results
 - [ ] D: verify every `refs.bib` entry (author names marked TODO)
-- [ ] D: empirical paper full draft (RQ1-RQ4) -> PDF
-- [ ] D: claims ledger complete (`paper/CLAIMS.md`) + independent review
+- [x] D: empirical paper first full draft (RQ1-RQ4) -> PDF (3 pages; expand to venue length once chosen)
+- [x] D: claim audit of the empirical draft (`paper/CLAIM_AUDIT.md`): 4 wording fixes, no number changes
+- [ ] D: independent re-review after venue-length expansion
 - [ ] D: tool-demo paper draft (4+1 pages) + architecture figure
 - [ ] D: demo video script; H: record or approve a screencast
 - [ ] H: choose venue(s): ICPC Tool Demo (19 Nov), ICPC RENE (abstract 11 Dec, paper 18 Dec), FSE Tool Demos (26 Jan)

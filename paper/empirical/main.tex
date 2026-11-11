@@ -1,64 +1,96 @@
-% Empirical paper (target: ICPC 2027 RENE, IEEE 10+2 pages). Venue not final.
+% Empirical paper (candidate: ICPC 2027 RENE, IEEE 10+2 pages). Venue not final. All numbers come from ../generated/*.tex.
 \documentclass[10pt,conference]{IEEEtran}
 \usepackage[T1]{fontenc}
 \usepackage{booktabs,graphicx,xcolor,url,amsmath}
 \usepackage[hidelinks]{hyperref}
 \input{../generated/numbers}
+\input{../generated/numbers_extra}
 \newcommand{\todo}[1]{\textcolor{red}{[TODO: #1]}}
 \begin{document}
 \title{Duplicate Pull Requests from Coding Agents:\\A Live-Queue Evaluation of \nStrategies{} Detection Strategies}
-\author{\IEEEauthorblockN{\todo{authors}}\IEEEauthorblockA{\todo{affiliations}}}
+\author{\IEEEauthorblockN{Harshul Jain, Saurabh Yergattikar, Tanya Sah}\IEEEauthorblockA{Independent Researchers}}
 \maketitle
 
 \begin{abstract}
-Coding agents now open pull requests (PRs) at scale, and many of them duplicate work that is already open: in one hand-labelled sample, 23.7\% of failed agent PRs were duplicates~\cite{ehsani2026fail}. Duplicate-PR detectors were built and evaluated on human PRs, scored against random pairs of PRs. We ask how well they work on agent PRs when scored the way they are used: at the moment a new PR is opened, against the PRs actually open in that repository (a \emph{live queue}). On AIDev~\cite{li2026aidev} we build \nPairs{} live-queue duplicate pairs (\nCross{} between different authors) and \nNeg{} PRs with no duplicate, and compare \nStrategies{} strategies: lexical, code-overlap, link, embedding, existing duplicate-PR bots, learned combinations, cross-encoders, and LLM judges (Qwen2.5 1.5B--14B, Claude Haiku 4.5). A cheap learned combination of text, code, link, and timing signals (Jinx) ranks the true duplicate first for \ROnejinx{} of cross-author pairs versus \ROneintrude{} for the INTRUDE-style detector and \ROnecg{} for the best existing bot, with \FARjinx\% versus \FARintrude\% false alarms. No LLM judge or re-ranker improves on it, and none of the \nComparedRFive{} strategies beats the classic detector on Recall@5 with a confidence interval above zero. Random-pair scoring ranks strategies differently from live-queue scoring, and duplicates that share no files remain unsolved.
+Coding agents now open pull requests (PRs) at scale, and many of them repeat work that is already open: in one hand-labelled sample, 23.7\% of failed agent PRs were duplicates~\cite{ehsani2026fail}. Duplicate-PR detectors were built for human PRs and scored against random pairs of PRs. We ask how well they work on agent PRs when scored the way they are used: at the moment a new PR is opened, against the PRs actually open in that repository (its \emph{live queue}). From AIDev~\cite{li2026aidev} we build \nPairs{} live-queue duplicate pairs (\nCross{} between different authors) and \nNeg{} PRs without a duplicate, and compare \nStrategies{} strategies: text, code-overlap, link, embedding, existing duplicate-PR bots, learned combinations, cross-encoders, and LLM judges (Qwen2.5 1.5B--14B, Claude Haiku 4.5). A cheap learned combination of text, code, link, and timing signals ranks the true duplicate first for \ROnejinx{} of cross-author pairs, against \ROneintrude{} for an INTRUDE-style detector and \ROnecg{} for the best existing bot, with \FARjinx\% versus \FARintrude\% false alarms, in \latJinx\,ms per PR on a CPU. No LLM judge or re-ranker improves on it. None of the \nComparedRFive{} strategies beats the classic detector on Recall@5 with a confidence interval above zero, so our pre-registered success criterion fails. Random-pair scoring ranks strategies differently from live-queue scoring (Kendall $\tau=\kendallTau$), and duplicates that share no files remain largely unsolved.
 \end{abstract}
 
 \section{Introduction}
-\todo{Motivation: agent PR volume; duplicates in failure studies~\cite{ehsani2026fail,alam2026unmerged,nakashima2026rejected,abujadallah2026rejection}; maintainers' cost.}
-\todo{Gap: no detector evaluated on agent PRs; random-pair negatives~\cite{ren2019intrude}; analogy to bug reports~\cite{zhang2023howfar}.}
-\todo{Contributions: (1) live-queue benchmark on AIDev; (2) \nStrategies-strategy comparison incl.\ LLM judges; (3) duplicate taxonomy and per-class results; (4) evidence that random-pair scoring misleads; (5) open tool and artifact.}
+AI coding agents such as Codex, Copilot, Devin, Cursor, Claude Code, and Jules open hundreds of thousands of PRs on GitHub~\cite{li2026aidev}. Studies of rejected agent PRs list duplicate or superseded work among the main reasons: 142 of 600 failed agent PRs (23.7\%) in Ehsani et al.~\cite{ehsani2026fail}, and ``resolved by another PR'' is the top reason for unmerged agent fix-PRs in Alam et al.~\cite{alam2026unmerged} (see also~\cite{nakashima2026rejected,abujadallah2026rejection}). Every duplicate costs a maintainer a review.
+
+Duplicate-PR detection is an old problem~\cite{li2017detecting,ren2019intrude,wang2019time,jiang2023duphunter,liao2024dupllm,galbraith2025duplicate}, but all prior detectors were evaluated on human PRs, and most against \emph{random} negative pairs (e.g., 100{,}000 random pairs in INTRUDE~\cite{ren2019intrude}). A deployed detector faces a different task: when a PR is opened it must rank the PRs open at that moment and decide whether to alert. Work on duplicate bug reports showed that such unrealistic set-ups overstate results~\cite{zhang2023howfar}. Agent PRs add new twists: long shared boilerplate, agents that replace their own PRs, and several agents working on the same issue.
+
+We contribute:
+(1) \textbf{LiveQueue}, a benchmark of \nPairs{} duplicate pairs and \nNeg{} no-duplicate queries over \nPRs{} agent PRs, with each new PR's real open queue (median 40 PRs);
+(2) a comparison of \nStrategies{} strategies, including five open duplicate-PR bots and LLM judges, with repository-cluster confidence intervals;
+(3) a duplicate taxonomy and per-class results;
+(4) evidence that random-pair scoring misleads method choice;
+(5) an LLM audit of the silver labels; and
+(6) all code, results, and the tool, Jinx.
 
 \section{Research Questions}
-\begin{itemize}
-\item \textbf{RQ1} How well do existing duplicate-PR detectors and bots work on agent PRs under live-queue scoring?
-\item \textbf{RQ2} Do embeddings, cross-encoders, or LLM judges beat cheap combined signals?
-\item \textbf{RQ3} Which kinds of duplicates (taxonomy) remain hard?
-\item \textbf{RQ4} Does random-pair scoring rank strategies the same way as live-queue scoring?
-\end{itemize}
+\textbf{RQ1} How well do existing detectors and bots work on agent PRs under live-queue scoring?
+\textbf{RQ2} Do embeddings, cross-encoders, or LLM judges beat cheap combined signals?
+\textbf{RQ3} Which kinds of duplicates remain hard?
+\textbf{RQ4} Does random-pair scoring rank strategies the same way as live-queue scoring?
 
 \section{Benchmark}
-\todo{AIDev v5 (CC BY 4.0, cutoff 31 Mar 2026); silver labels from ``duplicate of / superseded by / in favor of \#N'' comments; live queue = PRs open in the repo when the new PR was created; \nPRs{} PRs; median queue 40, p90 314; \nSelf{} self-replacement, \nCross{} cross-author (\nSameAgent{} same agent, \nCrossAgent{} cross-agent); \nNeg{} no-duplicate queries.}
-\todo{Taxonomy: A code twin, B partial overlap, C same files/different code, D no shared files; same issue/different code; same code/different description.}
-\todo{Label audit result (precision of silver labels) -- pending.}
+\textbf{Source.} AIDev v5~\cite{li2026aidev} (CC BY 4.0) contains agent PRs up to 31 March 2026 with comments, linked issues, and per-file patches.
+\textbf{Silver labels.} We match PR comments with a strict pattern that requires an explicit PR reference (``duplicate of \#N'', ``superseded by \#N'', ``in favor of \#N'', ``replaced by \#N'', ``same as \#N''); comment-based labels follow DupPR~\cite{yu2018dataset} and Galbraith and Greer~\cite{galbraith2025duplicate}. The later PR of a pair is the query and the earlier one is the gold duplicate.
+\textbf{Live queue.} A query's queue is every PR in the same repository created before it and still open then (or closed less than seven days earlier). We keep a pair only if the gold PR is in the queue. Other silver partners of a query are ignored when ranking.
+\textbf{No-duplicate queries.} We sample merged PRs from the same repositories with no duplicate-like comment; \nNeg{} have a non-empty queue.
+\textbf{Relations.} \nSelf{} pairs are self-replacements (same author) and \nCross{} are cross-author (\nSameAgent{} same agent, \nCrossAgent{} different agents). We report cross-author results as the main target: a maintainer cannot spot these duplicates from the author name alone.
+\textbf{Taxonomy.} By code overlap: A code twin ($\geq$50\% identical changed lines), B partial overlap, C same files with different code, D no shared files (intent-level). We also report pairs with no link at all (no \#ref and no shared issue) and pairs with the same code but a different description.
+\textbf{Label audit.} Claude Haiku 4.5 read each pair (comment, titles, truncated descriptions, changed files) and labelled it duplicate, replacement, subsumed (newer PR includes the older change in larger work), related, or unclear. On \auditRandN{} random pairs, \auditRandStrict\% [\auditRandStrictLo, \auditRandStrictHi] are duplicate or replacement and \auditRandLoose\% if subsumed counts; on all \auditCrossN{} cross-author pairs, \auditCrossStrict\% and \auditCrossLoose\%. This is an LLM audit, not human annotation.
 
 \section{Strategies}
-\todo{Families and exact definitions; re-implemented bots and what was run as-is; training protocol: repository-grouped 5-fold CV.}
+We group the \nStrategies{} strategies into families.
+\textbf{Simple}: recency; TF-IDF~\cite{li2017detecting} and BM25 on raw text, template-stripped text, or the diff.
+\textbf{Code}: changed-file Jaccard, overlapping changed line ranges, identical added lines.
+\textbf{Links}: shared linked issue or a \#reference between the PRs.
+\textbf{Embeddings}: MiniLM, BGE-small/base, UniXcoder, CodeBERT, Jina-code on text or diff.
+\textbf{Existing bots}: contrib-guard (two ports), Simili, PRSense, PRism and vector-triage, run as published where possible and otherwise re-implemented with local models.
+\textbf{Learned}: logistic regression (LR) and gradient boosting over INTRUDE-style features plus time~\cite{ren2019intrude,wang2019time} (``INTRUDE + time''), over the Jinx features, and over all signals.
+\textbf{Re-rankers and judges} on the top-10 (or top-5) of Jinx: cross-encoders (MiniLM, BGE-reranker base/v2-m3, and a BGE-reranker fine-tuned per fold), and LLM judges that output a yes/no duplicate probability (Qwen2.5 1.5B/7B/Coder-7B/14B on GPU, Claude Haiku 4.5 via API), alone, averaged with Jinx, or stacked with LR.
+\textbf{Jinx} is our tool: template-stripped TF-IDF on title and body, an optional MiniLM cosine, file/hunk/line overlap, links, same author/agent, time gap, and whether the candidate is still open, combined by LR.
 
 \section{Evaluation Protocol}
-\todo{Recall@1/5, MRR; false-alarm rate at a threshold fixed on training folds; repository-cluster bootstrap (2000 resamples); paired differences; pre-registered kill rule.}
+All learned strategies use five-fold cross-validation grouped by repository. For each labelled query we record the rank of the gold PR and report Recall@1, Recall@5, and mean reciprocal rank (MRR). For false alarms we set each strategy's threshold on the training folds at the median top-1 score of cross-author queries and count no-duplicate queries whose top score passes it. Confidence intervals (95\%) come from 2{,}000 bootstrap resamples of repositories. Before running, we fixed a kill rule: \emph{if Jinx does not beat the best baseline on cross-author Recall@5 by a meaningful, CI-backed margin, we say so plainly.}
 
 \section{Results}
 \begin{table}[t]\centering\caption{Cross-author pairs ($n=\nCross$). False alarms on \nNeg{} PRs with no duplicate.}\label{tab:main}
 \resizebox{\columnwidth}{!}{\input{../generated/tab_main}}\end{table}
 \begin{table}[t]\centering\caption{Recall@1 per relation and duplicate class (cross-author unless noted).}\label{tab:classes}
 \resizebox{\columnwidth}{!}{\input{../generated/tab_classes}}\end{table}
-\textbf{RQ1.} Against the INTRUDE-style detector, Jinx improves cross-author Recall@1 by \dROIntrude{} points [\dROIntrudeLo, \dROIntrudeHi] and MRR by \dMRRIntrude{} [\dMRRIntrudeLo, \dMRRIntrudeHi], but Recall@5 only by \dRFIntrude{} [\dRFIntrudeLo, \dRFIntrudeHi]: the pre-registered Recall@5 criterion is not met. Against the best existing bot, Recall@5 improves by \dRFCg{} [\dRFCgLo, \dRFCgHi].
-\textbf{RQ2.} \todo{LLM judges and rerankers: no CI-backed gain over Jinx; cost and latency.}
-\textbf{RQ3.} \todo{Classes C and D; no-link pairs; same code/different description.}
-\textbf{RQ4.} \todo{Kendall $\tau$ between random-pair AUC and live-queue Recall@1; strategies whose rank flips.}
+
+\textbf{RQ1: existing detectors.} Table~\ref{tab:main} shows that text-only methods are weak on agent PRs (TF-IDF Recall@1 \ROnetfidfRaw). The best open bot, contrib-guard, reaches \ROnecg, and INTRUDE + time \ROneintrude. Jinx improves Recall@1 over INTRUDE + time by \dROIntrude{} points [\dROIntrudeLo, \dROIntrudeHi] and MRR by \dMRRIntrude{} [\dMRRIntrudeLo, \dMRRIntrudeHi], and nearly halves false alarms (\FARjinx\% vs.\ \FARintrude\%). But Recall@5 improves only by \dRFIntrude{} [\dRFIntrudeLo, \dRFIntrudeHi]: \textbf{the kill rule fails}. Recall@5 is near its ceiling for all combined methods; the differences are in which PR is ranked first. Against contrib-guard, Recall@5 improves by \dRFCg{} [\dRFCgLo, \dRFCgHi]. On the \cleanN{} audit-valid cross-author pairs the Recall@1 gain over INTRUDE + time remains (\cleanRO{} [\cleanROLo, \cleanROHi]) and the Recall@5 gain does not (\cleanRF{} [\cleanRFLo, \cleanRFHi]).
+
+\textbf{RQ2: models.} Embeddings alone are far behind (MiniLM \ROneminilm, BGE-small \ROnebgeSmall, BGE on the diff \ROnebgeDiff). LLM judges do not help: Claude Haiku 4.5 alone re-ranking the top-5 gets \ROnehaikuOnly, averaged with Jinx \ROnehaiku; Qwen2.5-7B averaged with Jinx \ROneqwenSevenAvg; the larger Qwen2.5-14B \ROneqwenFourteenAvg. The best cascade (Jinx + BGE-reranker + Qwen-7B) ties Jinx (\ROnecascade). Using all signals in one LR gives \ROneall, within noise of Jinx. The judges add cost (\$\costHaiku{} for the Haiku run) and latency, whereas Jinx needs \latJinx\,ms per PR (p90 \latJinxPninety\,ms) on a CPU.
+
+\textbf{RQ3: hard duplicates.} Table~\ref{tab:classes} shows that code twins are easy: every combined method reaches Recall@1 of at least \classAMin. Recall@1 drops on class C (same files, different code; Jinx \ROnejinxClassC) and most on class D (no shared files, $n=\nClassD$; Jinx \ROnejinxClassD, INTRUDE + time \ROneintrudeClassD, Haiku + Jinx \ROnehaikuClassD). Links explain much of the benchmark's easiness: a links-only rule reaches \ROnelinks. On the \nNoLink{} cross-author pairs with no link at all, Jinx gets \ROnejinxNoLink{} and INTRUDE + time \ROneintrudeNoLink. When the code is the same but the description differs (all relations, $n=\nSameCodeAll$), INTRUDE + time beats Jinx (\ROneintrudeSameCodeAll{} vs.\ \ROnejinxSameCodeAll); this is consistent with the trained Jinx weights, which give identical changed lines almost no weight once text, files, and links are included.
+
+\textbf{RQ4: random pairs vs.\ live queues.} Fig.~\ref{fig:randlive} plots each strategy's AUC on random pairs against its live-queue Recall@1. The two rankings agree only partly (Kendall $\tau=\kendallTau$): \nCombHiAUC{} of the \nComb{} combined methods have random-pair AUC above 0.98, which makes them look interchangeable, yet their live-queue Recall@1 ranges from \combHiMin{} to \combHiMax{}. Fig.~\ref{fig:operating} shows the operating curves: at every false-alarm budget Jinx and the all-signals LR detect more cross-author duplicates at rank 1 than INTRUDE + time and contrib-guard.
+
+\begin{figure}[t]\centering\includegraphics[width=\columnwidth]{../generated/fig_randlive.pdf}\caption{Random-pair AUC vs.\ live-queue Recall@1 for all strategies.}\label{fig:randlive}\end{figure}
+\begin{figure}[t]\centering\includegraphics[width=\columnwidth]{../generated/fig_operating.pdf}\caption{Cross-author duplicates found at rank 1 above threshold, as a function of the false-alarm rate on no-duplicate PRs.}\label{fig:operating}\end{figure}
 
 \section{Threats to Validity}
-\todo{Silver labels; link bias (links-only rule reaches \ROnelinks{} Recall@1); no agent--human pairs; re-implemented bots; single dataset.}
+\textbf{Labels.} Silver labels miss duplicates nobody commented on, so some ``no-duplicate'' queries may hide duplicates (false alarms are overstated) and some labels are subsumed rather than duplicate. The LLM audit bounds this but is not human annotation.
+\textbf{Link bias.} Commenters often link the duplicate, and the same links are features; we therefore report the no-link subset.
+\textbf{External validity.} One dataset, agent PRs only: AIDev v5 has no human PRs from the same repositories and time, and our attempt to fetch more PRs failed, so we cannot compare agent and human duplicates. Self-replacement dominates (82\% of pairs).
+\textbf{Bots.} Some bots needed re-implementation with local models; our ports may differ from the deployed tools.
+\textbf{Multiple comparisons.} We compare many strategies; we fixed the main comparison and the kill rule before running.
 
 \section{Related Work}
-Classic duplicate-PR detection~\cite{li2017detecting,yu2018dataset,ren2019intrude,wang2019time,jiang2023duphunter,liao2024dupllm,galbraith2025duplicate,benchekaya2026slr}; competing and redundant PRs~\cite{zhang2018competing,li2022redundancy}; agent-PR studies~\cite{ehsani2026fail,xu2026conflicts,sarkar2026before,khemissi2026humans}; duplicate bug reports~\cite{zhang2023howfar,cupid2023}. \todo{Commercial review tools and open bots (incl.\ doppelg\"anger, DupeHound).}
+\textbf{Duplicate PRs.} Li et al.\ introduced TF-IDF detection~\cite{li2017detecting} and the DupPR dataset~\cite{yu2018dataset}; INTRUDE added code and issue clues~\cite{ren2019intrude}; later work added time~\cite{wang2019time}, graph embeddings~\cite{jiang2023duphunter}, LLM summaries~\cite{liao2024dupllm}, and issue--PR linking~\cite{galbraith2025duplicate}; a recent review covers the field~\cite{benchekaya2026slr}. Empirical studies examine competing and redundant PRs~\cite{zhang2018competing,li2022redundancy}. None evaluates on agent PRs or against live queues.
+\textbf{Agent PRs.} Studies of agent-PR failures report duplicates and superseded work~\cite{ehsani2026fail,alam2026unmerged,nakashima2026rejected,abujadallah2026rejection}; others study merge conflicts between co-active agent PRs~\cite{xu2026conflicts}, coordination before a PR exists~\cite{sarkar2026before}, and references between PRs~\cite{khemissi2026humans}.
+\textbf{Duplicate bug reports.} Zhang et al.\ showed that realistic evaluation shrinks reported gains~\cite{zhang2023howfar}; CUPID combines an LLM with retrieval~\cite{cupid2023}. We bring the realistic-evaluation argument to PRs.
 
 \section{Conclusion}
-\todo{}
+On agent PRs scored against real open queues, a cheap combination of text, code, link, and timing signals is the best of \nStrategies{} strategies we tested, beats existing duplicate-PR bots, and ranks the right PR first more often than a classic INTRUDE-style detector with fewer false alarms. It does not clear our pre-registered Recall@5 bar, LLM judges add nothing, and intent-level duplicates with no shared files remain open. Random-pair AUC should not be used to choose a duplicate-PR detector.
 
 \section*{Data Availability}
-\todo{Zenodo DOI for benchmark, code, and raw results.}
+Benchmark, code, raw scores, logs, and the Jinx tool: \todo{Zenodo DOI and repository URL}.
 \bibliographystyle{IEEEtran}
 \bibliography{../refs}
 \end{document}
