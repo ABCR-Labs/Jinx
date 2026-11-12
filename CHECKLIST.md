@@ -22,7 +22,7 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [x] D: ship trained weights (`experiments/bench_v2/train_package_weights.py`)
 - [x] D: feature-parity check: package features == benchmark features (0 difference on 200 queries)
 - [x] D: end-to-end CLI tests on real AIDev PRs (`tests/test_e2e_aidev.py`)
-- [ ] D: run the Action on a private sandbox repo with test PRs
+- [x] D: Action run live on ABCR-Labs/Jinx with demo PRs #12-#15 for issue #11; comment on #15, quiet on #13, missed #14 (0.30 < 0.5); screenshot in tool demo
 - [ ] D: clean Ruff warnings in `experiments/` scripts
 - [ ] H: rename GitHub repo `ABCR-Labs/agentdup` -> `jinx-pr` (Settings; Devin lacks admin)
 - [ ] H: approve making the repo public (needed by both tool tracks)
@@ -65,5 +65,7 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [x] Empirical paper no longer claims Jinx as a contribution; tool demo cites the study; shared table/figure removed from the demo
 - [x] Claude Haiku re-run on open-only top-5: all cross-author queries + 1,600 random no-duplicate queries ($7.93, `experiments/bench_v2/haiku_open.py`); false alarms from `experiments/results_haiku_subset/`
 - [x] Repo public at https://github.com/ABCR-Labs/Jinx; README with banner, badges, quickstart and results
-- [ ] Publish `jinx-pr` on PyPI (needs a PyPI token), record demo video, add an Action PR-comment screenshot (tool-track availability)
-- [ ] Human 100-pair label check
+- [x] Action PR-comment screenshot (`docs/assets/action_comment.png`, tool-demo Fig.)
+- [x] Captioned demo video draft (`paper/tooldemo/video/`), no voice-over yet
+- [ ] Publish `jinx-pr` on PyPI (on hold); record voice-over for the demo video
+- [ ] Human 100-pair label check: sheets ready in `experiments/label_audit/human/` (label_sheet_A/B.xlsx); score with `agreement.py`

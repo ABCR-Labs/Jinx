@@ -1,0 +1,10 @@
+PR #44134: checked 19 open PRs in 14 ms. 1 likely duplicate(s) (score >= 0.50).
+  DUPLICATE? #44110  score 1.00  refactor(tvp): use capture_outputs for output tracing
+               - one PR links to the other (#44110)
+               - shares 1 of 1 changed files (src/transformers/models/tvp/modeling_tvp.py)
+               - 100% of changed line ranges overlap
+               - 100% of added lines are identical
+               - similar title/description after removing agent template text (0.92)
+             #44133  score 0.05  refactor(poolformer): use capture_outputs for output tracing
+               - similar title/description after removing agent template text (0.50)
+               - same author (possible re-opened or replacement PR)
