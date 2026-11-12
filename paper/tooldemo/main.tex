@@ -12,6 +12,8 @@
 \acmConference[Tool demonstration]{Under review}{2026}{venue to be decided}
 \settopmatter{printacmref=false}
 \renewcommand\footnotetextcopyrightpermission[1]{}
+% arXiv ids come from howpublished (shared with the IEEE paper); hide the duplicate eprint line
+\renewcommand{\showeprint}[2][]{}
 \begin{document}
 \title{Jinx: Explainable Duplicate Warnings for Pull Requests from Coding Agents}
 \author{Harshul Jain}\affiliation{\institution{Independent Researcher}\city{}\country{}}
@@ -120,7 +122,7 @@ $ jinx check new.json --open-queue open.jsonl
 \emph{Reading a warning.} Fig.~\ref{fig:cli} shows a true duplicate, where five reasons agree. Fig.~\ref{fig:fa} shows a warning that is wrong: a follow-up PR stacked on the same author's earlier PR. Because each reason is listed, a maintainer can see what triggered the warning without opening both diffs. Stacked PRs are a known source of false alarms for any code-overlap signal. A screenshot of the Action's PR comment will be added once the Action has run on a public repository.
 
 \section{Limitations}
-Jinx often misses duplicates that change different files to reach the same goal (\ROnejinxClassD{} Recall@1 on such cross-author pairs). Labels come from PR comments; an LLM audit judged \auditOpenStrict\% of the cross-author labels to be true duplicates or replacements, and a human check is pending. We have evaluated Jinx on historical data only; no maintainer has used it yet, and a run on live repositories is future work.
+Jinx often misses duplicates that change different files to reach the same goal (\ROnejinxClassD{} Recall@1 on such cross-author pairs). Labels come from PR comments; an LLM audit judged \auditOpenStrict\% of the cross-author labels to be true duplicates or replacements, and a human check is pending. We have evaluated Jinx on historical data only; no maintainer has used it yet, and a run on live repositories is future work. In the companion study, asking Claude Haiku 4.5 to check Jinx's top five candidates cut false alarms from \FARsubjinx\% to \FARsubhaiku\% for about \costHaikuPerPR{} US cents per PR~\cite{jinxstudy}; Jinx does not offer this optional check yet.
 
 \section{Availability}
 Jinx is open source under the MIT licence. Before submission the repository (\url{https://github.com/ABCR-Labs/Jinx}), the PyPI package \texttt{jinx-pr} and a short demo video must be made public; until then the repository is private and the package is not yet on PyPI.

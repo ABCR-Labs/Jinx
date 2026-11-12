@@ -40,6 +40,9 @@ meta = pd.DataFrame([{"qi": i, "neg": x["neg"], "self": x["self"], "same_agent":
                       "n": len(x["cand"])} for i, x in enumerate(Q)]).set_index("qi")
 # keep labelled queries only if the true duplicate is still in the (real-use) queue; a closed one cannot be flagged live
 meta = meta[meta.index.isin(set(F.qi)) & (meta.neg | meta.index.isin(set(F[F.gold].qi)))]; F = F[F.qi.isin(meta.index)].reset_index(drop=True)
+# NEG_SUBSET=<parquet of qi>: score false alarms only on these no-duplicate queries (the sample an LLM judge scored in
+# full); models and rankings are unchanged, so every method is compared on the same queries. top10.parquet is left alone.
+NEG_SUBSET = os.environ.get("NEG_SUBSET")
 meta["n"] = F.groupby("qi").size().reindex(meta.index)
 gm = F[F.gold].set_index("qi")
 meta["ref"] = (gm.mention_ref > 0).reindex(meta.index).fillna(False).astype(bool)
@@ -108,7 +111,8 @@ for name, (fam, cols, kind) in TRAINED.items():
 BASE = "Jinx + MiniLM, LR (current tool)"
 # top-10 of the current tool for re-rankers
 F["_r"] = F.groupby("qi")[BASE].rank(ascending=False, method="first")
-F.loc[F._r <= 10, ["qi", "cand", BASE, "_r"]].rename(columns={BASE: "base", "_r": "rank"}).to_parquet(D + "top10.parquet")
+if not NEG_SUBSET:
+    F.loc[F._r <= 10, ["qi", "cand", BASE, "_r"]].rename(columns={BASE: "base", "_r": "rank"}).to_parquet(D + "top10.parquet")
 xq_all = meta.index[(~meta.neg) & (meta.self == False)]
 COVER = {}
 def rerank(name, file, col, k, combine=False, scope=None, sig=False, fam="8 re-ranker on top-k"):
@@ -125,6 +129,7 @@ def rerank(name, file, col, k, combine=False, scope=None, sig=False, fam="8 re-r
     val = np.where(inband, 10 + np.where(np.isnan(s), x[BASE].values, s), x[BASE].values)
     add(name, fam, val)
 negset = set(meta.index[meta.neg])
+HAIKU = "llm_haiku45_open.parquet" if os.path.exists(D + "llm_haiku45_open.parquet") else "llm_haiku45.parquet"
 rerank("Cross-encoder ms-marco MiniLM (CPU) re-rank top-10", "ce_scores.parquet", "ce", 10, sig=True)
 for tag, nm in [("ce_msmarco", "ms-marco MiniLM"), ("ce_bgebase", "BGE-reranker-base"), ("ce_bgem3", "BGE-reranker-v2-m3")]:
     rerank(f"Cross-encoder {nm} re-rank top-10", f"rr_{tag}.parquet", tag, 10, sig=True)
@@ -139,8 +144,8 @@ for tag, nm in LLMS:
     for k in [5, 10]:
         rerank(f"LLM judge {nm} re-rank top-{k}", f"llm_{tag}.parquet", "p_yes", k, fam="9 LLM judge on top-k")
         rerank(f"LLM judge {nm} + Jinx (avg) top-{k}", f"llm_{tag}.parquet", "p_yes", k, combine=True, fam="9 LLM judge on top-k")
-rerank("LLM judge Claude Haiku 4.5 re-rank top-5", "llm_haiku45.parquet", "p_yes", 5, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
-rerank("LLM judge Claude Haiku 4.5 + Jinx (avg) top-5", "llm_haiku45.parquet", "p_yes", 5, combine=True, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
+rerank("LLM judge Claude Haiku 4.5 re-rank top-5", HAIKU, "p_yes", 5, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
+rerank("LLM judge Claude Haiku 4.5 + Jinx (avg) top-5", HAIKU, "p_yes", 5, combine=True, scope=set(xq_all) | negset, fam="9 LLM judge on top-k")
 # stacked re-ranker: per-fold LR over Jinx score + cross-encoder + LLM judge scores on the top-10 (repo-grouped folds)
 def stack(name, files):
     x = F[["qi", "cand", BASE, "_r", "y", "other_gold"]].copy(); cols = [BASE]
@@ -214,13 +219,14 @@ for ref in [BASE, "INTRUDE + time (Wang et al. 2019), LR", "contrib-guard/phoeni
                         "dR@5 lo": lo[1], "dR@5 hi": hi[1], "dMRR": d[:, 2].mean(), "dMRR lo": lo[2], "dMRR hi": hi[2]})
 pd.DataFrame(pr_rows).to_csv(OUT + "paired_cross_author.csv", index=False)
 # false alarms (threshold per fold at 50% of training cross-author top-1 scores) + operating curve on negatives
+NEGK = meta.neg & (meta.index.isin(set(pd.read_parquet(D + NEG_SUBSET).qi)) if NEG_SUBSET else True)
 negq = meta.index[meta.neg]; fa = []; curve = []; FARR = {}
 ALERT_METHODS = {BASE, "INTRUDE + time (Wang et al. 2019), LR", "contrib-guard/phoenix (bot, exact port)"}; alerts = []
 for c in METHODS:
     t1 = F.groupby("qi")[c].max(); far, hit, fq = [], [], []
     for tr, te in folds:
         trx = [q for q in meta.index[tr] if q in set(xq)]; thr = np.quantile(t1.reindex(trx).values, 0.5)
-        ten = [q for q in meta.index[te] if meta.neg[q]]; tex = [q for q in meta.index[te] if q in set(xq)]
+        ten = [q for q in meta.index[te] if NEGK[q]]; tex = [q for q in meta.index[te] if q in set(xq)]
         far += list(t1.reindex(ten).values >= thr); hit += list((t1.reindex(tex).values >= thr) & (R[c].reindex(tex).values == 1)); fq += ten
         if c in ALERT_METHODS:
             alerts += [{"method": c, "qi": q, "top1": t1.get(q, np.nan), "thr": thr, "rank": R[c].get(q, np.nan)} for q in meta.index[te]]
@@ -230,8 +236,8 @@ for c in METHODS:
     for target in [0.01, 0.02, 0.05, 0.10, 0.20]:
         det, fal, dq, nq = [], [], [], []
         for tr, te in folds:
-            nv = np.sort(t1.reindex([q for q in meta.index[tr] if meta.neg[q]]).values); thr = nv[min(int((1 - target) * len(nv)), len(nv) - 1)]
-            tex = [q for q in meta.index[te] if q in set(xq)]; ten = [q for q in meta.index[te] if meta.neg[q]]
+            nv = np.sort(t1.reindex([q for q in meta.index[tr] if NEGK[q]]).values); thr = nv[min(int((1 - target) * len(nv)), len(nv) - 1)]
+            tex = [q for q in meta.index[te] if q in set(xq)]; ten = [q for q in meta.index[te] if NEGK[q]]
             det += list((t1.reindex(tex).values > thr) & (R[c].reindex(tex).values == 1)); dq += tex
             fal += list(t1.reindex(ten).values > thr); nq += ten
         det = np.array(det, float); lo, hi = boot(det[:, None], meta.repo.reindex(dq))

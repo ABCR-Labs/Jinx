@@ -1,0 +1,305 @@
+{
+ "latency": {
+  "lexical features ms/query": {
+   "median": 4.3549504928342335,
+   "p90": 43.002333160116265
+  },
+  "cpu_rerankers": {
+   "cross-encoder/ms-marco-MiniLM-L6-v2": {
+    "cpu_threads": 4,
+    "pairs": 200,
+    "ms_per_pair": 45.7,
+    "ms_per_query_top10": 457.5
+   },
+   "BAAI/bge-reranker-base": {
+    "cpu_threads": 4,
+    "pairs": 200,
+    "ms_per_pair": 286.1,
+    "ms_per_query_top10": 2861.4
+   }
+  },
+  "gpu_bge_diff": {
+   "tag": "bge_diff",
+   "model": "BAAI/bge-small-en-v1.5",
+   "variant": "diff",
+   "maxlen": 512,
+   "n": 76209,
+   "dim": 384,
+   "gpu": "L4",
+   "seconds": 144.0,
+   "ms_per_pr_gpu": 1.89
+  },
+  "gpu_bge_raw": {
+   "tag": "bge_raw",
+   "model": "BAAI/bge-small-en-v1.5",
+   "variant": "raw",
+   "maxlen": 512,
+   "n": 76209,
+   "dim": 384,
+   "gpu": "L4",
+   "seconds": 125.0,
+   "ms_per_pr_gpu": 1.64
+  },
+  "gpu_bge_stripped": {
+   "tag": "bge_stripped",
+   "model": "BAAI/bge-small-en-v1.5",
+   "variant": "stripped",
+   "maxlen": 512,
+   "n": 76209,
+   "dim": 384,
+   "gpu": "L4",
+   "seconds": 120.7,
+   "ms_per_pr_gpu": 1.583
+  },
+  "gpu_bgebase_stripped": {
+   "tag": "bgebase_stripped",
+   "model": "BAAI/bge-base-en-v1.5",
+   "variant": "stripped",
+   "maxlen": 512,
+   "n": 76209,
+   "dim": 768,
+   "gpu": "L4",
+   "seconds": 244.3,
+   "ms_per_pr_gpu": 3.205
+  },
+  "gpu_ce_bgebase": {
+   "tag": "ce_bgebase",
+   "model": "BAAI/bge-reranker-base",
+   "pairs": 43591,
+   "gpu": "L4",
+   "seconds": 137.5,
+   "ms_per_pair_gpu": 3.154
+  },
+  "gpu_ce_bgem3": {
+   "tag": "ce_bgem3",
+   "model": "BAAI/bge-reranker-v2-m3",
+   "pairs": 43591,
+   "gpu": "L4",
+   "seconds": 445.7,
+   "ms_per_pair_gpu": 10.224
+  },
+  "gpu_ce_msmarco": {
+   "tag": "ce_msmarco",
+   "model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+   "pairs": 43591,
+   "gpu": "L4",
+   "seconds": 41.6,
+   "ms_per_pair_gpu": 0.954
+  },
+  "gpu_codebert_diff": {
+   "tag": "codebert_diff",
+   "model": "microsoft/codebert-base",
+   "variant": "diff",
+   "maxlen": 512,
+   "n": 76209,
+   "dim": 768,
+   "gpu": "L4",
+   "seconds": 262.1,
+   "ms_per_pr_gpu": 3.44
+  },
+  "gpu_finetune_bgebase": {
+   "gpu": "L4",
+   "folds": [
+    {
+     "fold": 0,
+     "base": "BAAI/bge-reranker-base",
+     "train_pairs": 34896,
+     "test_pairs": 8695,
+     "train_s": 678.1,
+     "predict_s": 121.0
+    },
+    {
+     "fold": 1,
+     "base": "BAAI/bge-reranker-base",
+     "train_pairs": 34892,
+     "test_pairs": 8699,
+     "train_s": 668.5,
+     "predict_s": 120.4
+    },
+    {
+     "fold": 2,
+     "base": "BAAI/bge-reranker-base",
+     "train_pairs": 34821,
+     "test_pairs": 8770,
+     "train_s": 668.3,
+     "predict_s": 121.9
+    },
+    {
+     "fold": 3,
+     "base": "BAAI/bge-reranker-base",
+     "train_pairs": 34868,
+     "test_pairs": 8723,
+     "train_s": 668.1,
+     "predict_s": 118.9
+    },
+    {
+     "fold": 4,
+     "base": "BAAI/bge-reranker-base",
+     "train_pairs": 34887,
+     "test_pairs": 8704,
+     "train_s": 674.0,
+     "predict_s": 121.1
+    }
+   ],
+   "train_s_total": 3357.0,
+   "predict_ms_per_pair_gpu": 13.84
+  },
+  "gpu_jinacode_diff": {
+   "tag": "jinacode_diff",
+   "model": "jinaai/jina-embeddings-v2-base-code",
+   "variant": "diff",
+   "maxlen": 512,
+   "n": 76209,
+   "dim": 768,
+   "gpu": "L4",
+   "seconds": 620.2,
+   "ms_per_pr_gpu": 8.138
+  },
+  "gpu_qwen14": {
+   "tag": "qwen14",
+   "model": "Qwen/Qwen2.5-14B-Instruct",
+   "pairs": 43591,
+   "gpu": "L40S",
+   "seconds": 5187.5,
+   "ms_per_pair_gpu_batched": 119.003,
+   "prompt_tokens_total": 49530439
+  },
+  "gpu_qwen15": {
+   "tag": "qwen15",
+   "model": "Qwen/Qwen2.5-1.5B-Instruct",
+   "pairs": 43591,
+   "gpu": "L40S",
+   "seconds": 687.2,
+   "ms_per_pair_gpu_batched": 15.766,
+   "prompt_tokens_total": 49530439
+  },
+  "gpu_qwen7": {
+   "tag": "qwen7",
+   "model": "Qwen/Qwen2.5-7B-Instruct",
+   "pairs": 43591,
+   "gpu": "L40S",
+   "seconds": 2567.3,
+   "ms_per_pair_gpu_batched": 58.895,
+   "prompt_tokens_total": 49530439
+  },
+  "gpu_qwencoder7": {
+   "tag": "qwencoder7",
+   "model": "Qwen/Qwen2.5-Coder-7B-Instruct",
+   "pairs": 43591,
+   "gpu": "L40S",
+   "seconds": 2478.3,
+   "ms_per_pair_gpu_batched": 56.854,
+   "prompt_tokens_total": 49530439
+  },
+  "gpu_unix_diff": {
+   "tag": "unix_diff",
+   "model": "microsoft/unixcoder-base",
+   "variant": "diff",
+   "maxlen": 512,
+   "n": 76209,
+   "dim": 768,
+   "gpu": "L4",
+   "seconds": 284.0,
+   "ms_per_pr_gpu": 3.727
+  },
+  "gpu_unix_stripped": {
+   "tag": "unix_stripped",
+   "model": "microsoft/unixcoder-base",
+   "variant": "stripped",
+   "maxlen": 512,
+   "n": 76209,
+   "dim": 768,
+   "gpu": "L4",
+   "seconds": 247.7,
+   "ms_per_pr_gpu": 3.251
+  },
+  "claude haiku45 API": {
+   "pairs": 4587,
+   "ms/pair median": 912.8988000011304,
+   "ms/pair p90": 977.3896139959106,
+   "model": "claude-haiku-4-5",
+   "usd": 7.252751,
+   "budget": 15.0
+  }
+ },
+ "kendall_tau random-pair AUC vs live-queue cross-author R@1": [
+  0.698551238626587,
+  1.2596474585266214e-16
+ ],
+ "classes": {
+  "A. code twin (>=50% identical changed lines)": 951,
+  "B. partial code overlap": 658,
+  "D. no shared files (intent-level)": 117,
+  "C. same files, different code": 41
+ },
+ "n_methods": 67,
+ "gb_features": [
+  "text_tfidf",
+  "title_tfidf",
+  "file_jacc",
+  "file_contain",
+  "hunk_overlap",
+  "line_contain",
+  "same_issue",
+  "mention_ref",
+  "same_author",
+  "same_agent",
+  "log_gap_hours",
+  "cand_open",
+  "emb_cos",
+  "cos_raw",
+  "cos_diff",
+  "bm25_raw_n",
+  "bm25_stripped_n",
+  "bm25_diff_n",
+  "text_tfidf_raw",
+  "title_tfidf_raw",
+  "cos_bge_raw",
+  "cos_bge_stripped",
+  "cos_bge_diff",
+  "cos_bgebase_stripped",
+  "cos_unix_diff",
+  "cos_unix_stripped",
+  "cos_codebert_diff",
+  "cos_jinacode_diff"
+ ],
+ "n_bootstrap": 2000,
+ "judge_coverage": {
+  "Cross-encoder ms-marco MiniLM re-rank top-10": 0.9151713487277541,
+  "Cross-encoder ms-marco MiniLM + Jinx (avg) top-10": 0.9151713487277541,
+  "Cross-encoder BGE-reranker-base re-rank top-10": 0.9151713487277541,
+  "Cross-encoder BGE-reranker-base + Jinx (avg) top-10": 0.9151713487277541,
+  "Cross-encoder BGE-reranker-v2-m3 re-rank top-10": 0.9151713487277541,
+  "Cross-encoder BGE-reranker-v2-m3 + Jinx (avg) top-10": 0.9151713487277541,
+  "Fine-tuned BGE-reranker (repo-grouped folds) re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-1.5B re-rank top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-1.5B + Jinx (avg) top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-1.5B re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-1.5B + Jinx (avg) top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-7B re-rank top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-7B + Jinx (avg) top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-7B re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-7B + Jinx (avg) top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-Coder-7B re-rank top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-Coder-7B re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-Coder-7B + Jinx (avg) top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-14B re-rank top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-14B + Jinx (avg) top-5": 0.9875317615080068,
+  "LLM judge Qwen2.5-14B re-rank top-10": 0.9151713487277541,
+  "LLM judge Qwen2.5-14B + Jinx (avg) top-10": 0.9151713487277541,
+  "LLM judge Claude Haiku 4.5 re-rank top-5": 1.0,
+  "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5": 1.0,
+  "Cascade: Jinx + BGE-reranker-base (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + Qwen2.5-7B judge (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + Qwen2.5-14B judge (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + fine-tuned BGE-reranker (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + fine-tuned reranker + Qwen2.5-7B (stacked LR)": 0.9151713487277541,
+  "Cascade: Jinx + BGE-reranker + Qwen2.5-7B (stacked LR)": 0.9151713487277541
+ },
+ "cap_dropped": {
+  "all": 29,
+  "cross-author": 11
+ }
+}
