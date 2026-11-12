@@ -125,7 +125,7 @@ $ jinx check new.json --open-queue open.jsonl
 Jinx often misses duplicates that change different files to reach the same goal (\ROnejinxClassD{} Recall@1 on such cross-author pairs). Labels come from PR comments; an LLM audit judged \auditOpenStrict\% of the cross-author labels to be true duplicates or replacements, and a human check is pending. We have evaluated Jinx on historical data only; no maintainer has used it yet, and a run on live repositories is future work. In the companion study, asking Claude Haiku 4.5 to check Jinx's top five candidates cut false alarms from \FARsubjinx\% to \FARsubhaiku\% for about \costHaikuPerPR{} US cents per PR~\cite{jinxstudy}; Jinx does not offer this optional check yet.
 
 \section{Availability}
-Jinx is open source under the MIT licence. Before submission the repository (\url{https://github.com/ABCR-Labs/Jinx}), the PyPI package \texttt{jinx-pr} and a short demo video must be made public; until then the repository is private and the package is not yet on PyPI.
+Jinx is open source under the MIT licence at \url{https://github.com/ABCR-Labs/Jinx} and installs with \texttt{pip install git+https://github.com/ABCR-Labs/Jinx}; the Action is used as \texttt{ABCR-Labs/Jinx@main}. A PyPI release (\texttt{jinx-pr}) and a short demo video will follow before submission.
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{../refs}
 \end{document}
