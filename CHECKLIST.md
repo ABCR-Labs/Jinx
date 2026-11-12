@@ -64,5 +64,6 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [x] Link rule without TF-IDF tie-break reported; table redesigned; consistent figure colours and names
 - [x] Empirical paper no longer claims Jinx as a contribution; tool demo cites the study; shared table/figure removed from the demo
 - [x] Claude Haiku re-run on open-only top-5: all cross-author queries + 1,600 random no-duplicate queries ($7.93, `experiments/bench_v2/haiku_open.py`); false alarms from `experiments/results_haiku_subset/`
-- [ ] Make repo public, publish `jinx-pr` on PyPI, record demo video, add an Action PR-comment screenshot (tool-track availability)
+- [x] Repo public at https://github.com/ABCR-Labs/Jinx; README with banner, badges, quickstart and results
+- [ ] Publish `jinx-pr` on PyPI (needs a PyPI token), record demo video, add an Action PR-comment screenshot (tool-track availability)
 - [ ] Human 100-pair label check
