@@ -19,6 +19,7 @@
 \author{Harshul Jain}\affiliation{\institution{Independent Researcher}\city{}\country{}}
 \author{Saurabh Yergattikar}\affiliation{\institution{Independent Researcher}\city{}\country{}}
 \author{Tanya Sah}\affiliation{\institution{Independent Researcher}\city{}\country{}}
+\author{Parv Khatri}\affiliation{\institution{Independent Researcher}\city{}\country{}}
 \begin{abstract}
 Coding agents open many pull requests (PRs), and some of them repeat work that is already open in the same repository. Jinx is a GitHub Action and command-line tool that compares each new PR with the repository's open PRs and posts one comment listing likely duplicates, with a plain-language reason for each match: same files, identical added lines, same issue, similar description. It runs on the CI runner's CPU, needs no API key and sends no code to an outside service. Maintainers can tune one threshold to trade missed duplicates against false alarms. On \nCross{} historical cross-author duplicate pairs from the AIDev dataset, each scored against the PRs that were open at the time, Jinx ranks the true duplicate first \ROnejinxlex{} of the time in its default mode, statistically tied with a classic research detector and a simple link rule, and raises \FARjinxlex\% false alarms, against \FARxcg\% for the best existing open-source duplicate-PR bot.
 \end{abstract}

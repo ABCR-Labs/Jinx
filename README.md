@@ -183,4 +183,4 @@ ruff check src tests
 ## License
 
 MIT. The benchmark is derived from [AIDev](https://huggingface.co/datasets/hao-li/AIDev) (CC BY 4.0).
-Authors: Harshul Jain, Saurabh Yergattikar and Tanya Sah. Jinx was formerly named AgentDup.
+Authors: Harshul Jain, Saurabh Yergattikar, Tanya Sah and Parv Khatri. Jinx was formerly named AgentDup.
