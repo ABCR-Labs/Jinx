@@ -1,16 +1,19 @@
-# Jinx demo video script (target 3-4 minutes)
+# Jinx demo video script (about 3.5 minutes)
 
-Record after the sandbox Action run (CHECKLIST: "Action run on a private test repo"). Screen + voice-over, 1080p.
+`video/make_video.py` builds `video/jinx_demo.mp4` (1920x1080, captions, no voice-over yet) from the real
+screenshots of the live Action run on ABCR-Labs/Jinx (demo PRs #12-#15 for issue #11) and the CLI fixture. Read the
+captions below as the voice-over when recording audio.
 
-| Time | On screen | Voice-over |
+| Time | On screen | Voice-over / caption |
 |---|---|---|
-| 0:00-0:25 | GitHub PR list in a repo with two agent PRs for the same issue | "Coding agents open many PRs. Some redo work that is already open. A maintainer reviews both before noticing." |
-| 0:25-0:50 | `.github/workflows/jinx.yml` (8 lines) | "Jinx is a GitHub Action. Add this file; it uses the workflow's own token, needs no API key, and sends no code anywhere." |
-| 0:50-1:40 | Agent opens a second PR; Jinx comment appears with ranked match and reasons | "When a PR opens, Jinx compares it with every open PR: same files, overlapping lines, shared issue, similar text after removing agent boilerplate. It explains each match and never closes anything." |
-| 1:40-2:10 | Terminal: `pip install jinx-pr`; `jinx check new.json --open-queue open.jsonl` on the transformers fixture | "The same check runs locally. This is a real agent PR from huggingface/transformers; Jinx finds its twin in 12 ms." |
-| 2:10-2:20 | Same CLI on the no-duplicate fixture | "And when nothing is duplicated, it stays quiet." |
-| 2:20-3:10 | Results table (cross-author Recall@1, false alarms, latency) | "On 342 cross-author duplicates from real agent PRs, Jinx ranks the right PR first 90% of the time, versus 78% for the best existing bot, with 2.5% false alarms, on a CPU." |
-| 3:10-3:30 | Limitations slide | "It still misses duplicates that change different files. Labels come from PR comments." |
-| 3:30-3:45 | Repo URL, PyPI name | "Jinx is open source. Links below." |
+| 0:00-0:12 | Banner | "Jinx: explainable duplicate warnings for pull requests from coding agents." |
+| 0:12-0:34 | PR list with demo PRs #12-#15 | "Coding agents open many pull requests. Some redo work that is already open, and a maintainer may review both before noticing. Here are four demo PRs: three for the same issue and one unrelated." |
+| 0:34-0:59 | `.github/workflows/jinx.yml` | "Jinx is a GitHub Action. It uses the workflow's own token, needs no API key, reads PR metadata and diffs through the API, and never runs the PR's code." |
+| 0:59-1:34 | Jinx comment on #15 | "PR #15 redoes open PR #12. Jinx compares it with every open PR: same linked issue, shared files, overlapping lines, identical added lines, similar text after removing agent boilerplate. It explains the match and never closes anything." |
+| 1:34-1:59 | Quiet cases (#13, #14) | "An unrelated docs PR got no comment. A PR for the same issue written very differently scored 0.30, below the default threshold, so it was missed. The threshold trades misses against false alarms." |
+| 1:59-2:24 | Terminal: install + `jinx check` on the transformers fixture | "This is a real agent PR from huggingface/transformers, from AIDev. Jinx finds its twin among 19 open PRs in about 10 ms on a CPU." |
+| 2:24-2:54 | False-alarm figure | "On real AIDev queues, Jinx ranks the right PR first 93% of the time, tied with a link rule and a classic detector. Its false alarms are 1.8 per 100 clean PRs, about a third of the best existing bot's." |
+| 2:54-3:16 | Limitations | "Jinx is not more accurate than the best baselines; it packages them with explanations." |
+| 3:16-3:28 | Links | "Jinx is open source. Thanks for watching." |
 
-Numbers must match `paper/generated/numbers.tex` at recording time.
+Numbers must match `paper/generated/numbers.tex` and `numbers_extra.tex` at recording time.
