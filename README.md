@@ -13,28 +13,89 @@
 </p>
 
 <p align="center">
-  <a href="#quickstart">Quickstart</a> ·
+  <a href="#what-it-looks-like">What it looks like</a> ·
+  <a href="#how-it-compares">How it compares</a> ·
+  <a href="#add-it-to-your-repo">Add it to your repo</a> ·
   <a href="#how-it-works">How it works</a> ·
-  <a href="#github-action">GitHub Action</a> ·
-  <a href="#results">Results</a> ·
-  <a href="#papers">Papers</a>
+  <a href="#the-research">The research</a>
 </p>
 
 ---
 
-**Jinx** finds pull requests in your open-PR queue that are likely to duplicate a new PR, and it tells you why.
-It is built for PRs written by coding agents (Copilot, Codex, Devin, Claude Code, Cursor, Jules).
+**Jinx stops your team from reviewing the same pull request twice.**
 
-Agent PRs share long boilerplate (`## Summary ... ## Testing ... Generated with ...`). Plain text similarity is
-misled by that boilerplate: unrelated agent PRs look alike, and a real duplicate written in different words is
-missed. Jinx strips the template text and then compares the code, the links and the remaining words.
+Coding agents (Copilot, Codex, Devin, Claude Code, Cursor, Jules) open a lot of PRs, and some of them redo work
+that is already open. Jinx checks each new PR against the open ones. When it finds a likely duplicate, it leaves
+one short comment that says which PR it matches and why.
 
-- 🔍 **Explainable.** Every match comes with plain reasons: shared files, overlapping lines, a shared issue.
-- 💻 **Local and free.** It runs on CPU in about 6 ms per PR (median), with no LLM and no API key.
-- 🎚️ **Tunable.** One threshold trades caught duplicates against false alarms.
-- 🤖 **Drop-in Action.** It posts one comment on a new PR and updates it when the PR changes.
+- 💬 **Tells you why.** Shared files, the same lines changed, the same issue. You can decide in seconds.
+- 🔕 **Quiet.** About 2 false alarms per 100 PRs: under half of what the existing bots we tested raise, and a third of the best one's.
+- 💻 **Free and local.** It runs on the CI machine's CPU in about 6 ms per PR. No LLM, no API key, and no code leaves GitHub.
+- 🛡️ **Safe.** It only reads PR data through the GitHub API. It never runs the PR's code, and it never closes or blocks anything.
 
-## Quickstart
+A one-page website with the same story and an interactive comparison is in [`site/`](site/). See [Website](#website).
+
+## What it looks like
+
+A real comment from a live run on this repository. PR #15 redid the work of open PR #12:
+
+<p align="center"><img src="docs/assets/action_comment.png" alt="Jinx comment: this PR may duplicate PR 12, score 1.00, with the reasons" width="90%"></p>
+
+## How it compares
+
+We replayed 313 real duplicate PRs from the public [AIDev](https://huggingface.co/datasets/hao-li/AIDev) dataset.
+Each time, every method looked at the PRs that were open at that moment, as a bot would.
+
+| Method | Finds the right PR first (of 100) | False alarms (per 100 PRs with no duplicate) | Notes |
+|---|:---:|:---:|---|
+| **Jinx** (Action default) | 92 | **1.9** | Explains each match (files, lines, issue, text). Free, CPU only |
+| Jinx + MiniLM (optional) | 93 | 1.8 | Adds a local text model; installs PyTorch |
+| Link rule (same issue or #mention) | 94 | 1.2 | Only says "they share a link"; falls back to text similarity |
+| INTRUDE + time (research detector) | 91 | 2.0 | Published method, no ready-to-install tool |
+| contrib-guard (existing bot) | 91 | 5.5 | Best existing bot we tested |
+| Simili-bot (existing bot, re-implemented) | 88 | 4.5 | |
+| PRSense (existing bot, re-implemented) | 83 | 4.7 | |
+| Claude Haiku 4.5 + Jinx | 94 | 0.8\* | Needs an API key, about 0.8¢ per PR |
+
+\* On a random sample of 1,600 PRs with no duplicate, where Jinx raises 1.7.
+
+**In short:** the good methods find the right PR about equally often. What sets Jinx apart is that it raises under half
+the false alarms of the existing bots, says exactly why it matched, and is ready to install. A simple
+link rule is just as good when the PRs link the same issue, but it can only say "they share a link".
+
+<p align="center">
+  <img src="docs/assets/fig_far.png" alt="False alarms per method with 95% confidence intervals" width="60%">
+</p>
+
+## Add it to your repo
+
+Create `.github/workflows/jinx.yml`:
+
+```yaml
+name: jinx
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited]
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ABCR-Labs/Jinx@main
+        with:
+          threshold: ""        # empty = bundled default (0.5); lower catches more, with more false alarms
+          max-open-prs: "200"
+          top: "3"
+          embed: "false"       # "true" adds MiniLM (installs PyTorch on every run)
+```
+
+That's it. Jinx posts one comment on a new PR when it finds a likely duplicate, and updates that comment when the PR changes.
+`pull_request_target` is safe here because Jinx never checks out or runs the PR's code.
+
+### Or use the command line
 
 ```bash
 pip install git+https://github.com/ABCR-Labs/Jinx   # adds the `jinx` command
@@ -97,63 +158,25 @@ flowchart LR
 4. **Add context:** the same author, and the time gap between the PRs.
 5. **Combine** these with a small logistic model. The shipped weights are in `src/jinx_pr/data/weights.json` (lexical) and `weights_emb.json` (`--embed`), trained on all 4,832 AIDev queue queries by `experiments/bench_v2/train_package_weights.py`.
 
-## GitHub Action
+## Website
 
-```yaml
-# .github/workflows/jinx.yml
-name: jinx
-on:
-  pull_request_target:
-    types: [opened, reopened, synchronize, edited]
-permissions:
-  contents: read
-  pull-requests: write
-  issues: write
-jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: ABCR-Labs/Jinx@main
-        with:
-          threshold: ""        # empty = bundled default (0.5)
-          max-open-prs: "200"
-          top: "3"
-          embed: "false"       # "true" adds MiniLM (installs PyTorch on every run)
-```
+[`site/`](site/) is a static one-page website (plain HTML, CSS and JS, no build step). It has the pitch, the live comment,
+the comparison table, and a slider that shows how many duplicates each method catches at a chosen false-alarm level.
+Every number comes from `experiments/results/` through `python3 site/make_data.py`.
 
-The Action reads PR metadata and diffs through the API and posts or updates one comment. It never checks out or
-runs the PR's code, which keeps `pull_request_target` safe.
+- **Vercel:** import the repo; `vercel.json` serves `site/`.
+- **Netlify:** import the repo; `netlify.toml` publishes `site/`.
+- **Locally:** `python3 -m http.server -d site` and open http://localhost:8000.
 
-## Results
+## The research
 
-These results come from the AIDev benchmark (v5). We replayed each new PR against the PRs that were open when
-it arrived, capped to the 200 most recent. The table shows the 313 duplicate pairs written by different authors,
-and false alarms on PRs that have no duplicate.
-
-| Method | Right PR ranked first (Recall@1) | False alarms | Needs |
-|---|:---:|:---:|---|
-| **Jinx** (with MiniLM) | 0.927 | 1.8% | CPU |
-| Jinx, lexical only (Action default) | 0.917 | 1.9% | CPU |
-| Link rule (TF-IDF tie-break) | 0.936 | 1.2% | CPU |
-| INTRUDE + time (Wang et al. 2019) | 0.914 | 2.0% | CPU |
-| contrib-guard (existing bot) | 0.914 | 5.5% | CPU |
-| TF-IDF text only | 0.911 | 3.5% | CPU |
-| Claude Haiku 4.5 + Jinx | 0.936 | 0.8%\* | API, about 0.8¢ per PR |
-
-\* Measured on a random sample of 1,600 PRs without a duplicate; Jinx raises 1.7% on the same sample.
-
-All the strong methods rank about equally well: every difference in Recall@1 between them is within noise. They
-differ mainly in false alarms, and Jinx raises about a third as many as the best existing bot. Jinx's value is
-explanations, packaging and local operation, not higher accuracy.
+How you build the evaluation queue changes which method looks best. If the queue also keeps PRs closed in the
+last 7 days, Jinx leads the research detector by 9 points; on real open-only queues the methods tie. The full study
+of 66 strategies is in [`experiments/`](experiments/) and [`experiments/report/REPORT.md`](experiments/report/REPORT.md).
 
 <p align="center">
-  <img src="docs/assets/fig_far.png" alt="False alarms per method with 95% confidence intervals" width="48%">
-  <img src="docs/assets/fig_queues.png" alt="Recall@1 under the 7-day and open-only queue designs" width="48%">
+  <img src="docs/assets/fig_queues.png" alt="Recall@1 under the 7-day and open-only queue designs" width="60%">
 </p>
-
-How you build the evaluation queue changes the winner. If the queue also keeps PRs closed in the last 7 days,
-Jinx leads INTRUDE + time by 9 points; on real open-only queues the methods tie. The full study of 66 strategies
-is in [`experiments/`](experiments/) and [`experiments/report/REPORT.md`](experiments/report/REPORT.md).
 
 ## Learn templates for your own PRs
 
@@ -162,7 +185,7 @@ jinx learn-templates corpus.jsonl -o my_templates.json   # JSON-lines with agent
 jinx check new.json --open-queue open.jsonl --templates my_templates.json
 ```
 
-## Papers
+### Papers
 
 The LaTeX sources and PDFs are in [`paper/`](paper/), and `make -C paper` regenerates every number, table and
 figure from the result files.

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jinx: catch duplicate pull requests before you review them twice</title>
+<meta name="description" content="Jinx is a free GitHub Action that warns when a new pull request repeats one that is already open, and says why. Runs on CPU, no API key.">
+<meta property="og:title" content="Jinx: duplicate PR warnings for coding agents">
+<meta property="og:description" content="A free GitHub Action that spots when a new PR repeats an open one, and tells you why.">
+<meta property="og:image" content="assets/action_comment.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪢</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="nav">
+  <a class="logo" href="#top">Jinx</a>
+  <nav>
+    <a href="#problem">Why</a>
+    <a href="#how">How it works</a>
+    <a href="#compare">Compare</a>
+    <a href="#start">Get started</a>
+    <a class="btn small" href="https://github.com/ABCR-Labs/Jinx">GitHub</a>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-text">
+    <p class="eyebrow">Free GitHub Action · runs on CPU · no API key</p>
+    <h1>Stop reviewing the same pull request twice.</h1>
+    <p class="lead">Coding agents open a lot of PRs, and some of them redo work that is already waiting for review.
+      Jinx checks every new PR against the open ones and leaves one short comment when it finds a likely duplicate,
+      with the reasons in plain words.</p>
+    <div class="cta">
+      <a class="btn" href="#start">Add it to your repo</a>
+      <a class="btn ghost" href="#compare">See how it compares</a>
+    </div>
+  </div>
+  <figure class="hero-shot">
+    <img src="assets/action_comment.png" alt="A Jinx comment on a GitHub PR: this PR may duplicate PR 12, score 1.00, same linked issue, shares 2 of 2 changed files, 100% of changed lines overlap.">
+    <figcaption>A real Jinx comment, from a live run on the Jinx repository.</figcaption>
+  </figure>
+</section>
+
+<section id="problem" class="band">
+  <h2>Duplicates waste reviewer time</h2>
+  <p class="sub">We looked at <b data-k="n_cross"></b> real cases from the public AIDev dataset where one agent PR repeated another PR from a different author.</p>
+  <div class="stats">
+    <div class="stat"><span class="num" data-k="after_1h"></span><span>were noticed only <b>after an hour</b> or more</span></div>
+    <div class="stat"><span class="num" data-k="after_1d"></span><span>were noticed only <b>after a day</b> or more</span></div>
+    <div class="stat"><span class="num" data-k="reviewed_before"></span><span>had already received a <b>human review or comment</b> before anyone noticed</span></div>
+  </div>
+</section>
+
+<section id="how">
+  <h2>How it works</h2>
+  <p class="sub">Four simple checks, combined into one score from 0 to 1. Above 0.5, Jinx comments.</p>
+  <div class="steps">
+    <div class="step"><span class="ico">✂️</span><h3>Removes agent boilerplate</h3><p>Agent PRs all start with "## Summary … ## Testing …". Jinx strips that, so unrelated PRs stop looking alike.</p></div>
+    <div class="step"><span class="ico">🧩</span><h3>Compares the code</h3><p>Same files changed? Same lines touched? Identical added lines?</p></div>
+    <div class="step"><span class="ico">🔗</span><h3>Follows the links</h3><p>Do both PRs fix the same issue, or does the new PR mention the old one?</p></div>
+    <div class="step"><span class="ico">💬</span><h3>Explains itself</h3><p>Every warning lists its reasons, so a maintainer can decide in seconds. Jinx never closes or blocks a PR.</p></div>
+  </div>
+</section>
+
+<section id="compare" class="band">
+  <h2>How it compares</h2>
+  <p class="sub">Each method was replayed on <b data-k="n_cross"></b> real duplicate PR pairs, against the PRs that were open at the time.
+    Higher is better on the left, lower is better on the right.</p>
+  <div class="table-wrap">
+    <table id="cmp">
+      <thead><tr><th>Method</th><th>Finds the right PR first<br><small>out of 100 duplicates</small></th><th>False alarms<br><small>per 100 PRs with no duplicate</small></th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="callouts">
+    <div class="callout"><h3>Fewer false alarms than existing bots</h3><p>Jinx warns on <b data-k="jinx_far"></b> of every 100 clean PRs. The best existing bot we tested, contrib-guard, warns on <b data-k="cg_far"></b>.</p></div>
+    <div class="callout"><h3>Tells you why</h3><p>Jinx lists code-level reasons: shared files, overlapping lines, identical added lines. A link rule or a text-only bot can only say that two PRs look related.</p></div>
+    <div class="callout honest"><h3>Honest note</h3><p>On ranking, the strong methods are statistically tied, and a simple link rule is slightly ahead overall. Jinx's edge is fewer false alarms than the existing bots, clear reasons, and a ready-to-use Action.</p></div>
+  </div>
+</section>
+
+<section id="tradeoff">
+  <h2>Pick your noise level</h2>
+  <p class="sub">Every detector trades missed duplicates against false alarms. Drag the slider to choose how many false alarms per 100 clean PRs you can live with, and see how many real duplicates each method would catch.</p>
+  <div class="slider-box">
+    <label for="far">False alarms you accept: <b id="farlabel"></b> per 100 PRs</label>
+    <input type="range" id="far" min="0" max="4" step="1" value="1">
+    <div class="ticks"><span>1</span><span>2</span><span>5</span><span>10</span><span>20</span></div>
+  </div>
+  <div id="bars" class="bars"></div>
+  <p class="note">"Caught" means the method ranked the right PR first and its score was high enough to warn. Numbers come from cross-validated replays on AIDev.</p>
+</section>
+
+<section id="start" class="band">
+  <h2>Get started in two minutes</h2>
+  <div class="two">
+    <div>
+      <h3>1. As a GitHub Action</h3>
+      <p>Add this file to your repository. Jinx comments on new PRs and updates its comment when the PR changes.</p>
+      <div class="code"><button class="copy" data-target="yaml">Copy</button><pre id="yaml"># .github/workflows/jinx.yml
+name: jinx
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, edited]
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ABCR-Labs/Jinx@main</pre></div>
+      <p class="small">Safe for PRs from forks: Jinx reads PR data through the GitHub API and never runs the PR's code.</p>
+    </div>
+    <div>
+      <h3>2. From the command line</h3>
+      <p>Check one PR against a list of open PRs on your own machine.</p>
+      <div class="code"><button class="copy" data-target="cli">Copy</button><pre id="cli">pip install git+https://github.com/ABCR-Labs/Jinx
+jinx check new_pr.json --open-queue open_prs.jsonl</pre></div>
+      <div class="facts">
+        <div><b data-k="latency"></b><span>median time per PR</span></div>
+        <div><b>$0</b><span>no LLM, no API key</span></div>
+        <div><b>0.5</b><span>one threshold to tune</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="limits">
+  <h2>What Jinx does not do (yet)</h2>
+  <ul class="limits">
+    <li>It misses duplicates that solve the same issue with different files and different words. Lowering the threshold catches more of them, at the cost of more false alarms.</li>
+    <li>It is tested on historical data, plus a live demo on our own repository. It has not yet been run by outside maintainers.</li>
+    <li>An LLM check (Claude Haiku) on Jinx's top five cuts false alarms from <span data-k="haiku_jinx"></span> to <span data-k="haiku_far"></span> per 100 PRs, but costs about <span data-k="haiku_cost"></span> cents per PR. Jinx does not include it yet.</li>
+  </ul>
+</section>
+
+<footer>
+  <p><b>Jinx</b> · MIT licence · built on the <a href="https://huggingface.co/datasets/hao-li/AIDev">AIDev dataset</a> (CC BY 4.0)</p>
+  <p>Research papers: <a href="https://github.com/ABCR-Labs/Jinx/blob/main/paper/tooldemo/main.pdf">tool paper</a> · <a href="https://github.com/ABCR-Labs/Jinx/blob/main/paper/empirical/main.pdf">evaluation study</a></p>
+  <p class="small">Harshul Jain, Saurabh Yergattikar, Tanya Sah, Parv Khatri</p>
+</footer>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
