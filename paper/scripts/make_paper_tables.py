@@ -12,6 +12,12 @@ S = pd.read_csv(os.path.join(RES, "strategies_by_group.csv"))
 P = pd.read_csv(os.path.join(RES, "paired_cross_author.csv"))
 FA = pd.read_csv(os.path.join(RES, "false_alarms.csv"))
 PFA = pd.read_csv(os.path.join(RES, "paired_false_alarms.csv"))
+# Haiku false alarms come from the run restricted to the no-duplicate queries Haiku scored in full (results_haiku_subset/).
+SUB = os.path.join(RES, "..", "results_haiku_subset")
+HAS_SUB = os.path.exists(os.path.join(SUB, "false_alarms.csv"))
+if HAS_SUB:
+    FAS = pd.read_csv(os.path.join(SUB, "false_alarms.csv"))
+    PFAS = pd.read_csv(os.path.join(SUB, "paired_false_alarms.csv"))
 
 M = {"jinx": "Jinx + MiniLM, LR (current tool)", "jinxlex": "Jinx lexical, LR", "all": "All signals, LR",
      "intrude": "INTRUDE + time (Wang et al. 2019), LR", "cg": "contrib-guard/phoenix (bot, exact port)",
@@ -30,15 +36,19 @@ def get(group, key, col):
     r = S[(S.group == group) & (S.method == M[key])]
     return float(r[col].iloc[0]) if len(r) else float("nan")
 
+SUBKEYS = {"haiku"} if HAS_SUB else set()
+
+
 def far(key):
-    r = FA[FA.method == M[key]].iloc[0]
+    r = (FAS if key in SUBKEYS else FA)
+    r = r[r.method == M[key]].iloc[0]
     return r.FAR, r["FAR lo"], r["FAR hi"]
 
 f3 = lambda x: "--" if pd.isna(x) else f"{x:.3f}"
 pct = lambda x: f"{100 * x:.1f}"
 CA = "cross-author"
 BASE = ["links", "linksraw", "intrude", "cg", "bge", "tfidf"]
-ORDER = [["jinx", "jinxlex"], ["all", "casc", "qwen14"], BASE]
+ORDER = [["jinx", "jinxlex"], ["all", "casc", "qwen14"] + sorted(SUBKEYS), BASE]
 vals = {}
 for k in [k for blk in ORDER for k in blk]:
     vals[k] = [get(CA, k, "R@1"), get(CA, k, "R@5"), get(CA, k, "MRR"), far(k)[0]]
@@ -63,19 +73,22 @@ def cell(k, i):
     x = vals[k][i]
     txt = f3(x) if i < 2 else pct(x)
     if i == 2 and k != "jinx":
-        q = PFA[(PFA.reference == M["jinx"]) & (PFA.method == M[k])]
+        q = (PFAS if k in SUBKEYS else PFA)
+        q = q[(q.reference == M["jinx"]) & (q.method == M[k])]
         if len(q) and q["dFAR lo"].iloc[0] > 0:  # row raises more false alarms than Jinx, CI excludes zero
             txt = f"{txt}$^{{\\dagger}}$"
         elif len(q) and q["dFAR hi"].iloc[0] < 0:  # row raises fewer false alarms than Jinx, CI excludes zero
             txt = f"{txt}$^{{\\ddagger}}$"
-    if round(x, 4) == round(best[i], 4):
+    if round(x, 4) == round(best[i], 4) and not (i == 2 and k in SUBKEYS):
         txt = f"\\textbf{{{txt}}}"
+    if i == 2 and k in SUBKEYS:
+        txt = f"{txt}$^{{*}}$"
     return txt
 
 
 COLS = [0, 1, 3]
 vals = {k: [v[c] for c in COLS] for k, v in vals.items()}
-best = [max(v[0] for v in vals.values()), max(v[1] for v in vals.values()), min(v[2] for v in vals.values())]
+best = [max(v[0] for v in vals.values()), max(v[1] for v in vals.values()), min(v[2] for k, v in vals.items() if k not in SUBKEYS)]
 blocks = []
 for blk in ORDER:
     rr = []

@@ -63,6 +63,6 @@ Owner: **D** = Devin, **H** = Harshul. Update this file in every PR.
 - [x] Package `mention_ref` is forward-only, matching training; Action default `embed: "false"`
 - [x] Link rule without TF-IDF tie-break reported; table redesigned; consistent figure colours and names
 - [x] Empirical paper no longer claims Jinx as a contribution; tool demo cites the study; shared table/figure removed from the demo
-- [ ] Decide: re-run Claude Haiku on open-only top-5 candidates (~$1.2) — current scores cover 30%, so Haiku results are omitted
+- [x] Claude Haiku re-run on open-only top-5: all cross-author queries + 1,600 random no-duplicate queries ($7.93, `experiments/bench_v2/haiku_open.py`); false alarms from `experiments/results_haiku_subset/`
 - [ ] Make repo public, publish `jinx-pr` on PyPI, record demo video, add an Action PR-comment screenshot (tool-track availability)
 - [ ] Human 100-pair label check

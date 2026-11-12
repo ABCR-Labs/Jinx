@@ -223,8 +223,8 @@
   }
  },
  "kendall_tau random-pair AUC vs live-queue cross-author R@1": [
-  0.6997644399081561,
-  1.0999629281574727e-16
+  0.698551238626587,
+  1.2596474585266214e-16
  ],
  "classes": {
   "A. code twin (>=50% identical changed lines)": 951,
@@ -288,8 +288,8 @@
   "LLM judge Qwen2.5-14B + Jinx (avg) top-5": 0.9875317615080068,
   "LLM judge Qwen2.5-14B re-rank top-10": 0.9151713487277541,
   "LLM judge Qwen2.5-14B + Jinx (avg) top-10": 0.9151713487277541,
-  "LLM judge Claude Haiku 4.5 re-rank top-5": 0.29767358304140845,
-  "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5": 0.29767358304140845,
+  "LLM judge Claude Haiku 4.5 re-rank top-5": 1.0,
+  "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5": 1.0,
   "Cascade: Jinx + BGE-reranker-base (stacked LR)": 0.9151713487277541,
   "Cascade: Jinx + Qwen2.5-7B judge (stacked LR)": 0.9151713487277541,
   "Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR)": 0.9151713487277541,

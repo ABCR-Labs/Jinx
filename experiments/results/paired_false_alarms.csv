@@ -56,8 +56,8 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.003581376840429765,-0.007078535551986879,0.0004220126259638855
 "Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B re-rank top-10,0.11619578193394349,0.08171190392955577,0.15997416400744568
 "Jinx + MiniLM, LR (current tool)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.0019896538002387586,-0.005826087146311865,0.0023598552030936514
-"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 re-rank top-5,0.01631516116195782,0.009484491645929613,0.02327851909434967
-"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,0.0031834460803820135,-0.001986873373499422,0.008695652173913044
+"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 re-rank top-5,-0.005173099880620772,-0.013352906396637308,0.0018259406141031206
+"Jinx + MiniLM, LR (current tool)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.012733784321528054,-0.019857828445552797,-0.006950402395093017
 "Jinx + MiniLM, LR (current tool)",Cascade: Jinx + BGE-reranker-base (stacked LR),0.02347791484281735,0.01716046862855767,0.03013707114011968
 "Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.003979307600477517,-0.009196474784319402,0.00034353830444311547
 "Jinx + MiniLM, LR (current tool)",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.002785515320334262,-0.0072969919298126245,0.0011202667186446958
@@ -122,8 +122,8 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.006366892160764027,-0.012486146972233747,-0.0014214837306525342
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B re-rank top-10,0.11341026661360923,0.07941898332879165,0.15854794576643416
 "INTRUDE + time (Wang et al. 2019), LR",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.00477516912057302,-0.011131649210394848,0.000537952240131226
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 re-rank top-5,0.013529645841623557,0.006045321018328814,0.019979129504102744
-"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,0.0003979307600477517,-0.0055252149799791435,0.005754384266068662
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 re-rank top-5,-0.007958615200955034,-0.017535711094361316,0.0
+"INTRUDE + time (Wang et al. 2019), LR",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.015519299641862315,-0.024066905892632034,-0.008851638254857677
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + BGE-reranker-base (stacked LR),0.020692399522483088,0.014612459933927301,0.026802893892709588
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.006764822920811779,-0.014508178250173705,-0.0013111530332797527
 "INTRUDE + time (Wang et al. 2019), LR",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.005571030640668524,-0.012673752053355835,-0.00033756449731850343
@@ -188,8 +188,8 @@ reference,method,dFAR,dFAR lo,dFAR hi
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-5,-0.04058893752487067,-0.055532742506550596,-0.024993686868686905
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B re-rank top-10,0.07918822124950259,0.03900850863747154,0.12704682872541304
 "contrib-guard/phoenix (bot, exact port)",LLM judge Qwen2.5-14B + Jinx (avg) top-10,-0.03899721448467967,-0.054122855731152046,-0.023213931232866376
-"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 re-rank top-5,-0.020692399522483088,-0.03314705510730853,-0.007128810609163283
-"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.033824114604058896,-0.04728758826022221,-0.019949400502462553
+"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 re-rank top-5,-0.04218066056506168,-0.0565418943733585,-0.02755645228292785
+"contrib-guard/phoenix (bot, exact port)",LLM judge Claude Haiku 4.5 + Jinx (avg) top-5,-0.04974134500596896,-0.06411613644224065,-0.03421852078853203
 "contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + BGE-reranker-base (stacked LR),-0.013529645841623557,-0.02715674026035954,0.0008750870386753919
 "contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-7B judge (stacked LR),-0.040986868284918425,-0.05545826203374171,-0.026133408953717366
 "contrib-guard/phoenix (bot, exact port)",Cascade: Jinx + Qwen2.5-Coder-7B judge (stacked LR),-0.03979307600477517,-0.054123722992160374,-0.02482418050234144

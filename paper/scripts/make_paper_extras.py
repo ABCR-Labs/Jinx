@@ -144,5 +144,23 @@ nm("ROnecgClassD", f"{float(S[(S.group == 'cross-author, class D. no shared file
 _cov = SJ.get("judge_coverage", {}).get("LLM judge Claude Haiku 4.5 + Jinx (avg) top-5", 1.0)
 nm("judgeCovHaiku", f"{100 * _cov:.0f}")
 nm("judgeNote", "" if _cov > 0.99 else f"Haiku was run on an earlier candidate set and scored {100 * _cov:.0f}\\% of the current top-5 candidates; the rest keep Jinx's score, so its results are approximate.")
+# Claude Haiku re-scored on open-only top-5 candidates: every cross-author query plus a random sample of no-duplicate
+# queries; false alarms come from the matching NEG_SUBSET run, where all methods see the same sampled queries.
+SUBD = os.path.join(EXP, "results_haiku_subset")
+HC = json.loads(pathlib.Path(SUBD, "llm_haiku45_open_cost.json").read_text()) if os.path.exists(os.path.join(SUBD, "llm_haiku45_open_cost.json")) else None
+if HC and os.path.exists(os.path.join(SUBD, "false_alarms.csv")):
+    nm("haikuNegN", f"{HC['neg_sample_n']:,}".replace(",", "{,}")); nm("haikuNegTotal", f"{HC['n_neg_total']:,}".replace(",", "{,}"))
+    nm("costHaikuOpen", f"{HC['new_usd']:.2f}")
+    nm("costHaikuPerPR", f"{100 * 5 * HC['new_usd'] / HC['new_pairs']:.1f}")  # US cents for 5 judged candidates
+    FS = pd.read_csv(os.path.join(SUBD, "false_alarms.csv")); PS = pd.read_csv(os.path.join(SUBD, "paired_false_alarms.csv"))
+    OS = pd.read_csv(os.path.join(SUBD, "operating_curve.csv")); osc = OS.columns[2]
+    for tag, m in [("jinx", JINX), ("haiku", "LLM judge Claude Haiku 4.5 + Jinx (avg) top-5"), ("haikuonly", "LLM judge Claude Haiku 4.5 re-rank top-5"),
+                   ("intrude", INTR), ("links", "Links only (same issue / #ref)")]:
+        r_ = FS[FS.method == m].iloc[0]
+        nm("FARsub" + tag, f"{100 * r_.FAR:.1f}"); nm("FARsub" + tag + "Lo", f"{100 * r_['FAR lo']:.1f}"); nm("FARsub" + tag + "Hi", f"{100 * r_['FAR hi']:.1f}")
+        nm("OCsubone" + tag, f"{100 * float(OS[(OS.method == m) & (OS['FAR target'] == 0.01)][osc].iloc[0]):.0f}")
+        if m != JINX:
+            q = PS[(PS.reference == JINX) & (PS.method == m)].iloc[0]
+            nm("dFARsub" + tag, f"{100 * q.dFAR:+.1f}"); nm("dFARsub" + tag + "Lo", f"{100 * q['dFAR lo']:+.1f}"); nm("dFARsub" + tag + "Hi", f"{100 * q['dFAR hi']:+.1f}")
 pathlib.Path(OUT, "numbers_extra.tex").write_text("\n".join(mac) + "\n")
 print(len(mac), "macros")
