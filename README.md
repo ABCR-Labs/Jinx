@@ -37,8 +37,8 @@ missed. Jinx strips the template text and then compares the code, the links and 
 ## Quickstart
 
 ```bash
-pip install git+https://github.com/ABCR-Labs/Jinx     # adds the `jinx` command
-# or, from a clone: pip install .   (pip install ".[embed]" adds the optional local MiniLM model)
+pip install git+https://github.com/ABCR-Labs/Jinx   # adds the `jinx` command
+# from a clone: pip install .  (or ".[embed]" for the optional MiniLM model)
 
 jinx check examples/new_pr.json --open-queue examples/open_prs.jsonl --top 2
 ```
@@ -132,7 +132,7 @@ and false alarms on PRs that have no duplicate.
 
 | Method | Right PR ranked first (Recall@1) | False alarms | Needs |
 |---|:---:|:---:|---|
-| **Jinx** (with MiniLM) | **0.927** | **1.8%** | CPU |
+| **Jinx** (with MiniLM) | 0.927 | 1.8% | CPU |
 | Jinx, lexical only (Action default) | 0.917 | 1.9% | CPU |
 | Link rule (TF-IDF tie-break) | 0.936 | 1.2% | CPU |
 | INTRUDE + time (Wang et al. 2019) | 0.914 | 2.0% | CPU |
