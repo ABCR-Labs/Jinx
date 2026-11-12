@@ -1,8 +1,0 @@
-{
- "yes - same change": "duplicate",
- "yes - replacement (redone the same work)": "replacement",
- "partly - one PR contains the other": "subsumed",
- "no - related but different work": "related",
- "no - unrelated": "related",
- "unclear": "unclear"
-}
