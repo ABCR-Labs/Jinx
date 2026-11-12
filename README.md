@@ -155,6 +155,12 @@ How you build the evaluation queue changes the winner. If the queue also keeps P
 Jinx leads INTRUDE + time by 9 points; on real open-only queues the methods tie. The full study of 66 strategies
 is in [`experiments/`](experiments/) and [`experiments/report/REPORT.md`](experiments/report/REPORT.md).
 
+## Choosing a threshold
+
+The default threshold (0.5) was set so that about 2.5% of PRs with no duplicate get a warning in
+cross-validation. Raise it (for example `--threshold 0.7`) if your maintainers prefer fewer comments; lower it
+to catch more duplicates at the cost of more false alarms.
+
 ## Learn templates for your own PRs
 
 ```bash
