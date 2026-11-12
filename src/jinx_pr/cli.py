@@ -4,6 +4,7 @@ import argparse
 import json
 import sys
 import time
+from importlib.metadata import PackageNotFoundError, version
 
 from .pr import PR
 from .scorer import Detector
@@ -87,8 +88,16 @@ def cmd_learn(a) -> int:
     return 0
 
 
+def _installed_version() -> str:
+    try:
+        return version("jinx-pr")
+    except PackageNotFoundError:
+        return "unknown"
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="jinx", description="Find likely duplicate PRs in an open-PR queue.")
+    p.add_argument("-V", "--version", action="version", version=f"%(prog)s {_installed_version()}")
     sub = p.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("check", help="rank open PRs that may duplicate a new PR")
     c.add_argument("new_pr", help="JSON file with the new PR (GitHub API shape; optional files/diff/agent)")
