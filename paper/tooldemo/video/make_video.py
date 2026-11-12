@@ -4,6 +4,7 @@ Inputs: docs/assets/*.png, the live-run screenshots in paper/tooldemo/video/shot
 Output: paper/tooldemo/video/jinx_demo.mp4 (1920x1080, about 3 minutes)."""
 
 import os
+import pathlib
 import subprocess
 import textwrap
 
@@ -56,26 +57,26 @@ def banner():
     svg = os.path.join(ROOT, "docs/assets/banner.svg")
     out = os.path.join(HERE, "shots/banner.png")
     subprocess.run(["google-chrome", "--headless=new", "--no-sandbox", "--disable-gpu", "--hide-scrollbars",
-                    "--window-size=1280,320", f"--screenshot={out}", f"file://{svg}"], capture_output=True)
+                    "--window-size=1280,320", f"--screenshot={out}", f"file://{svg}"], check=False, capture_output=True)
     im = Image.new("RGB", (W, H), (49, 46, 129))
     return paste(im, out, (0, 280, W, 760))
 
 
 S = os.path.join(HERE, "shots")
-cli = open(os.path.join(S, "cli_dup.txt")).read().splitlines()
-yaml = open(os.path.join(ROOT, ".github/workflows/jinx.yml")).read().splitlines()
+cli = pathlib.Path(S, "cli_dup.txt").read_text().splitlines()
+yaml = pathlib.Path(ROOT, ".github/workflows/jinx.yml").read_text().splitlines()
 slides = [
     (banner(), 12, "Jinx: explainable duplicate warnings for pull requests from coding agents."),
     (paste(canvas("Agents open many PRs, some redo open work")[0], os.path.join(S, "pulls.png"), (60, 150, W - 60, 860)), 22,
-     "Coding agents open many pull requests. Some redo work that is already open, and a maintainer may review both "
-     "before noticing. Here are four demo PRs on the Jinx repository: three for the same issue and one unrelated."),
+     ("Coding agents open many pull requests. Some redo work that is already open, and a maintainer may review both "
+     "before noticing. Here are four demo PRs on the Jinx repository: three for the same issue and one unrelated.")),
     (text_slide("Add one workflow file", yaml, font=MONO, top=170, step=40), 25,
-     "Jinx is a GitHub Action. It uses the workflow's own token, needs no API key, reads PR metadata and diffs through "
-     "the API, and never runs the PR's code."),
+     ("Jinx is a GitHub Action. It uses the workflow's own token, needs no API key, reads PR metadata and diffs through "
+     "the API, and never runs the PR's code.")),
     (paste(canvas("A new PR opens: Jinx comments")[0], os.path.join(ROOT, "docs/assets/action_comment.png"), (60, 170, W - 60, 820)), 35,
-     "PR #15 redoes open PR #12. Jinx compares it with every open PR: same linked issue, shared files, overlapping "
+     ("PR #15 redoes open PR #12. Jinx compares it with every open PR: same linked issue, shared files, overlapping "
      "lines, identical added lines, similar text after removing agent boilerplate. It explains the match and never "
-     "closes anything."),
+     "closes anything.")),
     (text_slide("And when to stay quiet", [
         "#13  docs: explain how to choose the threshold   ->  no comment (unrelated)",
         "#14  same issue, different wording and code       ->  score 0.30, no comment",
@@ -83,16 +84,16 @@ slides = [
         "The default threshold (0.5) keeps false alarms near 2 in 100 clean PRs.",
         "Lower it to catch duplicates like #14, at the cost of more alerts.",
     ], font=MONO, top=230, step=64), 25,
-     "An unrelated docs PR got no comment. A PR for the same issue written very differently scored 0.30, below the "
-     "default threshold, so it was missed. The threshold is the knob that trades misses against false alarms."),
+     ("An unrelated docs PR got no comment. A PR for the same issue written very differently scored 0.30, below the "
+     "default threshold, so it was missed. The threshold is the knob that trades misses against false alarms.")),
     (text_slide("The same check runs locally", ["$ pip install git+https://github.com/ABCR-Labs/Jinx",
                                                  "$ jinx check examples/new_pr.json --open-queue examples/open_prs.jsonl --top 2",
                                                  ""] + cli, font=ImageFont.truetype(F + "DejaVuSansMono.ttf", 25), top=170, step=40), 25,
-     "This is a real agent PR from huggingface/transformers, from the AIDev dataset. Jinx finds its twin among 19 "
-     "open PRs in about 10 ms on a CPU."),
+     ("This is a real agent PR from huggingface/transformers, from the AIDev dataset. Jinx finds its twin among 19 "
+     "open PRs in about 10 ms on a CPU.")),
     (paste(canvas("How it compares (313 cross-author duplicates)")[0], os.path.join(ROOT, "docs/assets/fig_far.png"), (60, 160, W - 60, 820)), 30,
-     "On real AIDev queues, Jinx ranks the right PR first 93% of the time, tied with a link rule and a classic research "
-     "detector. Its false alarms are 1.8 per 100 clean PRs, about a third of the best existing bot's."),
+     ("On real AIDev queues, Jinx ranks the right PR first 93% of the time, tied with a link rule and a classic research "
+     "detector. Its false alarms are 1.8 per 100 clean PRs, about a third of the best existing bot's.")),
     (text_slide("Limitations", [
         "- Misses duplicates that change different files (Recall@1 0.72 on those).",
         "- Labels come from PR comments; a human check of 100 pairs is under way.",
@@ -111,7 +112,7 @@ for i, (im, sec, cap) in enumerate(slides):
     caption(im, cap).save(f)
     lst += [f"file '{f}'", f"duration {sec}"]
 lst.append(f"file '{f}'")
-open(os.path.join(HERE, "frames", "list.txt"), "w").write("\n".join(lst) + "\n")
+pathlib.Path(HERE, "frames", "list.txt").write_text("\n".join(lst) + "\n")
 subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", os.path.join(HERE, "frames", "list.txt"),
                 "-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-crf", "20", os.path.join(HERE, "jinx_demo.mp4")], check=True)
 print(sum(s for _, s, _ in slides), "seconds")

@@ -4,6 +4,7 @@ Sample: 100 of the 313 open-only cross-author pairs that make up the papers' mai
 
 import json
 import os
+import pathlib
 import pickle
 import re
 
@@ -25,17 +26,18 @@ LABELS = [
 ]
 TO_AUDIT = dict(zip(LABELS, ["duplicate", "replacement", "subsumed", "related", "related", "unclear"]))
 
-Q = pickle.load(open(D + "bench.pkl", "rb"))["queries"]
+Q = pickle.loads(pathlib.Path(D, "bench.pkl").read_bytes())["queries"]
 ranks = pd.read_parquet(os.path.join(ROOT, "experiments/results/ranks.parquet"))
 cross = sorted(i for i in ranks.index if not Q[i]["neg"] and not Q[i]["self"])
 A = pd.read_parquet(os.path.join(HERE, "..", "audit_cross_pairs.parquet")).set_index("qi").loc[cross]
-H = {j["qi"]: j["label"] for j in map(json.loads, open(os.path.join(HERE, "..", "audit_cross_labels.jsonl")))}
+_lab = pathlib.Path(HERE, "..", "audit_cross_labels.jsonl").read_text().splitlines()
+H = {j["qi"]: j["label"] for j in map(json.loads, _lab)}
 S = A.sample(100, random_state=0).reset_index()
 
 
 def field(prompt, who, name):
     blk = prompt.split(f"## {who} PR")[1].split("## NEWER PR")[0] if who == "OLDER" else prompt.split("## NEWER PR")[1]
-    m = re.search(rf"^{name}: (.*)$", blk, re.M)
+    m = re.search(rf"^{name}: (.*)$", blk, re.MULTILINE)
     return m.group(1).strip() if m else ""
 
 
@@ -108,5 +110,5 @@ for who in ["A", "B"]:
             c.alignment = Alignment(wrap_text=True, vertical="top")
     ws.freeze_panes = "C2"
     wb.save(os.path.join(HERE, f"label_sheet_{who}.xlsx"))
-json.dump(TO_AUDIT, open(os.path.join(HERE, "label_map.json"), "w"), indent=1)
+pathlib.Path(HERE, "label_map.json").write_text(json.dumps(TO_AUDIT, indent=1))
 print(len(sheet), "pairs;", sheet.repository.nunique(), "repositories")

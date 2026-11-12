@@ -2,13 +2,14 @@
 
 import json
 import os
+import pathlib
 import sys
 
 import numpy as np
 import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-M = json.load(open(os.path.join(HERE, "label_map.json")))
+M = json.loads(pathlib.Path(HERE, "label_map.json").read_text())
 key = pd.read_csv(os.path.join(HERE, "key_do_not_open.csv"))
 a, b = (pd.read_excel(p, sheet_name="Pairs").set_index("id").label.map(M) for p in sys.argv[1:3])
 
@@ -39,4 +40,4 @@ out = {
     "haiku_strict_same_rows": prec(hk, strict),
 }
 print(json.dumps(out, indent=1))
-json.dump(out, open(os.path.join(HERE, "agreement.json"), "w"), indent=1)
+pathlib.Path(HERE, "agreement.json").write_text(json.dumps(out, indent=1))
