@@ -5,6 +5,7 @@ import json
 import sys
 import time
 
+from . import __version__
 from .pr import PR
 from .scorer import Detector
 from .templates import TemplateModel
@@ -89,6 +90,7 @@ def cmd_learn(a) -> int:
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="jinx", description="Find likely duplicate PRs in an open-PR queue.")
+    p.add_argument("--version", action="version", version=f"jinx {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("check", help="rank open PRs that may duplicate a new PR")
     c.add_argument("new_pr", help="JSON file with the new PR (GitHub API shape; optional files/diff/agent)")
